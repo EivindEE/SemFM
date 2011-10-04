@@ -1,0 +1,124 @@
+2011-09-30 10:26:52,651 WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+2011-09-30 10:26:52,651 ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+2011-09-30 10:27:05,036 WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+2011-09-30 10:27:05,036 ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+10:27:27,017            WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+10:27:27,018            ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+2011-09-30 10:27:41,012 WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+2011-09-30 10:27:41,012 ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+2011-09-30 11:17:42,390 WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+2011-09-30 11:17:42,483 ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+2011-09-30 11:17:47,448 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:19:18,455 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:20:13,509 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:20:57,628 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:21:21,904 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:24:32,107 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:28:00,432 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:28:02,599 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:28:02,609 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:28:02,668 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:28:02,673 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:28:02,678 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:41:22,572 WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+2011-09-30 11:41:22,572 ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+2011-09-30 11:41:25,078 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:41:55,860 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:41:58,351 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:41:58,361 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:41:58,419 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:41:58,424 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:41:58,428 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:42:26,994 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:42:27,755 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:42:27,764 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:42:27,824 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:42:27,829 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:42:27,835 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:05,507 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:06,615 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:06,624 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:06,686 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:06,691 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:06,696 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:57,127 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:58,856 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:58,866 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:58,933 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:58,939 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:43:58,943 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:46:46,948 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:46:49,879 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:46:49,886 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:46:49,962 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:46:49,967 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:46:49,972 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:48:56,193 WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+2011-09-30 11:48:56,194 ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+2011-09-30 11:48:58,095 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:49:23,461 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:50:32,691 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:51:06,818 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:51:50,477 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:53:06,123 WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+2011-09-30 11:53:06,123 ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+2011-09-30 11:53:08,992 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:53:32,580 WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+2011-09-30 11:53:32,581 ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+2011-09-30 11:53:34,143 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:54:29,274 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:55:14,093 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:55:35,643 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:56:01,437 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:56:24,853 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:57:01,726 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:57:22,226 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:58:18,923 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:59:10,828 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 11:59:47,187 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:00:55,514 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:01:22,489 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:02:26,833 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:04:23,946 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:04:49,420 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:05:06,279 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:05:19,099 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:06:44,309 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:07:06,812 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:07:46,173 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:08:36,858 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:09:21,022 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:09:48,891 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:10:22,913 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:11:55,475 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:12:15,737 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:12:43,025 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:12:51,113 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:16:43,813 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:26:13,186 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:37:23,883 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:38:00,426 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:38:18,568 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:39:12,718 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:41:59,868 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:42:17,323 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 12:42:48,937 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:30:59,203 WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+2011-09-30 15:30:59,280 ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+2011-09-30 15:31:02,925 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:34:07,415 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:35:32,527 WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+2011-09-30 15:35:32,556 ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+2011-09-30 15:35:34,919 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:40:43,544 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:40:46,999 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:40:59,048 WARN : edu.uib.goblin.HomeController - Warning logging is enabled
+2011-09-30 15:40:59,048 ERROR: edu.uib.goblin.HomeController - Error logging is enabled
+2011-09-30 15:41:01,276 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:42:00,144 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:43:16,046 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:43:45,464 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:44:19,943 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:45:00,966 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 15:45:08,608 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
+2011-09-30 17:54:41,643 DEBUG: edu.uib.goblin.ChatController - I guess this should initiate the chatroom
