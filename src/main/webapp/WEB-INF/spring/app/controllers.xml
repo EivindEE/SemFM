@@ -9,7 +9,7 @@
 
 	<!-- Scans within the base package of the application for @Components to 
 		configure as beans -->
-	<context:component-scan base-package="edu.uib.goblin" />
+	<context:component-scan base-package="edu.uib.info310" />
 
 	<tx:annotation-driven />
 	<mvc:annotation-driven />
