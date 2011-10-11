@@ -1,5 +1,6 @@
 package edu.uib.info310;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,13 +22,24 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
+		String helloWrold = null;
+		try {
+			helloWrold = GetUrl.getContent("http://www.tastekid.com/ask/ws?q=rihanna"); // RIHANNA FUCK YEAH!
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		
 		logger.debug("Debug logging is enabled");
 		logger.info("Info logging is enabled");
 		logger.warn("Warning logging is enabled");
 		logger.error("Error logging is enabled");
 		model.addAttribute("controllerMessage",
-				"This is the message from the controller!");
+				helloWrold);
 		return "home";
 	}
+	
 
 }
