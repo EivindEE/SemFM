@@ -30,8 +30,6 @@ public class HomeController {
 			e1.printStackTrace();
 		}
 		
-		
-		
 		logger.debug("Debug logging is enabled");
 		logger.info("Info logging is enabled");
 		logger.warn("Warning logging is enabled");
