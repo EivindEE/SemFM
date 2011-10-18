@@ -1473,5 +1473,11 @@ The review does not have to be open content, as long as it is accessible to the 
     </p>
 			* <p>Subclass of:<ul/></p> 
 			*/
+
 		public static final Property wikipedia =  m_model.createProperty( "http://purl.org/ontology/mo/wikipedia" );
+		
+		public static final Property artistImage =  m_model.createProperty( "http://xmlns.com/foaf/0.1/img" );
+		
+		public static final Property bio =  m_model.createProperty( "http://dbpedia.org/property/abstract" );
  }
+ 
