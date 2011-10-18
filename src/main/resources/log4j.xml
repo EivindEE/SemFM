@@ -57,7 +57,6 @@
 	<logger name="edu.uib.goblin.ChatController">
 		<level value="debug" />
 	</logger>
-	
 
 	<!-- Root Logger -->
 	<root>
