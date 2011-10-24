@@ -20,11 +20,11 @@ $.fn.thuneScroller = function(o) {
         btnPrev: null,
         btnNext: null,
 
-        speed: 400,
+        speed: 200,
 
-        visible: 5,
+        visible: 2,
         start: 0,
-        scroll:1,
+        scroll:3,
 
         beforeStart: null,
         afterEnd: null
@@ -41,22 +41,20 @@ $.fn.thuneScroller = function(o) {
 		// define css for div, ul, etc
         ul.css({ position: "relative"});
 		var liMargins = css(li, 'marginLeft') + css(li, 'marginRight') + 2;
-		var liSize = li[0].offsetWidth + liMargins;
+		
 		var divSize = div[0].offsetWidth-60; 
 		
-		li.css({ width: (divSize/v - liMargins*v) });
-		console.log('hello?');
-		console.log(liSize-liMargins + " " +liMargins + " " + divSize + " " + divSize/v + ((divSize/v)-(liMargins*v))*v);
-		console.log('---');
-		
-		while(liSize-liMargins < 210 && v > 0) {
+		li.css({ width: ((divSize/v) - (liMargins*v)) });
+		var liSize = li[0].offsetWidth + liMargins;
+
+		/*while(liSize-liMargins < 210 && v > 0) {
 			v--;
 			li.css({ width: ((divSize/v)-(liMargins*v)) });
 			liSize = li[0].offsetWidth + liMargins;
 			
 			console.log(liMargins + " " + divSize + " " + divSize/v + ((divSize/v)-(liMargins*v))*v);
 			console.log('---');
-		}
+		}*/
 		
 		
 		
