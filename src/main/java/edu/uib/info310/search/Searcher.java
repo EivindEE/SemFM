@@ -1,5 +1,7 @@
 package edu.uib.info310.search;
 
+import org.springframework.stereotype.Component;
+
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
 import edu.uib.info310.model.Record;
