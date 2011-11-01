@@ -3,6 +3,7 @@ package edu.uib.info310;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.uib.info310.model.MockArtist;
+import edu.uib.info310.model.mock.MockArtist;
+import edu.uib.info310.search.Searcher;
 
 /**
  * Sample controller for going to the home page with a message
@@ -24,6 +26,8 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(HomeController.class);
 	
+	@Autowired
+	private Searcher searcher;
 	
 
 	/**
@@ -48,12 +52,14 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	@RequestMapping(value = "/search")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ModelAndView search(@RequestParam String search_string){
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("artist", new MockArtist());
-		mav.setViewName("artist");
+		String searchType = "artist";
+		
+		mav.addObject(searchType, searcher.searchArtist(search_string));
+		mav.setViewName(searchType);
 		
 		return mav;
 	}
