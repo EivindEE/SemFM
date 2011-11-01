@@ -10,7 +10,7 @@ public interface Event {
 	
 	public String getVenue();
 	
-	public String getLong();
+	public String getLng();
 	
 	public String getLat();
 }

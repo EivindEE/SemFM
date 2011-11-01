@@ -1,15 +1,57 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<jsp:include page="includes/header.jsp" />
-
-<c:if test="${not empty artist}">
-	hey
-</c:if>
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Rihanna - SemFM</title>
+	<link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico" />
+	<link rel="icon" type="image/png" href="resources/images/favicon.png" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	<script type="text/javascript" src="resources/javascript/thune.scroller.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$(".album_list_carousel").thuneScroller({
+				btnNext: ".next",
+				btnPrev: ".prev",
+				speed: 200,
+				visible: 4,
+				scroll: 4
+			});
+		});
+	</script>
+	<link rel="stylesheet" type="text/css" href="resources/css/screen.css" />
+	
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+	<script type="text/javascript">
+	  function initialize() {
+	    var latlng = new google.maps.LatLng(35, 10);
+	    var myOptions = {
+	      zoom: 2,
+	      center: latlng,
+	      mapTypeId: google.maps.MapTypeId.ROADMAP
+	    };
+	    var map = new google.maps.Map(document.getElementById("concert_map"),
+	        myOptions);
+	    <c:forEach var="eventMarker" items="${artist.events}">
+	  	  var latlng = new google.maps.LatLng(${eventMarker.lat},${eventMarker.lng});
+		  var marker = new google.maps.Marker({
+		      position: latlng, 
+		      map: map, 
+		      title:"<strong>${artist.name}</strong><br />${eventMarker.venue} @ ${eventMarker.venue}"
+		  }); 
+	  </c:forEach>
+	  }
+	  
+	
+	</script>
+	</head>
+<body onload="initialize()">
 
 <div id="header" class="cf">
 	<a href="#" id="logo"><img src="resources/images/SemFM-small.png" alt="" /></a>
 	<form id="search_form" action="search" method="post">
-		<input type="text" name="search_string" id="search_string" value="Search term" />
+		<input type="text" name="search_string" id="search_string" placeholder="${artist.name}" />
 		<button>Submit Search</button>
 	</form>
 	<ul class="header_meta_links">
@@ -46,7 +88,6 @@
 	
 	<div class="discography full">
 		<h2>Discography</h2>
-		hoppet over :D:D:D:D:D
 		<div class="album_list_wrapper">
 			<button class="prev">Previous</button>
 			<button class="next">Next</button>
@@ -61,8 +102,11 @@
 							<div class="album_tracks">
 								<h4>Tracks</h4>
 								<ul class="track_list">
+								
 									<c:forEach var="track" items="${album.tracks}">
-										<li><a href="">${track}</a></li>
+										<li> ${track.value} </li>
+										<c:out value="">
+										</c:out>
 									</c:forEach>
 								</ul>
 							</div>
@@ -84,31 +128,13 @@
 				<th>Location</th>
 				<th>Venue</th>
 			</tr>
-			<tr>
-				<td>20.10.2011</td>
-				<td>London, UK</td>
-				<td>Some Venue</td>
-			</tr>
-			<tr>
-				<td>20.10.2011</td>
-				<td>London, UK</td>
-				<td>Some Venue</td>
-			</tr>
-			<tr>
-				<td>20.10.2011</td>
-				<td>London, UK</td>
-				<td>Some Venue</td>
-			</tr>
-			<tr>
-				<td>20.10.2011</td>
-				<td>London, UK</td>
-				<td>Some Venue</td>
-			</tr>
-			<tr>
-				<td>20.10.2011</td>
-				<td>London, UK</td>
-				<td>Some Venue</td>
-			</tr>
+			<c:forEach var="event" items="${artist.events}">
+				<tr>
+					<td>${event.date}</td>
+					<td>${event.location}</td>
+					<td>${event.venue}</td>
+				</tr>
+			</c:forEach>
 		</table>
 	</div>
 	
@@ -116,7 +142,13 @@
 		<h2>Related Artists</h2>
 		<ul class="artist_list">
 			<c:forEach var="relatedArtist" items="${artist.similar}">
-				<li><a href="search/${relatedArtist.name}">${relatedArtist.name}</a></li>
+				<li>
+					<a href="search/${relatedArtist.name}">
+						<img src="${relatedArtist.image}" alt="" /> 
+						<span class="artist_name">${relatedArtist.name}</span>
+						<span class="artist_short_desc">${relatedArtist.shortDescription}</span>
+					</a>
+				</li>
 			</c:forEach>
 		</ul>
 	</div>
