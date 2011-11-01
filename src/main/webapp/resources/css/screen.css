@@ -195,15 +195,15 @@ a {
 			text-indent: -10000px;
 			width: 20px;
 			height: 21px;
-			background: url('../images/search-magnifier.png') top center no-repeat;
+			background: url('http://localhost:8080/SemFM/spring/resources/images/search-magnifier.png') top center no-repeat;
 			border:0;
 			cursor: pointer;
 		}
 			#search_form button:hover {
-				background: url('../images/search-magnifier.png') center center no-repeat;
+				background: url('http://localhost:8080/SemFM/spring/resources/images/search-magnifier.png') center center no-repeat;
 			}
 			#search_form button:active {
-				background: url('../images/search-magnifier.png') bottom center no-repeat;
+				background: url('http://localhost:8080/SemFM/spring/resources/images/search-magnifier.png') bottom center no-repeat;
 			}
 	
 	.header_meta_links {
@@ -242,7 +242,7 @@ a {
 /* search result header */
 .headline_wrapper {
 	position:relative;
-	background: url('../images/headline-background.png');
+	background: url('http://localhost:8080/SemFM/spring/resources/images/headline-background.png');
 	
 	border-top: 1px solid #666;
 	border-bottom: 1px solid #666;
@@ -308,7 +308,7 @@ a {
 
 /* used in upcoming concerts */
 .concert_map {
-	background: url('../images/map-background.png');
+	background: url('http://localhost:8080/SemFM/spring/resources/images/map-background.png');
 	border-radius: 10px;
 	height: 600px;
 	padding: 10px;
@@ -380,7 +380,7 @@ a {
 	position: absolute;
 	height: 65px;
 	width: 30px;
-	background: url('../images/prev-scroll-arrow.png') no-repeat center center #666;
+	background: url('http://localhost:8080/SemFM/spring/resources/images/prev-scroll-arrow.png') no-repeat center center #666;
 	border: 0;
 	top: 50%;
 	margin-top: -32px;
@@ -395,7 +395,7 @@ a {
 	position: absolute;
 	height: 64px;
 	width: 30px;
-	background: url('../images/next-scroll-arrow.png') no-repeat center center #666;
+	background: url('http://localhost:8080/SemFM/spring/resources/images/next-scroll-arrow.png') no-repeat center center #666;
 	border:0;
 	top: 50%;
 	margin-top: -32px;
@@ -526,6 +526,25 @@ a {
 			margin: 5px;
 			
 			border-radius: 10px;
+		}
+			.artist_list li a:hover {
+				background: #0099FF;
+				color: #fff;
+			}
+		.artist_list li img {
+			width: 210px;
+			height: 168px;
+		}
+		.artist_list li .artist_name {
+			font-size: 
+			16px;
+		}
+		.artist_list li a .artist_short_desc {
+			color: #333;
+		}
+		.artist_list li a:hover .artist_short_desc {
+			color: #fff;
+			text-decoration: none;
 		}
 
 #footer {
