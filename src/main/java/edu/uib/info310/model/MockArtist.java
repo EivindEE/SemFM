@@ -89,4 +89,8 @@ public class MockArtist implements Artist {
 	public String getDescription() {
 		return getBio();
 	}
+
+	public String getId() {
+		return "http://dbpedia.org/page/Rihanna";
+	}
 }

@@ -28,4 +28,8 @@ public class MockEvent implements Event {
 		return "5.3" + r.nextInt()*7000;
 	}
 
+	public String getId() {
+		return "http://www.last.fm/event/1767496+Rihanna+at+Oslo+Spektrum+on+30+October+2011";
+	}
+
 }
