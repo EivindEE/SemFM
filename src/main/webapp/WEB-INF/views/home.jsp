@@ -5,13 +5,13 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>SemFM - Semantic Music Search</title>
-	<link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico" />
-	<link rel="icon" type="image/png" href="resources/images/favicon.png" />
-	<link rel="stylesheet" type="text/css" href="resources/css/screen.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="http://localhost:8080/SemFM/spring/resources/images/favicon.ico" />
+	<link rel="icon" type="image/png" href="http://localhost:8080/SemFM/spring/resources/images/favicon.png" />
+	<link rel="stylesheet" type="text/css" href="http://localhost:8080/SemFM/spring/resources/css/screen.css" />
 </head>
 
 <body class="home">
-	<a href="#" id="logo"><img src="resources/images/SemFM-large.png" alt="SemFM" /></a>
+	<a href="http://localhost:8080/SemFM" id="logo"><img src="http://localhost:8080/SemFM/spring/resources/images/SemFM-large.png" alt="SemFM" /></a>
 	<form id="search_form" action="search" method="post">
 		<input type="text" name="search_string" id="search_string" placeholder="Artist name" />
 		<button>Submit Search</button>

@@ -5,10 +5,10 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>${artist.name} - SemFM</title>
-	<link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico" />
-	<link rel="icon" type="image/png" href="resources/images/favicon.png" />
+	<link rel="shortcut icon" type="image/x-icon" href="http://localhost:8080/SemFM/spring/resources/images/favicon.ico" />
+	<link rel="icon" type="image/png" href="http://localhost:8080/SemFM/spring/resources/images/favicon.png" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-	<script type="text/javascript" src="resources/javascript/thune.scroller.js"></script>
+	<script type="text/javascript" src="http://localhost:8080/SemFM/spring/resources/javascript/thune.scroller.js"></script>
 	<script type="text/javascript">
 		$(function() {
 			$(".album_list_carousel").thuneScroller({
@@ -20,7 +20,7 @@
 			});
 		});
 	</script>
-	<link rel="stylesheet" type="text/css" href="resources/css/screen.css" />
+	<link rel="stylesheet" type="text/css" href="http://localhost:8080/SemFM/spring/resources/css/screen.css" />
 	
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 	<script type="text/javascript">
@@ -49,7 +49,7 @@
 <body onload="initialize()">
 
 <div id="header" class="cf">
-	<a href="#" id="logo"><img src="resources/images/SemFM-small.png" alt="" /></a>
+	<a href="http://localhost:8080/SemFM" id="logo"><img src="http://localhost:8080/SemFM/spring/resources/images/SemFM-small.png" alt="" /></a>
 	<form id="search_form" action="search" method="post">
 		<input type="text" name="search_string" id="search_string" placeholder="${artist.name}" />
 		<button>Submit Search</button>
