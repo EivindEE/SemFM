@@ -22,7 +22,7 @@ public class SimilarHandeler extends DefaultHandler {
 
 	private String name;
 	
-	@Autowired
+	// @Autowired
 	private StringBuilder builder;
 
 	private List<String> similar;

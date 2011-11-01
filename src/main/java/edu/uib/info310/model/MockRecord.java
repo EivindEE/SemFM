@@ -17,7 +17,7 @@ public class MockRecord implements Record {
 		return "2005";
 	}
 
-	public String getLable() {
+	public String getLabel() {
 		
 		return "Def Jam Recordings";
 	}

@@ -10,7 +10,7 @@ public interface Record {
 	
 	public String getYear();
 	
-	public String getLable();
+	public String getLabel();
 	
 	public List<String> getTracks();
 
