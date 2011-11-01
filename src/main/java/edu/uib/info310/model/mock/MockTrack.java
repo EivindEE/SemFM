@@ -1,10 +1,12 @@
-package edu.uib.info310.model;
+package edu.uib.info310.model.mock;
+
+import edu.uib.info310.model.Track;
 
 
 public class MockTrack implements Track {
-	
-	public String getTrackNr(){
-		return "0";
+	private static Integer tracknr = new Integer(0);
+	public Integer getTrackNr(){
+		return tracknr++;
 	}
 	
 	public String getName() {
