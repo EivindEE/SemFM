@@ -50,17 +50,18 @@ public class Standard {
 	 * @return 
 	 */
 	public String getBio(String artistURI){
-		Model test = InfoFraSide("Metallica");
+		Model test = InfoFraSide(artistURI);
 		 String bio = null;
 		
 		Resource artist = test.getResource(artistURI); 
-
+		
 		StmtIterator itr = artist.listProperties(MO.bio);
 		while(itr.hasNext()){
 		 Statement s = itr.nextStatement();
 		 if (s.getLanguage().equals("en"))
 			bio = (s.getObject().toString());
-		}
+		 else bio = "no string";
+		} 
 
 		return bio;
 	}
@@ -68,7 +69,7 @@ public class Standard {
 	public static void main(String []args){
 		Standard s = new Standard();
 		
-	System.out.println(s.getBio("http://dbpedia.org/resources/Metallica"));
+	System.out.println(s.getBio("http://dbpedia.org/resource/Metallica"));
 	
 
 	}
