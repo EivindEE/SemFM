@@ -4,7 +4,7 @@
 <html dir="ltr" lang="en">
 <head>
 	<meta charset="UTF-8" />
-	<title>Rihanna - SemFM</title>
+	<title>${artist.name} - SemFM</title>
 	<link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico" />
 	<link rel="icon" type="image/png" href="resources/images/favicon.png" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
@@ -97,7 +97,7 @@
 						<li class="album">
 							<h3><a href="">${album.name}</a></h3>
 							<img src="${album.image}" alt="" />
-							<span class="album_year">${album.year}</span>
+							<span class="album_year">${album.year}</span><br />
 							<span class="album_publisher">${album.label}</span>
 							<div class="album_tracks">
 								<h4>Tracks</h4>
@@ -145,7 +145,7 @@
 				<li>
 					<a href="search?search_string=${relatedArtist.name}">
 						<img src="${relatedArtist.image}" alt="" /> 
-						<span class="artist_name">${relatedArtist.name}</span>
+						<span class="artist_name">${relatedArtist.name}</span><br />
 						<span class="artist_short_desc">${relatedArtist.shortDescription}</span>
 					</a>
 				</li>

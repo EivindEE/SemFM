@@ -527,6 +527,17 @@ a {
 			
 			border-radius: 10px;
 		}
+		.artist_list li img {
+			width: 210px;
+			height: 168px;
+		}
+		.artist_list li .artist_name {
+			font-size: 
+			16px;
+		}
+		.artist_list li a .artist_short_desc {
+			color: #333;
+		}
 
 #footer {
 	text-align:center;
