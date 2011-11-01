@@ -21,13 +21,13 @@ public class MockEvent implements Event {
 	public String getLng() {
 		Random r = new Random();
 		
-		return "60.39 " + r.nextInt()*7000;
+		return "60.39" + r.nextInt(100)*7000;
 	}
 
 	public String getLat() {
 		Random r = new Random();
 		
-		return "5.3" + r.nextInt()*7000;
+		return "5.3" + r.nextInt(100)*7000;
 	}
 
 	public String getId() {

@@ -62,6 +62,7 @@ public class MockArtist implements Artist {
 		records.add(new MockRecord());
 		records.add(new MockRecord());
 		records.add(new MockRecord());
+		records.add(new MockRecord());
 		return records;
 	}
 
