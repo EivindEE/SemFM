@@ -31,26 +31,26 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
-		String helloWrold = null;
-		try {
-			helloWrold = GetUrl.getContent("http://www.tastekid.com/ask/ws?q=rihanna"); // RIHANNA FUCK YEAH!
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		logger.debug("Debug logging is enabled");
-		logger.info("Info logging is enabled");
-		logger.warn("Warning logging is enabled");
-		logger.error("Error logging is enabled");
-		model.addAttribute("controllerMessage",
-				helloWrold);
+			String helloWrold = null;
+			try {
+				helloWrold = GetUrl.getContent("http://www.tastekid.com/ask/ws?q=rihanna"); // RIHANNA FUCK YEAH!
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			logger.debug("Debug logging is enabled");
+			logger.info("Info logging is enabled");
+			logger.warn("Warning logging is enabled");
+			logger.error("Error logging is enabled");
+			model.addAttribute("controllerMessage",
+					helloWrold);
 		return "home";
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
-	public ModelAndView search(@RequestParam String user){
+	public ModelAndView search(@RequestParam String search_string){
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("artist", new MockArtist());
 		mav.setViewName("artist");
