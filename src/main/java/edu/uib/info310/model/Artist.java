@@ -7,6 +7,10 @@ public interface Artist {
 	
 	public String getName();
 	
+	public String getShortDescription();
+	
+	public String getDescription();
+	
 	public String getBio();
 	
 	public String getImage();

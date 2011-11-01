@@ -81,4 +81,12 @@ public class MockArtist implements Artist {
 		events.add(new MockEvent());
 		return events;
 	}
+
+	public String getShortDescription() {
+		return "Singer, Songwriter";
+	}
+
+	public String getDescription() {
+		return getBio();
+	}
 }
