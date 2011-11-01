@@ -143,7 +143,7 @@
 		<ul class="artist_list">
 			<c:forEach var="relatedArtist" items="${artist.similar}">
 				<li>
-					<a href="search/${relatedArtist.name}">
+					<a href="search?search_string=${relatedArtist.name}">
 						<img src="${relatedArtist.image}" alt="" /> 
 						<span class="artist_name">${relatedArtist.name}</span>
 						<span class="artist_short_desc">${relatedArtist.shortDescription}</span>
