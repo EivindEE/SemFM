@@ -5,6 +5,8 @@ import java.util.Map;
 
 public interface Artist {
 	
+	public String getId();
+	
 	public String getName();
 	
 	public String getShortDescription();

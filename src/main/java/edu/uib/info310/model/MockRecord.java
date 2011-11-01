@@ -1,7 +1,10 @@
 package edu.uib.info310.model;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
 
 public class MockRecord implements Record {
 
@@ -22,13 +25,17 @@ public class MockRecord implements Record {
 		return "Def Jam Recordings";
 	}
 	
-	public List<String> getTracks(){
-		List<String> tracks = new LinkedList<String>();
-		tracks.add("Some track");
-		tracks.add("Some other track");
-		tracks.add("Some third track");
-		tracks.add("Some more tracks");
+	public Map<String, Track> getTracks(){
+		Map<String, Track> tracks = new HashMap<String, Track>();
+		tracks.put(((Integer) tracks.size()).toString(),new MockTrack());
+		tracks.put(((Integer) tracks.size()).toString(),new MockTrack());
+		tracks.put(((Integer) tracks.size()).toString(),new MockTrack());
+		tracks.put(((Integer) tracks.size()).toString(),new MockTrack());
 		return tracks;
+	}
+
+	public String getId() {
+		return "http://dbpedia.org/resource/Music_of_the_Sun";
 	}
 
 }
