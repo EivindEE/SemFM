@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,9 +53,9 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/search")
+	@RequestMapping(value = "/search/{search_string}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ModelAndView search(@RequestParam String search_string){
+	public ModelAndView search(@PathVariable String search_string){
 		ModelAndView mav = new ModelAndView();
 		String searchType = "artist";
 		
