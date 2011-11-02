@@ -17,18 +17,17 @@
 						<xsl:value-of select="title" />
 					</rdfs:label>
 					<xsl:for-each select="artists/artist">
-						<event:event>
-							<foaf:hasAgent>
-								<foaf:name>
-									<xsl:value-of select="." />
-								</foaf:name>
-							</foaf:hasAgent>
-						</event:event>
+
+						<foaf:hasAgent>
+							http://www.last.fm/music/
+							<xsl:value-of select="." />
+						</foaf:hasAgent>
 					</xsl:for-each>
 
 
 					<event:place>
-						http://www.last.fm/venue/<xsl:value-of select="venue/id"></xsl:value-of>
+						http://www.last.fm/venue/
+						<xsl:value-of select="venue/id"></xsl:value-of>
 					</event:place>
 					<event:time>
 						<xsl:value-of select="startDate" />
@@ -80,7 +79,15 @@
 
 				</rdf:Description>
 			</xsl:for-each>
+			<xsl:for-each select="//artist">
+				<rdf:Description rdf:about="http://www.last.fm/music/{.}">
+					<foaf:name>
+						<xsl:value-of select="." />
+					</foaf:name>
+				</rdf:Description>
+			</xsl:for-each>
 		</rdf:RDF>
+
 
 	</xsl:template>
 </xsl:stylesheet>

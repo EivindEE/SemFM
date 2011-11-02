@@ -13,6 +13,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class XslTransformer {
 
 	private Source xml;
