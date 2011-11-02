@@ -2,7 +2,9 @@ package edu.uib.info310.transformation;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -57,8 +59,22 @@ public class XslTransformer {
 	public void setXml(File xml) {
 		this.xml = new StreamSource(xml);
 	}
-
-
+	
+	/**
+	 * Sets the current xml source to be a new source created with the provided xml reader
+	 * @param xml
+	 */
+	public void setXml(Reader xml) {
+		this.xml = new StreamSource(xml);
+	}
+	
+	/**
+	 * Sets the current xml source to be a new source created with the provided xml stream
+	 * @param xml
+	 */
+	public void setXml(InputStream xml) {
+		this.xml = new StreamSource(xml);
+	}
 
 	/**
 	 * Returns the Source containing the xsl
@@ -82,5 +98,6 @@ public class XslTransformer {
 	public void setXsl(File xsl) {
 		this.xsl = new StreamSource(xsl);
 	}
+
 
 }
