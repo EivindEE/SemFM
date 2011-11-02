@@ -13,29 +13,35 @@
 			xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#" xmlns:wot="http://xmlns.com/wot/0.1/"
 			xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xml:base="http://purl.org/ontology/mo/">
 
-			<rdf:Description>
+			<rdf:Description rdf:about="www.last.fm/music/{similarartists/@artist}">
 				<foaf:name>
 					<xsl:value-of select="similarartists/@artist"></xsl:value-of>
 				</foaf:name>
 				<rdf:type rdf:resource="mo:MusicArtist" />
 
-				<mo:similar-to>
-					<xsl:for-each select="similarartists/artist">
-						<rdf:Description rdf:about="{url}">
-							<foaf:name>
-								<xsl:value-of select="name" />
-							</foaf:name>
-							<rdf:type rdf:resource="mo:MusicArtist" />
-							<xsl:for-each select="image">
-								<mo:image rdf:resource="{.}" />
-							</xsl:for-each>
-							<mo:musicbrainz_guid>
-								<xsl:value-of select="mbid" />
-							</mo:musicbrainz_guid>
-						</rdf:Description>
-					</xsl:for-each>
-				</mo:similar-to>
+				<xsl:for-each select="similarartists/artist">
+					<mo:similar-to>
+						<xsl:value-of select="url" />
+					</mo:similar-to>
+				</xsl:for-each>
+
+
 			</rdf:Description>
+
+			<xsl:for-each select="similarartists/artist">
+				<rdf:Description rdf:about="{url}">
+					<foaf:name>
+						<xsl:value-of select="name" />
+					</foaf:name>
+					<rdf:type rdf:resource="mo:MusicArtist" />
+					<xsl:for-each select="image">
+						<mo:image rdf:resource="{.}" />
+					</xsl:for-each>
+					<mo:musicbrainz_guid>
+						<xsl:value-of select="mbid" />
+					</mo:musicbrainz_guid>
+				</rdf:Description>
+			</xsl:for-each>
 
 		</rdf:RDF>
 	</xsl:template>
