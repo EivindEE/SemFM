@@ -11,69 +11,76 @@
 			xmlns:rooms="http://vocab.deri.ie/rooms#" xmlns:v="http://www.w3.org/2006/vcard/ns#">
 
 			<xsl:for-each select="events/event">
-				<event:event>
-					<rdf:Description rdf:about="{url}">
-						<rdf:type rdf:rescource="http://purl.org/ontology/mo/Performance" />
-						<rdfs:label>
-							<xsl:value-of select="title/." />
-						</rdfs:label>
-						<xsl:for-each select="artists/artist">
+				<rdf:Description rdf:about="{url}">
+					<rdf:type rdf:resource="http://purl.org/ontology/mo/Performance" />
+					<rdfs:label>
+						<xsl:value-of select="title" />
+					</rdfs:label>
+					<xsl:for-each select="artists/artist">
+						<event:event>
 							<foaf:hasAgent>
 								<foaf:name>
 									<xsl:value-of select="." />
 								</foaf:name>
 							</foaf:hasAgent>
-						</xsl:for-each>
+						</event:event>
+					</xsl:for-each>
 
-						<event:place>
-							<v:org>
-								<rdf:Description>
-									<v:organisation-name>
-										<xsl:value-of select="venue/name"></xsl:value-of>
-									</v:organisation-name>
-								</rdf:Description>
-								<v:adr>
-									<rdf:Description>
-										<v:street-address>
-											<xsl:value-of select="venue/location/street" />
-										</v:street-address>
-										<v:locality>
-											<xsl:value-of select="venue/location/city" />
-										</v:locality>
-										<v:postal-code>
-											<xsl:value-of select="venue/location/postalcode" />
-										</v:postal-code>
-										<v:country-name>
-											<xsl:value-of select="venue/location/country" />
-										</v:country-name>
-										<v:telephone>
-											<xsl:value-of select="venue/phonenumber"/>
-										</v:telephone>
-									</rdf:Description>
-								</v:adr>
-								<geo:point>
-									<geo:lat>
-										<xsl:value-of select="venue/location/geo:point/geo:lat" />
-									</geo:lat>
-									<geo:long>
-										<xsl:value-of select="venue/location/geo:point/geo:long" />
-									</geo:long>
-								</geo:point>
 
-								<foaf:image>
-									<xsl:value-of select="venue/image[@size='extralarge']" />
-								</foaf:image>
-								<foaf:homepage>
-									<xsl:value-of select="venue/website" />
-								</foaf:homepage>
-							</v:org>
-						</event:place>
-						<event:time>
-							<xsl:value-of select="startDate" />
-						</event:time>
-					</rdf:Description>
-				</event:event>
+					<event:place>
+						http://www.last.fm/venue/<xsl:value-of select="venue/id"></xsl:value-of>
+					</event:place>
+					<event:time>
+						<xsl:value-of select="startDate" />
+					</event:time>
+
+				</rdf:Description>
+			</xsl:for-each>
+			<xsl:for-each select="events/event/venue">
+				<rdf:Description rdf:about="http://www.last.fm/venue/{id}">
+					<v:organisation-name>
+						<xsl:value-of select="name"></xsl:value-of>
+					</v:organisation-name>
+					<geo:lat>
+						<xsl:value-of select="location/geo:point/geo:lat" />
+					</geo:lat>
+
+					<geo:long>
+						<xsl:value-of select="location/geo:point/geo:long" />
+					</geo:long>
+
+					<v:country-name>
+						<xsl:value-of select="location/country" />
+					</v:country-name>
+
+					<v:locality>
+						<xsl:value-of select="location/city" />
+					</v:locality>
+
+					<v:postal-code>
+						<xsl:value-of select="location/postalcode" />
+					</v:postal-code>
+
+					<v:street-address>
+						<xsl:value-of select="location/street" />
+					</v:street-address>
+
+					<foaf:image>
+						<xsl:value-of select="image[@size='extralarge']" />
+					</foaf:image>
+
+					<v:telephone>
+						<xsl:value-of select="phonenumber" />
+					</v:telephone>
+
+					<foaf:homepage>
+						<xsl:value-of select="website" />
+					</foaf:homepage>
+
+
+				</rdf:Description>
 			</xsl:for-each>
 		</rdf:RDF>
+
 	</xsl:template>
 </xsl:stylesheet>
