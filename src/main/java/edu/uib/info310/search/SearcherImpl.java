@@ -1,29 +1,15 @@
 package edu.uib.info310.search;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PipedInputStream;
+import java.util.LinkedList;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javassist.bytecode.ByteArray;
-
-import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
@@ -31,43 +17,42 @@ import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 import edu.uib.info310.model.imp.ArtistImp;
 import edu.uib.info310.search.builder.OntologyBuilder;
-import edu.uib.info310.sparql.QueryEndPoint;
-import edu.uib.info310.sparql.QueryEndPointImp;
-import edu.uib.info310.transformation.XslTransformer;
-import edu.uib.info310.vocabulary.MO;
 @Component
 public class SearcherImpl implements Searcher {
 
 	private OntologyBuilder builder = new OntologyBuilder();
-	
-	private QueryEndPoint endpoint = new QueryEndPointImp();
-	
-	private static String PREFIXES = "PREFIX mo:<http://purl.org/ontology/mo/> " +
-						 			 "PREFIX foaf:<http://xmlns.com/foaf/0.1/> " +
-						 			 "PREFIX rdf:<http://www.w3.org/2000/01/rdf-schema#> " +
-						 			 "";
+
 	
 	public Artist searchArtist(String search_string) {
 		ArtistImp artist = new ArtistImp();
 		artist.setName(search_string);
 		Model model = builder.createArtistOntology(search_string);
 		
-		
-		
-		
-		
-		String queryString = PREFIXES + "SELECT ?x  ?z WHERE{?x ?y mo:MusicArtist}";
-		System.out.println(queryString);
-		Query query = QueryFactory.create(queryString);
-		QueryExecution execution = QueryExecutionFactory.create(query, model);
-		ResultSet results = execution.execSelect();
-		while(results.hasNext()){
-			QuerySolution sol = results.nextSolution();
-			System.out.println(sol);
+		String queryStr = "PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/>  SELECT ?id WHERE {?id foaf:name '"+search_string+"'}";
+		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
+		ResultSet similarResults = execution.execSelect();
+		while(similarResults.hasNext()){
+			artist.setId(similarResults.nextSolution().get("id").toString());
 		}
-		
+		System.out.println(artist.getId());
+		artist.setSimilar(getSimilar(model, artist.getId()));
 		
 		return artist;
+	}
+
+	private List<Artist> getSimilar(Model model, String id) {
+		List<Artist> similar = new LinkedList<Artist>();
+		
+		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/>  PREFIX foaf:<http://xmlns.com/foaf/0.1/> SELECT ?similar ?x ?y WHERE {<"+ id + "> rdf:about ?similar. }";
+		System.out.println(queryStr);
+		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
+		ResultSet similarResults = execution.execSelect();
+		while(similarResults.hasNext()){
+			QuerySolution similarArtist = similarResults.next();
+			System.out.println(similarArtist.get("similar") + ", predicate :" + similarArtist.get("x") + ", object :" + similarArtist.get("y"));
+		}
+		
+		return similar;
 	}
 
 	public Event searchEvent(String search_string) {
