@@ -31,22 +31,39 @@ import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 import edu.uib.info310.model.imp.ArtistImp;
 import edu.uib.info310.search.builder.OntologyBuilder;
+import edu.uib.info310.sparql.QueryEndPoint;
+import edu.uib.info310.sparql.QueryEndPointImp;
 import edu.uib.info310.transformation.XslTransformer;
+import edu.uib.info310.vocabulary.MO;
 @Component
 public class SearcherImpl implements Searcher {
 
 	private OntologyBuilder builder = new OntologyBuilder();
+	
+	private QueryEndPoint endpoint = new QueryEndPointImp();
+	
+	private static String PREFIXES = "PREFIX mo:<http://purl.org/ontology/mo/> " +
+						 			 "PREFIX foaf:<http://xmlns.com/foaf/0.1/> " +
+						 			 "PREFIX rdf:<http://www.w3.org/2000/01/rdf-schema#> " +
+						 			 "";
+	
 	public Artist searchArtist(String search_string) {
 		ArtistImp artist = new ArtistImp();
 		artist.setName(search_string);
 		Model model = builder.createArtistOntology(search_string);
-		String queryString = "PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/> SELECT ?name WHERE{?artist foaf:name ?name}";
+		
+		
+		
+		
+		
+		String queryString = PREFIXES + "SELECT ?x  ?z WHERE{?x ?y mo:MusicArtist}";
+		System.out.println(queryString);
 		Query query = QueryFactory.create(queryString);
 		QueryExecution execution = QueryExecutionFactory.create(query, model);
 		ResultSet results = execution.execSelect();
 		while(results.hasNext()){
 			QuerySolution sol = results.nextSolution();
-			System.out.println(sol.get("name").toString());
+			System.out.println(sol);
 		}
 		
 		
