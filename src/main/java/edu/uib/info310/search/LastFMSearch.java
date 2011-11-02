@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import edu.uib.info310.transformation.XslTransformer;
 
 public class LastFMSearch {
-	private static final String similarArtistRequest = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=";
+	private static final String similarArtistRequest = "http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=";
 	private static final String artistEvents = "http://ws.audioscrobbler.com/2.0/?method=artist.getevents&artist=";
 	private static final String apiKey = "&api_key=a7123248beb0bbcb90a2e3a9ced3bee9";
 	private static final Logger LOGGER = LoggerFactory.getLogger(LastFMSearch.class);
