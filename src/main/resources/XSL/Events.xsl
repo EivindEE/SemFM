@@ -68,7 +68,7 @@
 
 				</rdf:Description>
 			</xsl:for-each>
-			<xsl:for-each select="//artist">
+			<xsl:for-each select="events/event/artists/artist">
 				<rdf:Description rdf:about="http://www.last.fm/music/{.}">
 					<foaf:name>
 						<xsl:value-of select="." />

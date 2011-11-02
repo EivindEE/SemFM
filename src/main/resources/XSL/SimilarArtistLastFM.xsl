@@ -20,18 +20,18 @@
 				<rdf:type rdf:resource="http://purl.org/ontology/mo/MusicArtist" />
 
 				<xsl:for-each select="similarartists/artist">
-						<mo:similar-to><xsl:value-of select="url"/></mo:similar-to>
+						<mo:similar-to>http://www.last.fm/music/<xsl:value-of select="name"/></mo:similar-to>
 				</xsl:for-each>
 
 
 			</rdf:Description>
 
 			<xsl:for-each select="similarartists/artist">
-				<rdf:Description rdf:about="{url}">
+				<rdf:Description rdf:about="http://www.last.fm/music/{name}">
 					<foaf:name>
 						<xsl:value-of select="name" />
 					</foaf:name>
-					<rdf:type rdf:resource="http://purl.org/ontology/mo/MusicArtist" />
+<!-- 					<rdf:type rdf:resource="http://purl.org/ontology/mo/MusicArtist" /> -->
 					<xsl:for-each select="image">
 						<mo:image rdf:resource="{.}" />
 					</xsl:for-each>
