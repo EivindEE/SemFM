@@ -33,7 +33,7 @@
 					<foaf:name>
 						<xsl:value-of select="name" />
 					</foaf:name>
-					<rdf:type rdf:resource="mo:MusicArtist" />
+					<rdf:type rdf:resource="http://purl.org/ontology/mo/MusicArtist" />
 					<xsl:for-each select="image">
 						<mo:image rdf:resource="{.}" />
 					</xsl:for-each>
