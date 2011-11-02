@@ -5,6 +5,4 @@
 log/
 .svn
 target/
-target
-/target
-*.class
+
