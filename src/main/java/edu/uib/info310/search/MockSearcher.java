@@ -14,6 +14,7 @@ import edu.uib.info310.model.mock.MockTrack;
 public class MockSearcher implements Searcher {
 
 	public Artist searchArtist(String search_string) {
+		
 		return new MockArtist();
 	}
 

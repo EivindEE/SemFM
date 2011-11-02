@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.uib.info310.model.mock.MockArtist;
 import edu.uib.info310.search.Searcher;
 
 /**
@@ -40,26 +38,21 @@ public class HomeController {
 			try {
 				helloWrold = GetUrl.getContent("http://www.tastekid.com/ask/ws?q=rihanna"); // RIHANNA FUCK YEAH!
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-			logger.debug("Debug logging is enabled");
-			logger.info("Info logging is enabled");
-			logger.warn("Warning logging is enabled");
-			logger.error("Error logging is enabled");
 			model.addAttribute("controllerMessage",
 					helloWrold);
 		return "home";
 	}
 	
-	@RequestMapping(value = "/search/{search_string}")
+	@RequestMapping(value = "/search")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ModelAndView search(@PathVariable String search_string){
+	public ModelAndView search(@RequestParam String search_string){
 		ModelAndView mav = new ModelAndView();
 		String searchType = "artist";
 		
 		mav.addObject(searchType, searcher.searchArtist(search_string));
+		
 		mav.setViewName(searchType);
 		
 		return mav;

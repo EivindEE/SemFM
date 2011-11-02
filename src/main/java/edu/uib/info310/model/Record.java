@@ -1,6 +1,5 @@
 package edu.uib.info310.model;
 
-import java.util.List;
 import java.util.Map;
 
 

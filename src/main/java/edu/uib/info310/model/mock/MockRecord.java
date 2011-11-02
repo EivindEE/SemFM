@@ -1,8 +1,6 @@
 package edu.uib.info310.model.mock;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import edu.uib.info310.model.Record;

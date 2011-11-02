@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
-import edu.uib.info310.HomeController;
-
 public class HomeControllerTest {
 
 	@Test
