@@ -3,13 +3,11 @@ package edu.uib.info310.transformation;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Reader;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -25,14 +23,14 @@ public class XslTransformer {
 	 * @return and outputStream with the transformed document
 	 * @throws TransformerException if an invalid xsl is provided
 	 */
-	public OutputStream transform() throws TransformerException{
-		OutputStream out = new ByteArrayOutputStream();
+	public ByteArrayOutputStream transform() throws TransformerException{
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		Result result = new StreamResult(out);
 
 		TransformerFactory factory = TransformerFactory.newInstance();
 		Transformer transformer = factory.newTransformer(xsl);
 		transformer.transform(xml, result);
-
+		
 		return out;
 	}
 
