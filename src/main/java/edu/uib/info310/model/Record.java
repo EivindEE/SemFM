@@ -1,6 +1,6 @@
 package edu.uib.info310.model;
 
-import java.util.Map;
+import java.util.List;
 
 
 public interface Record {
@@ -15,6 +15,6 @@ public interface Record {
 	
 	public String getLabel();
 	
-	public Map<String,Track> getTracks();
+	public List<Track> getTracks();
 
 }

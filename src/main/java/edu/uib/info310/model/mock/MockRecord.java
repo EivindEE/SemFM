@@ -1,6 +1,8 @@
 package edu.uib.info310.model.mock;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import edu.uib.info310.model.Record;
@@ -26,12 +28,12 @@ public class MockRecord implements Record {
 		return "Def Jam Recordings";
 	}
 	
-	public Map<String, Track> getTracks(){
-		Map<String, Track> tracks = new HashMap<String, Track>();
-		tracks.put(((Integer) tracks.size()).toString(),new MockTrack());
-		tracks.put(((Integer) tracks.size()).toString(),new MockTrack());
-		tracks.put(((Integer) tracks.size()).toString(),new MockTrack());
-		tracks.put(((Integer) tracks.size()).toString(),new MockTrack());
+	public List<Track> getTracks(){
+		List<Track> tracks = new LinkedList<Track>();
+		tracks.add(new MockTrack());
+		tracks.add(new MockTrack());
+		tracks.add(new MockTrack());
+		tracks.add(new MockTrack());
 		return tracks;
 	}
 
