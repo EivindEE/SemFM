@@ -1,5 +1,8 @@
 package edu.uib.info310.search;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +13,7 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
@@ -28,6 +32,19 @@ public class SearcherImpl implements Searcher {
 		artist.setName(search_string);
 		Model model = builder.createArtistOntology(search_string);
 		
+		FileOutputStream out;
+		try {
+			out = new FileOutputStream(new File("log/out.ttl"));
+			model.write(out, "TURTLE");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
 		String queryStr = "PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/>  SELECT ?id WHERE {?id foaf:name '"+search_string+"'}";
 		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
 		ResultSet similarResults = execution.execSelect();
@@ -43,13 +60,15 @@ public class SearcherImpl implements Searcher {
 	private List<Artist> getSimilar(Model model, String id) {
 		List<Artist> similar = new LinkedList<Artist>();
 		
-		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/>  PREFIX foaf:<http://xmlns.com/foaf/0.1/> SELECT ?similar ?x ?y WHERE {<"+ id + "> rdf:about ?similar. }";
-		System.out.println(queryStr);
+		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/>  PREFIX foaf:<http://xmlns.com/foaf/0.1/> SELECT ?name ?id WHERE {<"+id+"> mo:similar-to ?id . ?id foaf:name ?name}";
 		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
 		ResultSet similarResults = execution.execSelect();
 		while(similarResults.hasNext()){
-			QuerySolution similarArtist = similarResults.next();
-			System.out.println(similarArtist.get("similar") + ", predicate :" + similarArtist.get("x") + ", object :" + similarArtist.get("y"));
+			ArtistImp similarArtist = new ArtistImp();
+			QuerySolution queryArtist = similarResults.next();
+			similarArtist.setName(queryArtist.get("name").toString());
+			similarArtist.setId(queryArtist.get("id").toString());
+			similar.add(similarArtist);
 		}
 		
 		return similar;
