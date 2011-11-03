@@ -1,6 +1,7 @@
 package edu.uib.info310.search;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -36,15 +37,19 @@ public class LastFMSearch {
 	
 	public static void main(String[] args) throws Exception {
 		
-		File xsl = new File("src/main/resources/XSL/Events.xsl");
+		File xsl = new File("src/main/resources/XSL/SimilarArtistLastFM.xsl");
 		
 		LastFMSearch search = new LastFMSearch();
 		XslTransformer transform = new XslTransformer();
 		
-		transform.setXml(search.getArtistEvents("Metallica"));
+		transform.setXml(search.getSimilarArtist("Metallica"));
 		transform.setXsl(xsl);
 		
-		System.out.println(transform.transform());
+		File file = new File("log/rdf-artist.xml");
+		
+		FileOutputStream fileOutputStream = new FileOutputStream(file);
+		transform.transform().writeTo(fileOutputStream);
+//		System.out.println(transform.transform());
 		
 	}
 	
