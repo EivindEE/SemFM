@@ -20,10 +20,8 @@
 				<rdf:type rdf:resource="http://purl.org/ontology/mo/MusicArtist" />
 
 				<xsl:for-each select="similarartists/artist">
-						<mo:similar-to rdf:resource="http://www.last.fm/music/{name}"></mo:similar-to>
+					<mo:similar-to rdf:resource="http://www.last.fm/music/{name}" />
 				</xsl:for-each>
-
-
 			</rdf:Description>
 
 			<xsl:for-each select="similarartists/artist">
@@ -31,15 +29,11 @@
 					<foaf:name>
 						<xsl:value-of select="name" />
 					</foaf:name>
-<!-- 					<rdf:type rdf:resource="http://purl.org/ontology/mo/MusicArtist" /> -->
-					<xsl:for-each select="image">
-						<mo:image rdf:resource="{.}" />
-					</xsl:for-each>
-					<mo:musicbrainz_guid>
-						<xsl:value-of select="mbid" />
-					</mo:musicbrainz_guid>
+					<mo:image rdf:resource="{image[@size='extralarge']}" />
+					<mo:musicbrainz_guid rdf:resource="{mbid}" />
 				</rdf:Description>
 			</xsl:for-each>
+
 
 		</rdf:RDF>
 	</xsl:template>
