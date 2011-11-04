@@ -34,4 +34,16 @@ public class MockEvent implements Event {
 		return "http://www.last.fm/event/1767496+Rihanna+at+Oslo+Spektrum+on+30+October+2011";
 	}
 
+	public String getStreetAddress() {
+		return "Kalvedalsveien 47";
+	}
+
+	public String getCountry() {
+		return "Norway";
+	}
+
+	public String getImage() {
+		return "http://userserve-ak.last.fm/serve/252/53005163.jpg";
+	}
+
 }

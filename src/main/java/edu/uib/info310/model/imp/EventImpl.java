@@ -11,6 +11,9 @@ public class EventImpl implements Event {
 	private String venue;
 	private String lng;
 	private String lat;
+	private String streetAddress;
+	private String country;
+	private String image;
 
 	public String getId() {
 		return this.id;
@@ -58,6 +61,30 @@ public class EventImpl implements Event {
 
 	public void setLat(String lat) {
 		this.lat = lat;
+	}
+
+	public String getStreetAddress() {
+		return this.streetAddress;
+	}
+
+	public String getCountry() {
+		return this.country;
+	}
+
+	public String getImage() {
+		return this.image;
+	}
+
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 }
