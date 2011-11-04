@@ -127,7 +127,7 @@ public class SearcherImpl implements Searcher {
 		"PREFIX dbpedia: <http://dbpedia.org/property/> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"SELECT ?image ?fanpage WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image; mo:fanpage ?fanpage. }";
+		"SELECT * WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image. ?artistId mo:fanpage ?fanpage. OPTIONAL { ?artistId mo:imdb ?imdb. } OPTIONAL { ?artistId mo:myspace ?myspace. } OPTIONAL { ?artistId foaf:homepage ?homepage } }";
 		//"SELECT ?bio ?image WHERE { ?artist foaf:name '"+ artist.getName() + "'; dbpedia:description ?bio; mo:image ?image. }";
 	
 	QueryExecution ex = QueryExecutionFactory.create(queryStr, model);
@@ -146,9 +146,25 @@ public class SearcherImpl implements Searcher {
 		}
 		LOGGER.debug(query.get("fanpage").toString());
 		
+		if(query.get("homepage") != null) {
+			metaMap.put("Homepage", (query.get("homepage").toString()));
+			LOGGER.debug(query.get("homepage").toString());
+		}
 		
-//		metaMap.put("IMDB", (query.get("imdb").toString()));
-//		metaMap.put("MySpace", (query.get("myspace").toString()));
+		if(query.get("imdb") != null) {
+			metaMap.put("IMDB", (query.get("imdb").toString()));
+			LOGGER.debug(query.get("imdb").toString());
+		}
+		
+		if(query.get("myspace") != null) {
+			metaMap.put("MySpace", (query.get("myspace").toString()));
+			LOGGER.debug(query.get("myspace").toString());
+		}
+		
+		if(query.get("myspace") != null) {
+			metaMap.put("MySpace", (query.get("myspace").toString()));
+			LOGGER.debug(query.get("myspace").toString());
+		}
 	}
 	
 	if(!fanpages.isEmpty()) {
