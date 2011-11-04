@@ -9,6 +9,8 @@ public interface Artist {
 	
 	public String getName();
 	
+	public String safeName();
+	
 	public String getShortDescription();
 	
 	public String getDescription();

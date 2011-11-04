@@ -1,5 +1,7 @@
 package edu.uib.info310.model.imp;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -98,6 +100,14 @@ public class ArtistImp implements Artist {
 
 	public void setMeta(Map<String, String> meta) {
 		this.meta = meta;
+	}
+
+	public String safeName() {
+		try {
+			return URLEncoder.encode(name, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return name;
+		}
 	}
 
 }
