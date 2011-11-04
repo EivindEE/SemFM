@@ -49,6 +49,7 @@ public class HomeController {
 	@RequestMapping(value = "/search")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ModelAndView search(@RequestParam String search_string){
+		logger.debug("Got search string: " + search_string);
 		ModelAndView mav = new ModelAndView();
 		String searchType = "artist";
 		

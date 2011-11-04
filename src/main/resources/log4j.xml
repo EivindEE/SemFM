@@ -44,18 +44,9 @@
 		<level value="warn" />
 	</logger>
 	
-	<logger name="edu.uib.goblin" additivity="true">
-		<level value="warn" />
+	<logger name="edu.uib.info310" additivity="true">
+		<level value="debug" />
 		<appender-ref ref="dailylogfile" />
-	</logger>
-	
-	<logger name="edu.uib.goblin.applets">
-		<level value="debug" />
-		<appender-ref ref="console" />
-	</logger>
-	
-	<logger name="edu.uib.goblin.ChatController">
-		<level value="debug" />
 	</logger>
 
 	<!-- Root Logger -->
