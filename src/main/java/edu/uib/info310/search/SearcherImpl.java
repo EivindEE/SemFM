@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.query.QueryExecution;
@@ -24,6 +26,7 @@ import edu.uib.info310.search.builder.OntologyBuilder;
 @Component
 public class SearcherImpl implements Searcher {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(SearcherImpl.class);
 	private OntologyBuilder builder = new OntologyBuilder();
 
 	
@@ -60,7 +63,7 @@ public class SearcherImpl implements Searcher {
 	private List<Artist> getSimilar(Model model, String id) {
 		List<Artist> similar = new LinkedList<Artist>();
 		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/>  PREFIX foaf:<http://xmlns.com/foaf/0.1/> SELECT DISTINCT ?name ?id ?image WHERE {<"+id+"> mo:similar-to ?id . ?id foaf:name ?name; mo:image ?image .}";
-		
+		LOGGER.debug("Search for arist with id:" + id);
 		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
 		ResultSet similarResults = execution.execSelect();
 		while(similarResults.hasNext()){
