@@ -47,16 +47,13 @@ public class SearcherImpl implements Searcher {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
 		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/>  SELECT ?id WHERE {?id foaf:name '"+search_string+"'; mo:similar-to ?something.}";
 		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
 		ResultSet similarResults = execution.execSelect();
 		while(similarResults.hasNext()){
 			artist.setId(similarResults.nextSolution().get("id").toString());
 		}
+		LOGGER.debug("First string" + artist.getId());
 		artist.setSimilar(getSimilar(model, artist.getId()));
 		artist.setEvents(getEvents(model, artist.getId()));
 		
@@ -80,7 +77,12 @@ public class SearcherImpl implements Searcher {
 
 	private List<Artist> getSimilar(Model model, String id) {
 		List<Artist> similar = new LinkedList<Artist>();
-		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/>  PREFIX foaf:<http://xmlns.com/foaf/0.1/> SELECT DISTINCT ?name ?id ?image WHERE {<"+id+">  foaf:name ?name. ?artist foaf:name ?name. ?artist  mo:similar-to ?id ; mo:image ?image .}";
+		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+				"			PREFIX mo:<http://purl.org/ontology/mo/>  " +
+				"			PREFIX foaf:<http://xmlns.com/foaf/0.1/> " +
+				"SELECT ?name ?id ?image " +
+				"WHERE { <" + id + "> foaf:name ?name. ?artist foaf:name ?name. ?artist mo:similar-to ?id. ?id mo:image ?image } ";
+//				" SELECT ?name ?id ?image WHERE {<"+id+">  foaf:name ?name. ?artist foaf:name ?name. ?artist  mo:similar-to ?id ; mo:image ?image .}";
 		LOGGER.debug("Search for arist with id:" + id);
 		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
 		ResultSet similarResults = execution.execSelect();
@@ -92,6 +94,7 @@ public class SearcherImpl implements Searcher {
 			similarArtist.setId(queryArtist.get("id").toString());
 			similarArtist.setImage(queryArtist.get("image").toString());
 			similar.add(similarArtist);
+			
 		}
 		
 		return similar;
