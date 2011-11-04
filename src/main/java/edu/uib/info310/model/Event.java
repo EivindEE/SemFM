@@ -13,4 +13,10 @@ public interface Event {
 	public String getLng();
 	
 	public String getLat();
+	
+	public String getStreetAddress();
+	
+	public String getCountry();
+	
+	public String getImage();
 }

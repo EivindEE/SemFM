@@ -9,6 +9,8 @@ public interface Artist {
 	
 	public String getName();
 	
+	public String getSafeName();
+	
 	public String getShortDescription();
 	
 	public String getDescription();
@@ -25,5 +27,5 @@ public interface Artist {
 	
 	public Map<String, String> getMeta();
 	
-
+	public List<Event> getLocatedEvents();
 }

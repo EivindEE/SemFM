@@ -22,6 +22,7 @@ import edu.uib.info310.model.Event;
 import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 import edu.uib.info310.model.imp.ArtistImp;
+import edu.uib.info310.model.imp.EventImpl;
 import edu.uib.info310.search.builder.OntologyBuilder;
 @Component
 public class SearcherImpl implements Searcher {
@@ -54,8 +55,8 @@ public class SearcherImpl implements Searcher {
 		while(similarResults.hasNext()){
 			artist.setId(similarResults.nextSolution().get("id").toString());
 		}
-		System.out.println(artist.getId());
 		artist.setSimilar(getSimilar(model, artist.getId()));
+		artist.setEvents(getEvents(model, artist.getId()));
 		
 		return artist;
 	}
@@ -72,11 +73,32 @@ public class SearcherImpl implements Searcher {
 			similarArtist.setName(queryArtist.get("name").toString());
 			similarArtist.setId(queryArtist.get("id").toString());
 			similarArtist.setImage(queryArtist.get("image").toString());
-			System.out.println(similarArtist.getImage());
 			similar.add(similarArtist);
 		}
 		
 		return similar;
+	}
+	
+	private List<Event> getEvents(Model model, String id){
+	List<Event> events = new LinkedList<Event>();
+	String queryStr = " PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX event: <http://purl.org/NET/c4dm/event.owl#> PREFIX v: <http://www.w3.org/2006/vcard/ns#> PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
+							"SELECT ?venueId ?venueName ?date ?lng ?lat ?location " +
+								" WHERE {?preformance foaf:hasAgent <"+id+">; event:place ?venueId; event:time ?date. ?venueId v:organisation-name ?venueName; geo:lat ?lat; geo:long ?lng; v:locality ?location}";
+	QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
+	ResultSet eventResults = execution.execSelect();
+	while(eventResults.hasNext()){
+		EventImpl event = new EventImpl();
+		QuerySolution queryEvent = eventResults.next();
+		event.setId(queryEvent.get("venueId").toString());
+		event.setVenue(queryEvent.get("venueName").toString());
+		event.setLat(queryEvent.get("lat").toString());
+		event.setLng(queryEvent.get("lng").toString());
+		event.setDate(queryEvent.get("date").toString());
+		event.setLocation(queryEvent.get("location").toString());
+	
+		events.add(event);
+	}
+	return events;
 	}
 
 	public Event searchEvent(String search_string) {

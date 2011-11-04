@@ -33,7 +33,7 @@
 	    };
 	    var map = new google.maps.Map(document.getElementById("concert_map"),
 	        myOptions);
-	    <c:forEach var="eventMarker" items="${artist.events}">
+	    <c:forEach var="eventMarker" items="${artist.locatedEvents}">
 	  	  var latlng = new google.maps.LatLng(${eventMarker.lat},${eventMarker.lng});
 		  var marker = new google.maps.Marker({
 		      position: latlng, 
@@ -143,7 +143,7 @@
 		<ul class="artist_list">
 			<c:forEach var="relatedArtist" items="${artist.similar}">
 				<li>
-					<a href="search?search_string=${relatedArtist.name}">
+					<a href="search?search_string=${relatedArtist.safeName}">
 						<img src="${relatedArtist.image}" alt="" /> 
 						<span class="artist_name">${relatedArtist.name}</span><br />
 						<span class="artist_short_desc">${relatedArtist.shortDescription}</span>
