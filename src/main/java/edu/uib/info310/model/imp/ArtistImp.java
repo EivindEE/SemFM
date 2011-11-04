@@ -2,6 +2,7 @@ package edu.uib.info310.model.imp;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -108,6 +109,17 @@ public class ArtistImp implements Artist {
 		} catch (UnsupportedEncodingException e) {
 			return name;
 		}
+	}
+
+	public List<Event> getLocatedEvents() {
+		List<Event> locatedEvents = new LinkedList<Event>();
+		for(Event e: events){
+			if((e.getLat() == null || e.getLng() == null) || (e.getLat().equals("") || e.getLng().equals(""))){
+				continue;
+		}
+			locatedEvents.add(e);
+		}
+		return locatedEvents;
 	}
 
 }

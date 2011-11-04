@@ -27,5 +27,5 @@ public interface Artist {
 	
 	public Map<String, String> getMeta();
 	
-
+	public List<Event> getLocatedEvents();
 }

@@ -100,4 +100,8 @@ public class MockArtist implements Artist {
 	public String getSafeName() {
 		return this.getName();
 	}
+
+	public List<Event> getLocatedEvents() {
+		return getEvents();
+	}
 }
