@@ -38,11 +38,11 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 	 	else {
 	 		
 	 		QueryEndPoint qep = new QueryEndPointImp();
-	 		String query = "CONSTRUCT  WHERE { " +
+	 		String query = "DESCRIBE *  WHERE { " +
  					"?artist foaf:name '"+ artistName + "'. " +
-	 				"?artist owl:sameAs ?uri. " +
- 					"?artist mo:image ?image. " +
-	 				"?artist mo:fanpage ?fanpage. " + 
+	 				//"?artist owl:sameAs ?uri. " +
+ 					//"?artist mo:image ?image. " +
+	 				//"?artist mo:fanpage ?fanpage. " + 
  					//" ?artist dbpedia:url ?homepage." +
  					//" ?artist dbpedia:lifetimeProperty ?lifetimeProperty." +
  					//" ?artist dbpedia:yearsActive ?active." +
@@ -51,7 +51,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 	 		qep.setQuery(prefix + query);
 	 		qep.setEndPoint(QueryEndPoint.BBC_MUSIC);
 	 		
-	 		Model rm = qep.constructStatement();
+	 		Model rm = qep.describeStatement();
 	 		//ResultSetFormatter.out(rs);
 	 		
 	 		return rm;

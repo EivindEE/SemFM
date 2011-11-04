@@ -58,7 +58,9 @@ public class SearcherImpl implements Searcher {
 		artist.setSimilar(getSimilar(model, artist.getId()));
 		artist.setEvents(getEvents(model, artist.getId()));
 		
-		return artist;
+		//getArtistInfo(model, artist);
+		
+		return getArtistInfo(model, artist);
 	}
 
 	private List<Artist> getSimilar(Model model, String id) {
@@ -100,6 +102,28 @@ public class SearcherImpl implements Searcher {
 	}
 	return events;
 	}
+	
+	private Artist getArtistInfo(Model model, ArtistImp artist) {
+
+	String queryStr = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+		"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+		"PREFIX mo: <http://purl.org/ontology/mo/>" +
+		"PREFIX dbpedia: <http://dbpedia.org/property/>" +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
+		" SELECT ?image WHERE {" +
+		" ?x foaf:name '"+ artist.getName() + "'. ?x foaf:image ?image.  }";
+	QueryExecution ex = QueryExecutionFactory.create(queryStr, model);
+	ResultSet results = ex.execSelect();
+	if(results.hasNext()) {
+		QuerySolution query = results.next();
+		artist.setImage(query.get("image").toString());
+		System.out.println(query.get("image"));
+	}
+	
+	return artist;	
+
+}
 
 	public Event searchEvent(String search_string) {
 		// TODO Auto-generated method stub
@@ -118,7 +142,7 @@ public class SearcherImpl implements Searcher {
 	
 	public static void main(String[] args) {
 		Searcher searcher = new SearcherImpl();
-		searcher.searchArtist("Rihanna");
+		searcher.searchArtist("Moby");
 	}
 
 }

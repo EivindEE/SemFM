@@ -7,12 +7,19 @@ import java.io.InputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
+import edu.uib.info310.model.Artist;
+import edu.uib.info310.model.imp.ArtistImp;
 import edu.uib.info310.search.LastFMSearch;
 import edu.uib.info310.transformation.XslTransformer;
+import edu.uib.info310.util.GetArtistInfo;
 
 @Component
 public class OntologyBuilder {
@@ -43,8 +50,12 @@ public class OntologyBuilder {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		model.add(GetArtistInfo.ArtistInfo(search_string));
+		
+
+		
 		return model;
 	}
-
 
 }
