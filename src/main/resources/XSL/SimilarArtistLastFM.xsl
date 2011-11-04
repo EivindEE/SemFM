@@ -13,9 +13,19 @@
 			xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#" xmlns:wot="http://xmlns.com/wot/0.1/"
 			xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xml:base="http://purl.org/ontology/mo/">
 			
-			<rdf:Description rdf:about="http://www.last.fm/music/{translate(similarartists/@artist,' ','+')}">
-				<foaf:name>
-					<xsl:value-of select="similarartists/@artist"></xsl:value-of>
+	
+			<xsl:variable name="artistSafe">
+			<xsl:value-of select="similarartists/@artist"/>
+			</xsl:variable>
+<!-- 			<xsl:variable name="amp">&amp;</xsl:variable> -->
+			
+			<xsl:variable name="artistSafe2" select="translate($artistSafe,' ','+')" />
+			
+			
+		
+			<rdf:Description rdf:about="http://www.last.fm/music/{translate($artistSafe2,'&#38;','&#38;amp;')}">
+			<foaf:name>
+					<xsl:value-of select="similarartists/@artist"/>
 				</foaf:name>
 				<rdf:type rdf:resource="http://purl.org/ontology/mo/MusicArtist" />
 
