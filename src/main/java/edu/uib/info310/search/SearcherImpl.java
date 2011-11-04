@@ -127,9 +127,9 @@ public class SearcherImpl implements Searcher {
 		"PREFIX dbpedia: <http://dbpedia.org/property/> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-		"SELECT * WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image. ?artistId mo:fanpage ?fanpage. OPTIONAL { ?artistId mo:imdb ?imdb. } OPTIONAL { ?artistId mo:myspace ?myspace. } OPTIONAL { ?artistId foaf:homepage ?homepage } }";
-		//"SELECT ?bio ?image WHERE { ?artist foaf:name '"+ artist.getName() + "'; dbpedia:description ?bio; mo:image ?image. }";
-	
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+		"SELECT * WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image. ?artistId mo:fanpage ?fanpage. OPTIONAL { ?artistId mo:imdb ?imdb. } OPTIONAL { ?artistId mo:myspace ?myspace. } OPTIONAL { ?artistId foaf:homepage ?homepage. } OPTIONAL { ?artistId rdfs:comment ?shortDesc. }  OPTIONAL { ?artistId dbpedia:birthname ?birthname. }}";
+		
 	QueryExecution ex = QueryExecutionFactory.create(queryStr, model);
 	ResultSet results = ex.execSelect();
 	HashMap<String,String> metaMap = new HashMap<String,String>();
@@ -164,6 +164,16 @@ public class SearcherImpl implements Searcher {
 		if(query.get("myspace") != null) {
 			metaMap.put("MySpace", (query.get("myspace").toString()));
 			LOGGER.debug(query.get("myspace").toString());
+		}
+		
+		if(query.get("shortDesc") != null) {
+			artist.setShortDescription(query.get("shortDesc").toString());
+			LOGGER.debug(query.get("shortDesc").toString());
+		}
+		
+		if(query.get("birthname") != null) {
+			metaMap.put("Name", (query.get("birthname").toString()));
+			LOGGER.debug(query.get("birthname").toString());
 		}
 	}
 	
