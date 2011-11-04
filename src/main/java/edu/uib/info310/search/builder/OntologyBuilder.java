@@ -62,9 +62,14 @@ public class OntologyBuilder {
 			e.printStackTrace();
 		}
 
-		// get BBC_MUSIC model and add to model
-		model.add(GetArtistInfo.ArtistInfo(search_string));
-
+		// get BBC_MUSIC & DB_PEDIA model and add to model
+		try {
+			model.add(GetArtistInfo.ArtistInfo(search_string));
+			model.add(GetArtistInfo.DbPediaArtistInfo(search_string));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return model;
 	}

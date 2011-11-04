@@ -36,17 +36,9 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 	 			return null;
 	 		}
 	 	else {
-	 		
 	 		QueryEndPoint qep = new QueryEndPointImp();
 	 		String query = "DESCRIBE *  WHERE { " +
  					"?artist foaf:name '"+ artistName + "'. " +
-	 				//"?artist owl:sameAs ?uri. " +
- 					//"?artist mo:image ?image. " +
-	 				//"?artist mo:fanpage ?fanpage. " + 
- 					//" ?artist dbpedia:url ?homepage." +
- 					//" ?artist dbpedia:lifetimeProperty ?lifetimeProperty." +
- 					//" ?artist dbpedia:yearsActive ?active." +
-	 				//" ?artist dbpedia:abstract ?description. Filter (lang(?description) = 'en')" +
 	 				" }";
 	 		qep.setQuery(prefix + query);
 	 		qep.setEndPoint(QueryEndPoint.BBC_MUSIC);
@@ -55,8 +47,23 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 	 		//ResultSetFormatter.out(rs);
 	 		
 	 		return rm;
-	 	     }
-						
+	 	     }				
+	 	}
+	
+	public static Model DbPediaArtistInfo(String artistName) throws Exception{
+	 		if(artistName.isEmpty()){
+	 			throw new Exception("artistName cannot be empty string in GetArtistInfo.DbPediaArtistInfo");
+	 		}
+	 	else {
+	 		QueryEndPoint qep = new QueryEndPointImp();
+	 		String query = "DESCRIBE *  WHERE { " +
+ 					"?artist foaf:name '"+ artistName + "'. " +
+	 				" }";
+	 		qep.setQuery(prefix + query);
+	 		qep.setEndPoint(QueryEndPoint.DB_PEDIA);
+	 		
+	 		return qep.describeStatement();
+	 	     }				
 	 	}
 	
 	public static void main(String[] args) throws FileNotFoundException{
