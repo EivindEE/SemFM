@@ -4,6 +4,7 @@
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:mo="http://purl.org/ontology/mo/"
+    xmlns:nr="http://numbers.org/"
     version="1.0">
     
     <xsl:output method="xml" version="1.0" encoding="UTF-8"
@@ -18,6 +19,7 @@
             xmlns:dc="http://purl.org/dc/elements/1.1/"
             xmlns:foaf="http://xmlns.com/foaf/0.1/"
             xmlns:mo="http://purl.org/ontology/mo/"
+            xmlns:nr="http://numbers.org/"
             >
             <xsl:apply-templates />
             
@@ -26,9 +28,9 @@
     
     <xsl:template match="searchresults">
         <rdf:Description>
-        <rdf:ID><xsl:value-of select="@numResults"/></rdf:ID>
-        <rdf:ID><xsl:value-of select="@start"/></rdf:ID>
-        <rdf:ID><xsl:value-of select="@end"/></rdf:ID>
+        <nr:numberOfResults><xsl:value-of select="@numResults"/></nr:numberOfResults>
+        <rdf:startOfSearch><xsl:value-of select="@start"/></rdf:startOfSearch>
+        <rdf:endOfSearch><xsl:value-of select="@end"/></rdf:endOfSearch>
         </rdf:Description>
         <xsl:for-each select="result">
         <xsl:call-template name="result"/>
@@ -37,8 +39,8 @@
     
     <xsl:template name="result">
         <mo:Release rdf:about="{@num}">-
-        <mo:ReleaseType><xsl:value-of select="@release"/></mo:ReleaseType>
-        <mo:Album><xsl:value-of select="title"/></mo:Album>
+        <mo:release_type><xsl:value-of select="@release"/></mo:release_type>
+        <mo:album><xsl:value-of select="title"/></mo:album>
         <mo:homepage><xsl:value-of select="uri"/></mo:homepage>
         <rdfs:comment><xsl:value-of select="summary"/></rdfs:comment>
         <xsl:if test="thumb">

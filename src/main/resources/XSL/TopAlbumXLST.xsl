@@ -27,7 +27,7 @@
     </xsl:template>
     
     <xsl:template match="topalbums">
-        <rdf:Description rdf:about="http://www.last.fm/music/{@artist}">
+        <rdf:Description rdf:about="http://www.last.fm/music/{translate(@artist,' ','+')}">
         <nr:total><xsl:value-of select="@total"/></nr:total>
         <nr:totalPages><xsl:value-of select="@totalPages"/></nr:totalPages>
         <nr:perPage><xsl:value-of select="@perPage"/></nr:perPage>
@@ -43,18 +43,27 @@
         <mo:musicbrainz><xsl:value-of select="mbid"/></mo:musicbrainz>
         <mo:homepage><xsl:value-of select="url"/></mo:homepage>
         <xsl:for-each select="image">
-        <mo:image><xsl:value-of select="image"/></mo:image>
+        <mo:image><xsl:value-of select="."/></mo:image>
+        </xsl:for-each>
+        <xsl:for-each select="artist">
+        <mo:producer><xsl:value-of select="mbid"></xsl:value-of></mo:producer>
         </xsl:for-each>
         </mo:Release>
-        <xsl:call-template name="artist"/>  
+        <xsl:for-each select="artist">
+        <xsl:call-template name="artist">
+            <xsl:with-param name="id" select="mbid"/>
+        </xsl:call-template> 
+        </xsl:for-each>
     </xsl:template>
     
     <xsl:template name="artist">
+        <xsl:param name="id"/>
         
-    <mo:musicArtist>
+    <mo:MusicArtist>
+        <mo:produced><xsl:value-of select="$id"/></mo:produced>
         <foaf:hasAgent><xsl:value-of select="name"/></foaf:hasAgent>
         <mo:musicbrainz><xsl:value-of select="mbid"/></mo:musicbrainz>
         <mo:homepage><xsl:value-of select="url"/></mo:homepage>
-    </mo:musicArtist>
+    </mo:MusicArtist>
     </xsl:template>
 </xsl:stylesheet>
