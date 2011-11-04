@@ -97,7 +97,7 @@ public class MockArtist implements Artist {
 		return "http://dbpedia.org/page/Rihanna";
 	}
 
-	public String safeName() {
+	public String getSafeName() {
 		return this.getName();
 	}
 }

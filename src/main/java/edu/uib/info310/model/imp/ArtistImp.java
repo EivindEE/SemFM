@@ -102,7 +102,7 @@ public class ArtistImp implements Artist {
 		this.meta = meta;
 	}
 
-	public String safeName() {
+	public String getSafeName() {
 		try {
 			return URLEncoder.encode(name, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
