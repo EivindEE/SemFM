@@ -50,11 +50,9 @@ public class OntologyBuilder {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		// get BBC_MUSIC model and add to model
 		model.add(GetArtistInfo.ArtistInfo(search_string));
-		
 
-		
 		return model;
 	}
 

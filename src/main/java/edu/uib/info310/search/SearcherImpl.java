@@ -3,6 +3,8 @@ package edu.uib.info310.search;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -105,21 +107,40 @@ public class SearcherImpl implements Searcher {
 	
 	private Artist getArtistInfo(Model model, ArtistImp artist) {
 
-	String queryStr = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-		"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
-		"PREFIX mo: <http://purl.org/ontology/mo/>" +
-		"PREFIX dbpedia: <http://dbpedia.org/property/>" +
-		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-		"PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
-		" SELECT ?image WHERE {" +
-		" ?x foaf:name '"+ artist.getName() + "'. ?x foaf:image ?image.  }";
+	String queryStr = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
+		"PREFIX mo: <http://purl.org/ontology/mo/> " +
+		"PREFIX dbpedia: <http://dbpedia.org/property/> " +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+		"SELECT ?image ?fanpage WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image; mo:fanpage ?fanpage. }";
+		//"SELECT ?bio ?image WHERE { ?artist foaf:name '"+ artist.getName() + "'; dbpedia:description ?bio; mo:image ?image. }";
+	
 	QueryExecution ex = QueryExecutionFactory.create(queryStr, model);
 	ResultSet results = ex.execSelect();
-	if(results.hasNext()) {
+	HashMap<String,String> metaMap = new HashMap<String,String>();
+	List<String> fanpages = new LinkedList<String>();
+
+	
+	while(results.hasNext()) {
+		
 		QuerySolution query = results.next();
 		artist.setImage(query.get("image").toString());
-		System.out.println(query.get("image"));
+		LOGGER.debug(query.get("image").toString());
+		if(!fanpages.contains(query.get("fanpage").toString())) {
+			fanpages.add("<a href=\"" + query.get("fanpage").toString() + "\">" + query.get("fanpage").toString() + "</a>");
+		}
+		LOGGER.debug(query.get("fanpage").toString());
+		
+		
+//		metaMap.put("IMDB", (query.get("imdb").toString()));
+//		metaMap.put("MySpace", (query.get("myspace").toString()));
 	}
+	
+	if(!fanpages.isEmpty()) {
+		metaMap.put("Fanpages", fanpages.toString());
+	}
+	artist.setMeta(metaMap);
 	
 	return artist;	
 
@@ -142,7 +163,7 @@ public class SearcherImpl implements Searcher {
 	
 	public static void main(String[] args) {
 		Searcher searcher = new SearcherImpl();
-		searcher.searchArtist("Moby");
+		searcher.searchArtist("Rihanna");
 	}
 
 }

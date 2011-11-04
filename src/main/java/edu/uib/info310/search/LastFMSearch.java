@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -18,8 +19,18 @@ import edu.uib.info310.transformation.XslTransformer;
 public class LastFMSearch {
 	private static final String similarArtistRequest = "http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=";
 	private static final String artistEvents = "http://ws.audioscrobbler.com/2.0/?method=artist.getevents&artist=";
+	private static final String artistCorrection = "http://ws.audioscrobbler.com/2.0/?method=artist.getcorrection&artist=";
 	private static final String apiKey = "&api_key=a7123248beb0bbcb90a2e3a9ced3bee9";
 	private static final Logger LOGGER = LoggerFactory.getLogger(LastFMSearch.class);
+	
+	public InputStream ArtistCorrection(String search_string) throws Exception {
+		
+		URL lastFMRequest = new URL(artistCorrection + search_string + apiKey);
+        URLConnection lastFMConnection = lastFMRequest.openConnection();
+		return lastFMConnection.getInputStream();
+	}
+	
+	
 	
 	public InputStream getArtistEvents (String artist) throws Exception {
 		String safeArtist = makeWebSafeString(artist);
