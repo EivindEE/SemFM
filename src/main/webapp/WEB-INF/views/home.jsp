@@ -8,6 +8,12 @@
 	<link rel="shortcut icon" type="image/x-icon" href="http://localhost:8080/SemFM/spring/resources/images/favicon.ico" />
 	<link rel="icon" type="image/png" href="http://localhost:8080/SemFM/spring/resources/images/favicon.png" />
 	<link rel="stylesheet" type="text/css" href="http://localhost:8080/SemFM/spring/resources/css/screen.css" />
+	<script type="text/javascript" src="resources/javascript/jquery.min.js">
+	function postMessage() {
+		$.get("search", $('#search_form').serialize());
+	}
+	</script>
+
 </head>
 
 <body class="home">
