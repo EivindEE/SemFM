@@ -58,7 +58,16 @@ public class SearcherImpl implements Searcher {
 		artist.setSimilar(getSimilar(model, artist.getId()));
 		artist.setEvents(getEvents(model, artist.getId()));
 		
+		
+		
+		artist.setDiscography(getDiscography(model, "AristID"));
+		
 		return artist;
+	}
+
+	private List<Record> getDiscography(Model model, String string) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private List<Artist> getSimilar(Model model, String id) {
