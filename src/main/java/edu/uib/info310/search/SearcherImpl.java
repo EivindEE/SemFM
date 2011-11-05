@@ -25,6 +25,7 @@ import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 import edu.uib.info310.model.imp.ArtistImp;
 import edu.uib.info310.model.imp.EventImpl;
+import edu.uib.info310.model.imp.RecordImp;
 import edu.uib.info310.search.builder.OntologyBuilder;
 @Component
 public class SearcherImpl implements Searcher {
@@ -69,9 +70,46 @@ public class SearcherImpl implements Searcher {
 
 	}
 
-	private List<Record> getDiscography(Model model, String string) {
-		// TODO Auto-generated method stub
-		return null;
+	private List<Record> getDiscography(Model model, String id) {
+		List<Record> discog = new LinkedList<Record>();
+		String queryStr = 	"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+							"PREFIX mo: <http://purl.org/ontology/mo/>" +
+							"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
+							"PREFIX dc: <http://purl.org/dc/terms/> " + 
+							"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+							"SELECT DISTINCT " +
+							" ?id ?title ?image ?year ?labelName ?track  "+
+							" WHERE { " +
+									"?artist mo:discogs <"+id+">."+
+									"?artist foaf:made ?release."+ 
+									"?release dc:title ?title."+
+									"?release mo:discogs ?id." +
+									"?release rdf:type mo:Record." +
+									"OPTIONAL {?release mo:publisher ?label. ?label foaf:name ?labelName } "+
+									"OPTIONAL {?release mo:track ?track}" +
+									"Optional {?release dc:issued ?year}" +
+									"Optional {?release foaf:depiction ?image}" +
+							"}";
+		
+		LOGGER.debug("Search for albums for artist with id:" + id);
+		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
+		ResultSet albums = execution.execSelect();
+
+		while(albums.hasNext()){
+			RecordImp recordResult = new RecordImp();
+			QuerySolution queryAlbum = albums.next();
+			recordResult.setId(queryAlbum.get("id").toString());
+			recordResult.setName(queryAlbum.get("title").toString());
+			recordResult.setImage(queryAlbum.get("image").toString());
+			recordResult.setYear(queryAlbum.get("year").toString());
+			recordResult.setLabel(queryAlbum.get("labelName").toString());
+	//		discog.add(recordResult);
+			
+			LOGGER.debug("Album title " + queryAlbum.get("title"));
+			LOGGER.debug("Album ID" + queryAlbum.get("id"));
+		}
+		
+		return discog;
 	}
 
 	private List<Artist> getSimilar(Model model, String id) {
