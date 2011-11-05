@@ -53,7 +53,6 @@ public class SearcherImpl implements Searcher {
 		while(similarResults.hasNext()){
 			artist.setId(similarResults.nextSolution().get("id").toString());
 		}
-		LOGGER.debug("First string" + artist.getId());
 		artist.setSimilar(getSimilar(model, artist.getId()));
 		artist.setEvents(getEvents(model, artist.getId()));
 		
@@ -78,11 +77,14 @@ public class SearcherImpl implements Searcher {
 	private List<Artist> getSimilar(Model model, String id) {
 		List<Artist> similar = new LinkedList<Artist>();
 		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-				"			PREFIX mo:<http://purl.org/ontology/mo/>  " +
-				"			PREFIX foaf:<http://xmlns.com/foaf/0.1/> " +
-				"SELECT ?name ?id ?image " +
-				"WHERE { <" + id + "> foaf:name ?name. ?artist foaf:name ?name. ?artist mo:similar-to ?id. ?id mo:image ?image } ";
-//				" SELECT ?name ?id ?image WHERE {<"+id+">  foaf:name ?name. ?artist foaf:name ?name. ?artist  mo:similar-to ?id ; mo:image ?image .}";
+							"PREFIX mo:<http://purl.org/ontology/mo/>  " +
+							"PREFIX foaf:<http://xmlns.com/foaf/0.1/> " +
+							"SELECT ?name ?id ?image " +
+							" WHERE { <"+id+"> mo:similar-to ?id . " +
+									"?id foaf:name ?name; " +
+										" mo:image ?image } ";
+		
+//				" SELECT ?name ?id ?image WHERE {<"+id+">  foaf:name ?name. ?artist foaf:name ?name. ?artist mo:similar-to ?id ; mo:image ?image .}";
 		LOGGER.debug("Search for arist with id:" + id);
 		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
 		ResultSet similarResults = execution.execSelect();
@@ -95,6 +97,8 @@ public class SearcherImpl implements Searcher {
 			similarArtist.setImage(queryArtist.get("image").toString());
 			similar.add(similarArtist);
 			
+			LOGGER.debug("Similar Artist Name" + queryArtist.get("name"));
+			LOGGER.debug("Similar Artist ID" + queryArtist.get("id"));
 		}
 		
 		return similar;
