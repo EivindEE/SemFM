@@ -228,16 +228,15 @@ a {
 	margin: 0 auto;
 	margin-bottom: 50px;
 }
-
-.main_wrapper > div {
-	margin-bottom: 50px;
-}
-.main_wrapper > div > h2 {
-	margin-bottom: 10px;
-}
-.main_wrapper > div p:last-child {
-	margin-bottom: 0;
-}
+	.main_wrapper > div {
+		margin-bottom: 50px;
+	}
+	.main_wrapper > div > h2 {
+		margin-bottom: 10px;
+	}
+	.main_wrapper > div p:last-child {
+		margin-bottom: 0;
+	}
 
 /* search result header */
 .headline_wrapper {
@@ -432,7 +431,7 @@ a {
 	.album_list > li {
 		display: inline-block;
 		float:left;
-		min-width: 210px;
+		width: 210px;
 		height: 180px;
 		margin: 5px;
 		margin-top:0;
