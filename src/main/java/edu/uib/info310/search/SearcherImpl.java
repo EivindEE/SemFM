@@ -178,7 +178,7 @@ public class SearcherImpl implements Searcher {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX dbont: <http://dbpedia.org/ontology/> " +
-		"SELECT * WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image. ?artistId mo:fanpage ?fanpage. OPTIONAL { ?artistId mo:imdb ?imdb. } OPTIONAL { ?artistId mo:myspace ?myspace. } OPTIONAL { ?artistId foaf:homepage ?homepage. } OPTIONAL { ?artistId rdfs:comment ?shortDesc. }  ?artistId owl:sameAs ?artistDb. OPTIONAL { ?artistDb dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} OPTIONAL { ?artistDb dbont:birthname ?birthname. }}";
+		"SELECT * WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image. ?artistId mo:fanpage ?fanpage. OPTIONAL { ?artistId mo:imdb ?imdb. } OPTIONAL { ?artistId mo:myspace ?myspace. } OPTIONAL { ?artistId foaf:homepage ?homepage. } OPTIONAL { ?artistId rdfs:comment ?shortDesc. }  ?artistId owl:sameAs ?artistDb. OPTIONAL { ?artistDb dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} OPTIONAL { ?artistDb dbont:birthname ?birthname} OPTIONAL {?artistDb dbpedia:origin ?origin. } OPTIONAL {?artistDb dbpedia:yearsActive ?yearsactive. }}";
 		
 	QueryExecution ex = QueryExecutionFactory.create(queryStr, model);
 	ResultSet results = ex.execSelect();
@@ -226,10 +226,15 @@ public class SearcherImpl implements Searcher {
 			LOGGER.debug(query.get("birthname").toString());
 		}
 		
-//		if(query.get("artistDb") != null) {
-//			metaMap.put("Name", (query.get("artistDb").toString()));
-//			LOGGER.debug(query.get("artistDb").toString());
-//		}
+		if(query.get("origin") != null) {
+			metaMap.put("From", (query.get("origin").toString()));
+			LOGGER.debug(query.get("origin").toString());
+		}
+		
+		if(query.get("yearsactive") != null) {
+			metaMap.put("From", (query.get("yearsactive").toString()));
+			LOGGER.debug(query.get("yearsactive").toString());
+		}
 	}
 	
 	if(!fanpages.isEmpty()) {
