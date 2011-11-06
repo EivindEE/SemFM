@@ -3,7 +3,6 @@ package edu.uib.info310.search;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +16,6 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
@@ -56,7 +54,7 @@ public class SearcherImpl implements Searcher {
 		}
 		artist.setSimilar(getSimilar(model, artist.getId()));
 		artist.setEvents(getEvents(model, artist.getId()));
-		
+		artist.setDiscography(getDiscography(model, artist.getId()));
 
 		//getArtistInfo(model, artist);
 		
@@ -78,17 +76,19 @@ public class SearcherImpl implements Searcher {
 							"PREFIX dc: <http://purl.org/dc/terms/> " + 
 							"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
 							"SELECT DISTINCT " +
-							" ?id ?title ?image ?year ?labelName ?track  "+
+							" ?artistId ?albumId ?release ?title ?image ?year ?labelName ?track ?artist  "+
 							" WHERE { " +
-									"?artist mo:discogs <"+id+">."+
-									"?artist foaf:made ?release."+ 
-									"?release dc:title ?title."+
-									"?release mo:discogs ?id." +
-									"?release rdf:type mo:Record." +
-									"OPTIONAL {?release mo:publisher ?label. ?label foaf:name ?labelName } "+
-									"OPTIONAL {?release mo:track ?track}" +
-									"Optional {?release dc:issued ?year}" +
-									"Optional {?release foaf:depiction ?image}" +
+									"<"+id+"> foaf:name ?artist. "+
+									"?artistId foaf:name ?artist."+
+									"?releaseId foaf:maker ?artistId."+ 
+									"?releaseId mo:discogs ?release." +	
+									"?albumId mo:discogs ?release;" +
+									"dc:title ?title."+
+//									"?release rdf:type mo:Record." +
+//									"OPTIONAL {?release mo:publisher ?label. ?label foaf:name ?labelName } "+
+//									"OPTIONAL {?release mo:track ?track}" +
+//									"OPTIONAL {?release dc:issued ?year}" +
+									"OPTIONAL {?releaseId foaf:depiction ?image}" +
 							"}";
 		
 		LOGGER.debug("Search for albums for artist with id:" + id);
@@ -98,17 +98,24 @@ public class SearcherImpl implements Searcher {
 		while(albums.hasNext()){
 			RecordImp recordResult = new RecordImp();
 			QuerySolution queryAlbum = albums.next();
-			recordResult.setId(queryAlbum.get("id").toString());
+			recordResult.setId(queryAlbum.get("albumId").toString());
 			recordResult.setName(queryAlbum.get("title").toString());
-			recordResult.setImage(queryAlbum.get("image").toString());
-			recordResult.setYear(queryAlbum.get("year").toString());
-			recordResult.setLabel(queryAlbum.get("labelName").toString());
-	//		discog.add(recordResult);
+			if(queryAlbum.get("image") != null) {
+				recordResult.setImage(queryAlbum.get("image").toString());
+			}
 			
-			LOGGER.debug("Album title " + queryAlbum.get("title"));
-			LOGGER.debug("Album ID" + queryAlbum.get("id"));
+//			recordResult.setYear(queryAlbum.get("year").toString());
+//			recordResult.setLabel(queryAlbum.get("labelName").toString());
+			discog.add(recordResult);
+			
+			LOGGER.debug("Album title " + queryAlbum.get("artist"));
+			LOGGER.debug("Artist ID: " + queryAlbum.get("artistId"));
+			LOGGER.debug("Album ID " + queryAlbum.get("albumId"));
+			LOGGER.debug("Album Release " + queryAlbum.get("release"));
+			LOGGER.debug("Album Title " + queryAlbum.get("title"));
+			LOGGER.debug("Album Image " + queryAlbum.get("image"));
 		}
-		
+		LOGGER.debug("There should be albums before here");
 		return discog;
 	}
 
@@ -134,9 +141,6 @@ public class SearcherImpl implements Searcher {
 			similarArtist.setId(queryArtist.get("id").toString());
 			similarArtist.setImage(queryArtist.get("image").toString());
 			similar.add(similarArtist);
-			
-			LOGGER.debug("Similar Artist Name" + queryArtist.get("name"));
-			LOGGER.debug("Similar Artist ID" + queryArtist.get("id"));
 		}
 		
 		return similar;
@@ -248,7 +252,7 @@ public class SearcherImpl implements Searcher {
 	
 	public static void main(String[] args) {
 		Searcher searcher = new SearcherImpl();
-		searcher.searchArtist("Rihanna");
+		searcher.searchArtist("Metallica");
 	}
 
 }
