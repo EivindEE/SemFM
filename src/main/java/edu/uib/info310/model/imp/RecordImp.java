@@ -2,9 +2,10 @@ package edu.uib.info310.model.imp;
 
 import java.util.List;
 
+import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 
-public class RecordImp {
+public class RecordImp implements Record{
 	private String id;
 	private String name;
 	private String image;

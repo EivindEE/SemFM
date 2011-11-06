@@ -1,18 +1,16 @@
 package edu.uib.info310.model.imp;
 
-import java.util.List;
-
 import edu.uib.info310.model.Track;
 
-public class TrackImp {
-	private String trackNr;
+public class TrackImp implements Track {
+	private Integer trackNr;
 	private String name;
 	private String length;
 	private String artist;
 
 	
 	
-	public String getTrackNr() {
+	public Integer getTrackNr() {
 		return this.trackNr;
 	}
 
@@ -20,7 +18,7 @@ public class TrackImp {
 		return this.name;
 	}
 
-	public String getlenght() {
+	public String getLength() {
 		return this.length;
 	}
 
@@ -28,7 +26,7 @@ public class TrackImp {
 		return this.artist;
 	}
 
-	public void setTrackNr(String trackNr) {
+	public void setTrackNr(Integer trackNr) {
 		this.trackNr = trackNr;
 	}
 
@@ -43,5 +41,6 @@ public class TrackImp {
 	public void setArtist(String artist) {
 		this.artist = artist;
 	}
+
 
 }
