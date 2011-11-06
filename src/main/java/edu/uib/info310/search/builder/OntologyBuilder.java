@@ -44,6 +44,10 @@ public class OntologyBuilder {
 		LOGGER.debug("Number of items in discography: " + discs.size());
 		model.add(discs);
 		LOGGER.debug("Model size after getting artist discography: " + model.size());
+		Model tracks = disc.getTracks(search_string); 
+		LOGGER.debug("Number of tracks to discography: " + tracks.size());
+		model.add(tracks);
+		LOGGER.debug("Model size after getting artist tracksy: " + model.size());
 		try{
 			transformer.setXml(search.getSimilarArtist(search_string));
 			transformer.setXsl(new File(SIMILAR_XSL));

@@ -3,7 +3,6 @@ package edu.uib.info310.search;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +16,6 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
@@ -25,6 +23,7 @@ import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 import edu.uib.info310.model.imp.ArtistImp;
 import edu.uib.info310.model.imp.EventImpl;
+import edu.uib.info310.model.imp.RecordImp;
 import edu.uib.info310.search.builder.OntologyBuilder;
 @Component
 public class SearcherImpl implements Searcher {
@@ -47,10 +46,6 @@ public class SearcherImpl implements Searcher {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-		
 		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/>  SELECT ?id WHERE {?id foaf:name '"+search_string+"'; mo:similar-to ?something.}";
 		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
 		ResultSet similarResults = execution.execSelect();
@@ -59,7 +54,7 @@ public class SearcherImpl implements Searcher {
 		}
 		artist.setSimilar(getSimilar(model, artist.getId()));
 		artist.setEvents(getEvents(model, artist.getId()));
-		
+		artist.setDiscography(getDiscography(model, artist.getId()));
 
 		//getArtistInfo(model, artist);
 		
@@ -73,14 +68,68 @@ public class SearcherImpl implements Searcher {
 
 	}
 
-	private List<Record> getDiscography(Model model, String string) {
-		// TODO Auto-generated method stub
-		return null;
+	private List<Record> getDiscography(Model model, String id) {
+		List<Record> discog = new LinkedList<Record>();
+		String queryStr = 	"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+							"PREFIX mo: <http://purl.org/ontology/mo/>" +
+							"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
+							"PREFIX dc: <http://purl.org/dc/terms/> " + 
+							"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+							"SELECT DISTINCT " +
+							" ?artistId ?albumId ?release ?title ?image ?year ?labelName ?track ?artist  "+
+							" WHERE { " +
+									"<"+id+"> foaf:name ?artist. "+
+									"?artistId foaf:name ?artist."+
+									"?releaseId foaf:maker ?artistId."+ 
+									"?releaseId mo:discogs ?release." +	
+									"?albumId mo:discogs ?release;" +
+									"dc:title ?title."+
+//									"?release rdf:type mo:Record." +
+//									"OPTIONAL {?release mo:publisher ?label. ?label foaf:name ?labelName } "+
+//									"OPTIONAL {?release mo:track ?track}" +
+//									"OPTIONAL {?release dc:issued ?year}" +
+									"OPTIONAL {?releaseId foaf:depiction ?image}" +
+							"}";
+		
+		LOGGER.debug("Search for albums for artist with id:" + id);
+		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
+		ResultSet albums = execution.execSelect();
+
+		while(albums.hasNext()){
+			RecordImp recordResult = new RecordImp();
+			QuerySolution queryAlbum = albums.next();
+			recordResult.setId(queryAlbum.get("albumId").toString());
+			recordResult.setName(queryAlbum.get("title").toString());
+			if(queryAlbum.get("image") != null) {
+				recordResult.setImage(queryAlbum.get("image").toString());
+			}
+			
+//			recordResult.setYear(queryAlbum.get("year").toString());
+//			recordResult.setLabel(queryAlbum.get("labelName").toString());
+			discog.add(recordResult);
+			
+			LOGGER.debug("Album title " + queryAlbum.get("artist"));
+			LOGGER.debug("Artist ID: " + queryAlbum.get("artistId"));
+			LOGGER.debug("Album ID " + queryAlbum.get("albumId"));
+			LOGGER.debug("Album Release " + queryAlbum.get("release"));
+			LOGGER.debug("Album Title " + queryAlbum.get("title"));
+			LOGGER.debug("Album Image " + queryAlbum.get("image"));
+		}
+		LOGGER.debug("There should be albums before here");
+		return discog;
 	}
 
 	private List<Artist> getSimilar(Model model, String id) {
 		List<Artist> similar = new LinkedList<Artist>();
-		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/>  PREFIX foaf:<http://xmlns.com/foaf/0.1/> SELECT DISTINCT ?name ?id ?image WHERE {<"+id+">  foaf:name ?name. ?artist foaf:name ?name. ?artist  mo:similar-to ?id ; mo:image ?image .}";
+		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+							"PREFIX mo:<http://purl.org/ontology/mo/>  " +
+							"PREFIX foaf:<http://xmlns.com/foaf/0.1/> " +
+							"SELECT ?name ?id ?image " +
+							" WHERE { <"+id+"> mo:similar-to ?id . " +
+									"?id foaf:name ?name; " +
+										" mo:image ?image } ";
+		
+//				" SELECT ?name ?id ?image WHERE {<"+id+">  foaf:name ?name. ?artist foaf:name ?name. ?artist mo:similar-to ?id ; mo:image ?image .}";
 		LOGGER.debug("Search for arist with id:" + id);
 		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
 		ResultSet similarResults = execution.execSelect();
@@ -203,7 +252,7 @@ public class SearcherImpl implements Searcher {
 	
 	public static void main(String[] args) {
 		Searcher searcher = new SearcherImpl();
-		searcher.searchArtist("Rihanna");
+		searcher.searchArtist("Metallica");
 	}
 
 }

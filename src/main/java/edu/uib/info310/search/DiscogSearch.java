@@ -44,4 +44,24 @@ public class DiscogSearch {
 		
 		return queryExecution.execDescribe();
 	}
+	public Model getTracks(String search_string){
+		String safe_search = "";
+		try {
+			safe_search = URLEncoder.encode(search_string, "UTF-8");
+		} catch (UnsupportedEncodingException e) {/*ignore*/}
+		
+		String searchString =" PREFIX INPUT: <http://data.kasabi.com/dataset/discogs/artist/" + safe_search.toLowerCase().replace("+", "-") + ">" +
+
+	 			"DESCRIBE * where{ ?release foaf:maker INPUT:." +
+	 			"?release rdf:type mo:Track.}";
+		
+		Query query = QueryFactory.create(PREFIX + searchString);
+		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
+		
+		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
+		
+
+		
+		return queryExecution.execDescribe();
+	}
 }
