@@ -177,7 +177,8 @@ public class SearcherImpl implements Searcher {
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-		"SELECT * WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image. ?artistId mo:fanpage ?fanpage. OPTIONAL { ?artistId mo:imdb ?imdb. } OPTIONAL { ?artistId mo:myspace ?myspace. } OPTIONAL { ?artistId foaf:homepage ?homepage. } OPTIONAL { ?artistId rdfs:comment ?shortDesc. }  OPTIONAL { ?artistId dbpedia:birthname ?birthname. }}";
+		"PREFIX dbont: <http://dbpedia.org/ontology/> " +
+		"SELECT * WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image. ?artistId mo:fanpage ?fanpage. OPTIONAL { ?artistId mo:imdb ?imdb. } OPTIONAL { ?artistId mo:myspace ?myspace. } OPTIONAL { ?artistId foaf:homepage ?homepage. } OPTIONAL { ?artistId rdfs:comment ?shortDesc. }  ?artistId owl:sameAs ?artistDb. OPTIONAL { ?artistDb dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} OPTIONAL { ?artistDb dbont:birthname ?birthname. }}";
 		
 	QueryExecution ex = QueryExecutionFactory.create(queryStr, model);
 	ResultSet results = ex.execSelect();
@@ -186,7 +187,7 @@ public class SearcherImpl implements Searcher {
 
 	
 	while(results.hasNext()) {
-		
+		// TODO: optimize (e.g storing in variables instead of performing query.get several times?)
 		QuerySolution query = results.next();
 		artist.setImage(query.get("image").toString());
 		LOGGER.debug(query.get("image").toString());
@@ -194,6 +195,11 @@ public class SearcherImpl implements Searcher {
 			fanpages.add("<a href=\"" + query.get("fanpage").toString() + "\">" + query.get("fanpage").toString() + "</a>");
 		}
 		LOGGER.debug(query.get("fanpage").toString());
+		
+		if(query.get("bio") != null) {
+			artist.setBio(query.get("bio").toString());
+			LOGGER.debug(query.get("bio").toString());
+		}
 		
 		if(query.get("homepage") != null) {
 			metaMap.put("Homepage", (query.get("homepage").toString()));
@@ -210,11 +216,6 @@ public class SearcherImpl implements Searcher {
 			LOGGER.debug(query.get("myspace").toString());
 		}
 		
-		if(query.get("myspace") != null) {
-			metaMap.put("MySpace", (query.get("myspace").toString()));
-			LOGGER.debug(query.get("myspace").toString());
-		}
-		
 		if(query.get("shortDesc") != null) {
 			artist.setShortDescription(query.get("shortDesc").toString());
 			LOGGER.debug(query.get("shortDesc").toString());
@@ -224,6 +225,11 @@ public class SearcherImpl implements Searcher {
 			metaMap.put("Name", (query.get("birthname").toString()));
 			LOGGER.debug(query.get("birthname").toString());
 		}
+		
+//		if(query.get("artistDb") != null) {
+//			metaMap.put("Name", (query.get("artistDb").toString()));
+//			LOGGER.debug(query.get("artistDb").toString());
+//		}
 	}
 	
 	if(!fanpages.isEmpty()) {
