@@ -215,12 +215,12 @@ public class SearcherImpl implements Searcher {
 		}
 		
 		if(query.get("wikipedia") != null) {
-			metaMap.put("Wikipedia", (query.get("wikipedia").toString()));
+			metaMap.put("Wikipedia", ("<a href=\"" + query.get("wikipedia").toString() + "\">" + query.get("wikipedia").toString() + "</a>"));
 			LOGGER.debug(query.get("wikipedia").toString());
 		}
 		
 		if(query.get("bbcpage") != null) {
-			metaMap.put("BBC Music", (query.get("bbcpage").toString()));
+			metaMap.put("BBC Music", ("<a href=\"" + query.get("bbcpage").toString() + "\">" + query.get("bbcpage").toString() + "</a>"));
 			LOGGER.debug(query.get("bbcpage").toString());
 		}
 		
@@ -230,17 +230,17 @@ public class SearcherImpl implements Searcher {
 		}
 		
 		if(query.get("homepage") != null) {
-			metaMap.put("Homepage", (query.get("homepage").toString()));
+			metaMap.put("Homepage", ("<a href=\"" + query.get("homepage").toString() + "\">" + query.get("homepage").toString() + "</a>"));
 			LOGGER.debug(query.get("homepage").toString());
 		}
 		
 		if(query.get("imdb") != null) {
-			metaMap.put("IMDB", (query.get("imdb").toString()));
+			metaMap.put("IMDB", ("<a href=\"" + query.get("imdb").toString() + "\">" + query.get("imdb").toString() + "</a>"));
 			LOGGER.debug(query.get("imdb").toString());
 		}
 		
 		if(query.get("myspace") != null) {
-			metaMap.put("MySpace", (query.get("myspace").toString()));
+			metaMap.put("MySpace", ("<a href=\"" + query.get("myspace").toString() + "\">" + query.get("myspace").toString() + "</a>"));
 			LOGGER.debug(query.get("myspace").toString());
 		}
 		
