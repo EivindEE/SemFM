@@ -10,18 +10,13 @@ import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-
-
-import edu.uib.info310.model.Artist;
-import edu.uib.info310.model.imp.ArtistImp;
+import com.hp.hpl.jena.reasoner.Reasoner;
+import com.hp.hpl.jena.reasoner.ReasonerRegistry;
 
 import edu.uib.info310.search.DiscogSearch;
 import edu.uib.info310.search.ITunesSearcher;
-
 import edu.uib.info310.search.LastFMSearch;
 import edu.uib.info310.transformation.XslTransformer;
 import edu.uib.info310.util.GetArtistInfo;
@@ -49,7 +44,7 @@ public class OntologyBuilder {
 		Model tracks = disc.getTracks(search_string); 
 		LOGGER.debug("Number of tracks to discography: " + tracks.size());
 		model.add(tracks);
-		LOGGER.debug("Model size after getting artist tracksy: " + model.size());
+		LOGGER.debug("Model size after getting artist tracks: " + model.size());
 		try{
 			transformer.setXml(search.getSimilarArtist(search_string));
 			transformer.setXsl(new File(SIMILAR_XSL));
@@ -77,10 +72,19 @@ public class OntologyBuilder {
 			model.add(GetArtistInfo.DbPediaArtistInfo(search_string));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
-
-		return model;
+		
+		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX owl:<http://www.w3.org/2002/07/owl#> CONSTRUCT {?artist owl:sameAs ?artist2.} " +
+				" WHERE {?artist foaf:name ?name. ?artist2 foaf:name ?name}";
+		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
+		model.add(execution.execConstruct());
+		LOGGER.debug("Model size after using construct statement: " + model.size());
+		
+//		Reasoner reasoner = ReasonerFactoryAssembler.
+		Reasoner reasoner = ReasonerRegistry.getOWLMicroReasoner();
+		reasoner.bindSchema(model);
+		return ModelFactory.createInfModel(reasoner, model);
 	}
 
 }
