@@ -20,6 +20,7 @@ import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.imp.ArtistImp;
 
 import edu.uib.info310.search.DiscogSearch;
+import edu.uib.info310.search.ITunesSearcher;
 
 import edu.uib.info310.search.LastFMSearch;
 import edu.uib.info310.transformation.XslTransformer;
@@ -38,6 +39,7 @@ public class OntologyBuilder {
 	private static final String ARTIST_EVENTS_XSL = "src/main/resources/XSL/Events.xsl";
 	private static final Logger LOGGER = LoggerFactory.getLogger(OntologyBuilder.class);
 	private DiscogSearch disc = new DiscogSearch();
+	private ITunesSearcher itunes = new ITunesSearcher();
 	public Model createArtistOntology(String search_string) {
 		Model model = ModelFactory.createDefaultModel();
 		Model discs = disc.getDiscography(search_string); 
@@ -61,6 +63,9 @@ public class OntologyBuilder {
 			in = new ByteArrayInputStream(transformer.transform().toByteArray());
 			model.read(in, null);
 			LOGGER.debug("Model size after getting artist events: " + model.size());
+			
+			model.add(itunes.getRecords(search_string));
+			LOGGER.debug("Model size after adding record info from iTunes: " + model.size());
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
