@@ -55,10 +55,9 @@ public class SearcherImpl implements Searcher {
 		artist.setSimilar(getSimilar(model, artist.getId()));
 		artist.setEvents(getEvents(model, artist.getId()));
 		artist.setDiscography(getDiscography(model, artist.getId()));
-
-		//getArtistInfo(model, artist);
+		setArtistInfo(model, artist);
 		
-		return getArtistInfo(model, artist);
+		return artist;
 
 		
 		
@@ -76,19 +75,18 @@ public class SearcherImpl implements Searcher {
 							"PREFIX dc: <http://purl.org/dc/terms/> " + 
 							"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
 							"SELECT DISTINCT " +
-							" ?artistId ?albumId ?release ?title ?image ?year ?labelName ?track ?artist  "+
+							" ?artistId ?albumId ?release ?title ?image ?year ?labelId ?labelName ?track ?artist  "+
 							" WHERE { " +
-									"<"+id+"> foaf:name ?artist. "+
-									"?artistId foaf:name ?artist."+
-									"?releaseId foaf:maker ?artistId."+ 
-									"?releaseId mo:discogs ?release." +	
+									"<"+id+"> foaf:name _:artist. "+
+									"?artistId foaf:name _:artist."+
+									"?artistId2 foaf:name _:artist."+
+									"?albumId foaf:maker ?artistId."+ 
 									"?albumId mo:discogs ?release;" +
 									"dc:title ?title."+
-//									"?release rdf:type mo:Record." +
-//									"OPTIONAL {?release mo:publisher ?label. ?label foaf:name ?labelName } "+
+									"OPTIONAL {?albumId mo:publisher ?labelId.} "+
 //									"OPTIONAL {?release mo:track ?track}" +
-//									"OPTIONAL {?release dc:issued ?year}" +
-									"OPTIONAL {?releaseId foaf:depiction ?image}" +
+									"OPTIONAL {?albumId dc:issued ?year}" +
+									"OPTIONAL {?albumId foaf:depiction ?image.}" +
 							"}";
 		
 		LOGGER.debug("Search for albums for artist with id:" + id);
@@ -103,17 +101,20 @@ public class SearcherImpl implements Searcher {
 			if(queryAlbum.get("image") != null) {
 				recordResult.setImage(queryAlbum.get("image").toString());
 			}
-			
-//			recordResult.setYear(queryAlbum.get("year").toString());
+			if(queryAlbum.get("year") != null) {
+			recordResult.setYear(queryAlbum.get("year").toString());
+			}
 //			recordResult.setLabel(queryAlbum.get("labelName").toString());
 			discog.add(recordResult);
 			
-			LOGGER.debug("Album title " + queryAlbum.get("artist"));
-			LOGGER.debug("Artist ID: " + queryAlbum.get("artistId"));
+//			LOGGER.debug("Album title " + queryAlbum.get("artist"));
+//			LOGGER.debug("Artist ID: " + queryAlbum.get("artistId"));
 			LOGGER.debug("Album ID " + queryAlbum.get("albumId"));
-			LOGGER.debug("Album Release " + queryAlbum.get("release"));
-			LOGGER.debug("Album Title " + queryAlbum.get("title"));
+//			LOGGER.debug("Album Release " + queryAlbum.get("releaseId"));
+//			LOGGER.debug("Album Title " + queryAlbum.get("title"));
 			LOGGER.debug("Album Image " + queryAlbum.get("image"));
+//			LOGGER.debug("Album Year " + queryAlbum.get("year"));
+//			LOGGER.debug("Album Label Id " + queryAlbum.get("labelId"));
 		}
 		LOGGER.debug("There should be albums before here");
 		return discog;
@@ -168,7 +169,7 @@ public class SearcherImpl implements Searcher {
 	return events;
 	}
 	
-	private Artist getArtistInfo(Model model, ArtistImp artist) {
+	private Artist setArtistInfo(Model model, ArtistImp artist) {
 
 	String queryStr = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 		"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
