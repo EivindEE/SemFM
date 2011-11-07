@@ -60,7 +60,7 @@
 	</ul>
 </div>
 
-<div class="headline_wrapper">
+<div class="headline_wrapper<c:if test="${! empty artist.locatedEvents}"> tour</c:if>">
 	<div class="headline">
 		<img src="${artist.image}" alt="" class="search_result_image" />
 		<div class="h1-wrapper">
