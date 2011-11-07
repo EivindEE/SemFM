@@ -76,6 +76,10 @@ public class ITunesSearcher {
 					rdfObject = model.createLiteral(jObject.get("primaryGenreName").toString());
 					model.add(subject, property, rdfObject);
 
+					property = FOAF.maker;
+					rdfObject = model.createResource(jObject.get("artistViewUrl").toString());
+					model.add(subject, property, rdfObject);
+					
 					subject = model.createResource(jObject.get("artistViewUrl").toString());
 					property = FOAF.name;
 					rdfObject = model.createLiteral(jObject.get("artistName").toString());
