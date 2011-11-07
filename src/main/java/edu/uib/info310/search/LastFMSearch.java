@@ -9,9 +9,16 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import edu.uib.info310.transformation.XslTransformer;
 
@@ -23,13 +30,29 @@ public class LastFMSearch {
 	private static final String apiKey = "&api_key=a7123248beb0bbcb90a2e3a9ced3bee9";
 	private static final Logger LOGGER = LoggerFactory.getLogger(LastFMSearch.class);
 	
-//	public InputStream ArtistCorrection(String search_string) throws Exception {
-//		
-//		URL lastFMRequest = new URL(artistCorrection + search_string + apiKey);
-//        URLConnection lastFMConnection = lastFMRequest.openConnection();
-//		return lastFMConnection.getInputStream();
-//	}
+	public InputStream artistCorrection(String search_string) throws Exception {
+		
+		URL lastFMRequest = new URL(artistCorrection + search_string + apiKey);
+        URLConnection lastFMConnection = lastFMRequest.openConnection();
+		return lastFMConnection.getInputStream();
+	}
 	
+	private Document docBuilder(String artist) throws Exception{
+	    DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+	    domFactory.setNamespaceAware(true);
+	    DocumentBuilder builder = domFactory.newDocumentBuilder();
+	    Document doc = builder.parse(artistCorrection(artist));  
+	    return doc;
+}
+	public String correctArtist(String artist) throws Exception {
+		Document correction = docBuilder(artist);
+		
+		NodeList nameList = correction.getElementsByTagName("name");
+		Node nameNode = nameList.item(0);
+		Element element = (Element) nameNode;
+		NodeList name = element.getChildNodes();
+		return (name.item(0)).getNodeValue();
+	}
 	
 	
 	public InputStream getArtistEvents (String artist) throws Exception {
@@ -65,6 +88,7 @@ public class LastFMSearch {
 		FileOutputStream fileOutputStream = new FileOutputStream(file);
 		transform.transform().writeTo(fileOutputStream);
 //		System.out.println(transform.transform());
+		System.out.println(search.correctArtist("beatles"));
 		
 	}
 	
