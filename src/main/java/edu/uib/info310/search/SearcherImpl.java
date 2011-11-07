@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,6 +70,7 @@ public class SearcherImpl implements Searcher {
 
 	private List<Record> getDiscography(Model model, String id) {
 		List<Record> discog = new LinkedList<Record>();
+		Map<String,Record> uniqueRecord = new HashMap<String, Record>();
 		String queryStr = 	"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
 							"PREFIX mo: <http://purl.org/ontology/mo/>" +
 							"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
@@ -105,8 +107,9 @@ public class SearcherImpl implements Searcher {
 			recordResult.setYear(queryAlbum.get("year").toString());
 			}
 //			recordResult.setLabel(queryAlbum.get("labelName").toString());
-			discog.add(recordResult);
-			
+			if(recordResult.getImage() != null){
+				uniqueRecord.put(recordResult.getName(), recordResult);
+			}
 //			LOGGER.debug("Album title " + queryAlbum.get("artist"));
 //			LOGGER.debug("Artist ID: " + queryAlbum.get("artistId"));
 			LOGGER.debug("Album ID " + queryAlbum.get("albumId"));
@@ -115,6 +118,9 @@ public class SearcherImpl implements Searcher {
 			LOGGER.debug("Album Image " + queryAlbum.get("image"));
 //			LOGGER.debug("Album Year " + queryAlbum.get("year"));
 //			LOGGER.debug("Album Label Id " + queryAlbum.get("labelId"));
+		}
+		for(Record record : uniqueRecord.values()){
+			discog.add(record);
 		}
 		LOGGER.debug("There should be albums before here");
 		return discog;
