@@ -3,6 +3,8 @@ package edu.uib.info310.search;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.query.QueryExecution;
@@ -185,7 +188,7 @@ public class SearcherImpl implements Searcher {
 		"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 		"PREFIX dbont: <http://dbpedia.org/ontology/> " +
-		"SELECT * WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image. ?artistId mo:fanpage ?fanpage. OPTIONAL { ?artistId mo:imdb ?imdb. } OPTIONAL { ?artistId mo:myspace ?myspace. } OPTIONAL { ?artistId foaf:homepage ?homepage. } OPTIONAL { ?artistId rdfs:comment ?shortDesc. }  ?artistId owl:sameAs ?artistDb. OPTIONAL { ?artistDb dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} OPTIONAL { ?artistDb dbont:birthname ?birthname} OPTIONAL {?artistDb dbpedia:origin ?origin. } OPTIONAL {?artistDb dbpedia:yearsActive ?yearsactive. }}";
+		"SELECT * WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image. ?artistId mo:fanpage ?fanpage. OPTIONAL { ?artistId mo:imdb ?imdb. } OPTIONAL { ?artistId mo:myspace ?myspace. } OPTIONAL { ?artistId foaf:homepage ?homepage. } OPTIONAL { ?artistId rdfs:comment ?shortDesc. }  ?artistId owl:sameAs ?artistDb. OPTIONAL { ?artistDb dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} OPTIONAL { ?artistDb dbont:birthname ?birthname} OPTIONAL {?artistDb dbpedia:origin ?origin. } OPTIONAL {?artistDb dbpedia:yearsActive ?yearsactive. } OPTIONAL {?artistDb dbpedia:dateOfBirth ?birthdate. } OPTIONAL {?artistDb foaf:page ?wikipedia. } OPTIONAL {?artistId foaf:page ?bbcpage. }}";
 		
 	QueryExecution ex = QueryExecutionFactory.create(queryStr, model);
 	ResultSet results = ex.execSelect();
@@ -203,9 +206,27 @@ public class SearcherImpl implements Searcher {
 		}
 		LOGGER.debug(query.get("fanpage").toString());
 		
+		// foaf:page <http://en.wikipedia.org/wiki/Rihanna>
+		//  <http://dbpedia.org/property/dateOfBirth> "1988-02-20"^^xsd:date ;
+		
 		if(query.get("bio") != null) {
 			artist.setBio(query.get("bio").toString());
 			LOGGER.debug(query.get("bio").toString());
+		}
+		
+		if(query.get("wikipedia") != null) {
+			metaMap.put("Wikipedia", (query.get("wikipedia").toString()));
+			LOGGER.debug(query.get("wikipedia").toString());
+		}
+		
+		if(query.get("bbcpage") != null) {
+			metaMap.put("BBC Music", (query.get("bbcpage").toString()));
+			LOGGER.debug(query.get("bbcpage").toString());
+		}
+		
+		if(query.get("birthdate") != null) {
+			metaMap.put("Born", (query.get("birthdate").toString()));
+			LOGGER.debug(query.get("birthdate").toString());
 		}
 		
 		if(query.get("homepage") != null) {
@@ -239,7 +260,7 @@ public class SearcherImpl implements Searcher {
 		}
 		
 		if(query.get("yearsactive") != null) {
-			metaMap.put("From", (query.get("yearsactive").toString()));
+			metaMap.put("Active", (query.get("yearsactive").toString()));
 			LOGGER.debug(query.get("yearsactive").toString());
 		}
 	}
@@ -270,7 +291,7 @@ public class SearcherImpl implements Searcher {
 	
 	public static void main(String[] args) {
 		Searcher searcher = new SearcherImpl();
-		searcher.searchArtist("Metallica");
+		searcher.searchArtist("Rihanna");
 	}
 
 }

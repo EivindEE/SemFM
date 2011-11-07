@@ -254,6 +254,15 @@ a {
 	text-align:center;
 	box-shadow: inset 0px 0px 10px 6px rgba(85,85,85,0.3);
 }
+	.tour:before {
+		height: 87px;
+		width: 89px;
+		background: url(http://localhost:8080/SemFM/spring/resources/images/on-tour.png) no-repeat right top;
+		position: absolute;
+		top: 0;
+		right: 0;
+		content: '';
+	}
 	.headline_wrapper:after {
 		height: 30px;
 		width: 100%;
@@ -505,9 +514,14 @@ a {
 					border-bottom-left-radius: 10px;
 					border-bottom-right-radius: 10px;
 				}
+	.related_artists {
+		
+	}
 	.artist_list {
 		background: #eee;
 		width: 980px;
+		height: 463px;
+		overflow:auto;
 		border: 1px solid #ccc;
 		border-radius: 10px;
 	}
@@ -520,7 +534,7 @@ a {
 			
 			background: #fff;
 			border: 1px solid #ccc;
-			padding: 10px;
+			padding: 7px;
 			width: 210px;
 			margin: 5px;
 			
