@@ -41,7 +41,8 @@ public class SearcherImpl implements Searcher {
 		this.artist.setName(search_string);
 		this.model = builder.createArtistOntology(search_string);
 		LOGGER.debug("Size of infered model: " + model.size());
-		writeModelToFile();
+		// Write to file causes crash.
+//		writeModelToFile();
 		
 		setArtistId();
 	
@@ -58,8 +59,8 @@ public class SearcherImpl implements Searcher {
 	}
 
 	private void setArtistId() {
-		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/>  SELECT ?id WHERE {?id foaf:name '" + this.artist.getName() + "'; mo:similar-to ?something.}";
-		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
+		String getIdStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/>  SELECT ?id WHERE {?id foaf:name '" + this.artist.getName() + "'; mo:similar-to ?something.}";
+		QueryExecution execution = QueryExecutionFactory.create(getIdStr, model);
 		ResultSet similarResults = execution.execSelect();
 		this.artist.setId(similarResults.nextSolution().get("id").toString());
 		LOGGER.debug("Artist id set to " + this.artist.getId());
@@ -84,7 +85,7 @@ public class SearcherImpl implements Searcher {
 	private void setArtistDiscography() {
 		List<Record> discog = new LinkedList<Record>();
 		Map<String,Record> uniqueRecord = new HashMap<String, Record>();
-		String queryStr = 	"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
+		String getDiscographyStr = 	"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
 				"PREFIX mo: <http://purl.org/ontology/mo/> " +
 				"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " +
 				"PREFIX dc: <http://purl.org/dc/terms/> " + 
@@ -101,8 +102,8 @@ public class SearcherImpl implements Searcher {
 				"}";
 
 
-		LOGGER.debug("Search for albums for artist with name: " + this.artist.getName() + ", with query:" + queryStr);
-		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
+		LOGGER.debug("Search for albums for artist with name: " + this.artist.getName() + ", with query:" + getDiscographyStr);
+		QueryExecution execution = QueryExecutionFactory.create(getDiscographyStr, model);
 		ResultSet albums = execution.execSelect();
 
 		LOGGER.debug("Found records? " + albums.hasNext());
@@ -118,7 +119,7 @@ public class SearcherImpl implements Searcher {
 			if(queryAlbum.get("year") != null) {
 				recordResult.setYear(queryAlbum.get("year").toString());
 			}
-			if(recordResult.getImage() != null && !recordResult.getImage().startsWith("http://s.dsimg") && !recordResult.getImage().startsWith("http://api.di")){
+			if(recordResult.getImage() != null){
 				uniqueRecord.put(recordResult.getName(), recordResult);
 			}
 		}
@@ -132,7 +133,7 @@ public class SearcherImpl implements Searcher {
 
 	private void setSimilarArtist() {
 		List<Artist> similar = new LinkedList<Artist>();
-		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		String similarStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"PREFIX mo:<http://purl.org/ontology/mo/>  " +
 				"PREFIX foaf:<http://xmlns.com/foaf/0.1/> " +
 				"SELECT ?name ?id ?image " +
@@ -140,7 +141,7 @@ public class SearcherImpl implements Searcher {
 				"?id foaf:name ?name; " +
 				" mo:image ?image } ";
 
-		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
+		QueryExecution execution = QueryExecutionFactory.create(similarStr, model);
 		ResultSet similarResults = execution.execSelect();
 
 		while(similarResults.hasNext()){
@@ -157,10 +158,10 @@ public class SearcherImpl implements Searcher {
 
 	private void setArtistEvents(){
 		List<Event> events = new LinkedList<Event>();
-		String queryStr = " PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX event: <http://purl.org/NET/c4dm/event.owl#> PREFIX v: <http://www.w3.org/2006/vcard/ns#> PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
+		String getArtistEventsStr = " PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX event: <http://purl.org/NET/c4dm/event.owl#> PREFIX v: <http://www.w3.org/2006/vcard/ns#> PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
 				"SELECT ?venueId ?venueName ?date ?lng ?lat ?location " +
 				" WHERE {?preformance foaf:hasAgent <" + this.artist.getId() + ">; event:place ?venueId; event:time ?date. ?venueId v:organisation-name ?venueName; geo:lat ?lat; geo:long ?lng; v:locality ?location}";
-		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
+		QueryExecution execution = QueryExecutionFactory.create(getArtistEventsStr, model);
 		ResultSet eventResults = execution.execSelect();
 		while(eventResults.hasNext()){
 			EventImpl event = new EventImpl();
@@ -180,7 +181,7 @@ public class SearcherImpl implements Searcher {
 
 	private void setArtistInfo() {
 
-		String queryStr = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+		String getArtistInfoStr = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
 				"PREFIX mo: <http://purl.org/ontology/mo/> " +
 				"PREFIX dbpedia: <http://dbpedia.org/property/> " +
@@ -190,7 +191,7 @@ public class SearcherImpl implements Searcher {
 				"PREFIX dbont: <http://dbpedia.org/ontology/> " +
 				"SELECT * WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image. ?artistId mo:fanpage ?fanpage. OPTIONAL { ?artistId mo:imdb ?imdb. } OPTIONAL { ?artistId mo:myspace ?myspace. } OPTIONAL { ?artistId foaf:homepage ?homepage. } OPTIONAL { ?artistId rdfs:comment ?shortDesc. }  ?artistId owl:sameAs ?artistDb. OPTIONAL { ?artistDb dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} OPTIONAL { ?artistDb dbont:birthname ?birthname} OPTIONAL {?artistDb dbpedia:origin ?origin. } OPTIONAL {?artistDb dbpedia:yearsActive ?yearsactive. } OPTIONAL {?artistDb dbpedia:dateOfBirth ?birthdate. } OPTIONAL {?artistDb foaf:page ?wikipedia. } OPTIONAL {?artistId foaf:page ?bbcpage. }}";
 
-		QueryExecution ex = QueryExecutionFactory.create(queryStr, model);
+		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
 		ResultSet results = ex.execSelect();
 		HashMap<String,String> metaMap = new HashMap<String,String>();
 		List<String> fanpages = new LinkedList<String>();
