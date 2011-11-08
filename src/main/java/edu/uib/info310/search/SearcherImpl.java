@@ -114,7 +114,7 @@ public class SearcherImpl implements Searcher {
 			if(queryAlbum.get("year") != null) {
 				recordResult.setYear(queryAlbum.get("year").toString());
 			}
-			if(recordResult.getImage() != null && !recordResult.getImage().startsWith("http://s.dsimg")){
+			if(recordResult.getImage() != null && !recordResult.getImage().startsWith("http://s.dsimg") && !recordResult.getImage().startsWith("http://api.di")){
 				uniqueRecord.put(recordResult.getName(), recordResult);
 			}
 		}
@@ -194,8 +194,9 @@ public class SearcherImpl implements Searcher {
 			// TODO: optimize (e.g storing in variables instead of performing query.get several times?)
 			QuerySolution query = results.next();
 			artist.setImage(query.get("image").toString());
-			if(!fanpages.contains(query.get("fanpage").toString())) {
-				fanpages.add("<a href=\"" + query.get("fanpage").toString() + "\">" + query.get("fanpage").toString() + "</a>");
+			String fanpage = "<a href=\"" + query.get("fanpage").toString() + "\">" + query.get("fanpage").toString() + "</a>";
+			if(!fanpages.contains(fanpage)) {
+				fanpages.add(fanpage);
 			}
 //			LOGGER.debug(query.get("fanpage").toString());
 
