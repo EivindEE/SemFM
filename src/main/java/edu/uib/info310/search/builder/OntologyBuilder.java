@@ -55,18 +55,14 @@ public class OntologyBuilder {
 			
 			model.add(itunes.getRecords(correctName));
 			LOGGER.debug("Model size after adding record info from iTunes: " + model.size());
+			
+			model.add(GetArtistInfo.BBCMusic(correctName));
+			LOGGER.debug("Model size after adding artist info from BBC: " + model.size());
+			
+			model.add(GetArtistInfo.DBPedia(correctName));
+			LOGGER.debug("Model size after adding artis info from DBPedia: " + model.size());
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// get BBC_MUSIC & DB_PEDIA model and add to model
-		try {
-			model.add(GetArtistInfo.BBCMusic(correctName));
-			LOGGER.debug("Finished BBC");
-			model.add(GetArtistInfo.DBPedia(correctName));
-			LOGGER.debug("Finished DBPedia");
-		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
