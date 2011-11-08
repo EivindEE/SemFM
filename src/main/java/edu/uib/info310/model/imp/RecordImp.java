@@ -2,6 +2,7 @@ package edu.uib.info310.model.imp;
 
 import java.util.List;
 
+import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 
@@ -13,6 +14,8 @@ public class RecordImp implements Record{
 	private String label;
 	private String description;
 	private List<Track> track;
+	private List<Artist> artist;
+	private List<Record> relatedRecord;
 
 	
 	
@@ -40,6 +43,13 @@ public class RecordImp implements Record{
 		return this.description;
 	}
 
+	public List<Record> getRelatedRecord() {
+		return this.relatedRecord;
+	}
+	
+	public List<Artist> getArtist() {
+		return this.artist;
+	}
 
 	public List<Track> getTracks() {
 		return this.track;
@@ -70,6 +80,14 @@ public class RecordImp implements Record{
 	
 	public void setTrack(List<Track> track) {
 		this.track = track;
+	}
+	
+	public void setArtist(List<Artist> artist) {
+		this.artist = artist;
+	}
+	
+	public void setRelatedRecord(List<Record> relatedRecord) {
+		this.relatedRecord = relatedRecord;
 	}
 
 }

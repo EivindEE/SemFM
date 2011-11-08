@@ -17,6 +17,10 @@ public interface Record {
 	
 	public String getDescription();
 	
+	public List<Artist> getArtist();
+	
 	public List<Track> getTracks();
+	
+	public List<Record> getRelatedRecord();
 
 }
