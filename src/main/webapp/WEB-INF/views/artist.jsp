@@ -64,12 +64,13 @@
 </div>
 
 <div class="full main_wrapper">
-	
+	<c:if test="${! empty artist.bio}">
 	<div class="biography left half">
 		<h2>Bio</h2>
 		${artist.bio}
 	</div>
-	
+	</c:if>
+	<c:if test="${! empty artist.meta}">
 	<div class="artist_meta right half">
 		<h2>Meta Facts</h2>
 		<ul>
@@ -78,6 +79,7 @@
 			</c:forEach>
 		</ul>	
 	</div>
+	</c:if>
 	<c:if test="${! empty artist.discography}">
 	<div class="discography full">
 		<h2>Discography</h2>
