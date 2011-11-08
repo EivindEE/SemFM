@@ -31,43 +31,45 @@ public class LastFMSearch {
 	private static final String apiKey = "&api_key=a7123248beb0bbcb90a2e3a9ced3bee9";
 	private static final Logger LOGGER = LoggerFactory.getLogger(LastFMSearch.class);
 	
-	public InputStream artistCorrection(String search_string)  {
-	    try{ 
-
-		URL lastFMRequest = new URL(artistCorrection + search_string + apiKey);
-		LOGGER.debug(lastFMRequest.toString());
-        URLConnection lastFMConnection = lastFMRequest.openConnection();
-		LOGGER.debug("Test1");
-		return lastFMConnection.getInputStream();
-    } catch(IOException ioexc){ 
-       LOGGER.debug("Unavailable: "+ioexc.getMessage()); 
-    }
-		return null; 
-
+	private InputStream artistCorrection(String search_string) throws ArtistNotFoundException  {
+		InputStream in = null;
+		try{ 
+			URL lastFMRequest = new URL(artistCorrection + search_string + apiKey);
+			LOGGER.debug("LastFM correction request URL: " + lastFMRequest.toExternalForm());
+			URLConnection lastFMConnection = lastFMRequest.openConnection();
+			in = lastFMConnection.getInputStream();
+		} catch(IOException ioexc){ 
+			throw new ArtistNotFoundException("No correction found");
+		}
+		return in;
 	}
-	
-	private Document docBuilder(String artist) throws Exception{
-	    DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-	    domFactory.setNamespaceAware(true);
-	    DocumentBuilder builder = domFactory.newDocumentBuilder();
+
+	private Document docBuilder(String artist) throws ArtistNotFoundException {
+		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+		domFactory.setNamespaceAware(true);
 		Document doc = null;
 		String safe_search = "";
+		DocumentBuilder builder = null;
 		try {
+			builder = domFactory.newDocumentBuilder();
 			safe_search = URLEncoder.encode(artist, "UTF-8");
-		} catch (UnsupportedEncodingException e) {/*ignore*/}
-	    doc = builder.parse(artistCorrection(safe_search));  
+		} catch (Exception e) {/*ignore*/}
+		try {
+			doc = builder.parse(artistCorrection(safe_search));  
+		} catch (Exception a) {
+			throw new ArtistNotFoundException ("Doc couldn't be built");
+		}
+		LOGGER.debug("DOM object with " + artist + " as corrected by LastFM.");
 
-
-		LOGGER.debug("Test2");
-	    return doc;
-}
-	public String correctArtist(String artist) throws Exception {
+		return doc;
+	}
+	public String correctArtist(String artist) throws ArtistNotFoundException {
 		Document correction = docBuilder(artist);
-		
 		NodeList nameList = correction.getElementsByTagName("name");
 		Node nameNode = nameList.item(0);
 		Element element = (Element) nameNode;
 		NodeList name = element.getChildNodes();
+		LOGGER.debug("Get node value of correct artist: " + (name.item(0)).getNodeValue());
 		return (name.item(0)).getNodeValue();
 	}
 	
