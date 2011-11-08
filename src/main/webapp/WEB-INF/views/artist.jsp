@@ -7,7 +7,9 @@
 	<title>${artist.name} - SemFM</title>
 	<link rel="shortcut icon" type="image/x-icon" href="http://localhost:8080/SemFM/spring/resources/images/favicon.ico" />
 	<link rel="icon" type="image/png" href="http://localhost:8080/SemFM/spring/resources/images/favicon.png" />
+	<link rel="stylesheet" type="text/css" href="http://localhost:8080/SemFM/spring/resources/css/screen.css" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	<c:if test="${! empty artist.discography}">
 	<script type="text/javascript" src="http://localhost:8080/SemFM/spring/resources/javascript/thune.scroller.js"></script>
 	<script type="text/javascript">
 		$(function() {
@@ -20,32 +22,33 @@
 			});
 		});
 	</script>
-	<link rel="stylesheet" type="text/css" href="http://localhost:8080/SemFM/spring/resources/css/screen.css" />
-	
-	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
-	<script type="text/javascript">
-	  function initialize() {
-	    var latlng = new google.maps.LatLng(35, 10);
-	    var myOptions = {
-	      zoom: 2,
-	      center: latlng,
-	      mapTypeId: google.maps.MapTypeId.ROADMAP
-	    };
-	    var map = new google.maps.Map(document.getElementById("concert_map"),
-	        myOptions);
-	    <c:forEach var="eventMarker" items="${artist.locatedEvents}">
-	  	  var latlng = new google.maps.LatLng(${eventMarker.lat},${eventMarker.lng});
-		  var marker = new google.maps.Marker({
-		      position: latlng, 
-		      map: map, 
-		      title:"<strong>${artist.name}</strong><br />${eventMarker.venue} @ ${eventMarker.venue}"
-		  }); 
-	  </c:forEach>
-	  }
-	  
-	
-	</script>
-	</head>
+	</c:if>
+	<c:if test="${! empty artist.locatedEvents}">
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+		<script type="text/javascript">
+		  function initialize() {
+		    var latlng = new google.maps.LatLng(35, 10);
+		    var myOptions = {
+		      zoom: 2,
+		      center: latlng,
+		      mapTypeId: google.maps.MapTypeId.ROADMAP
+		    };
+		    var map = new google.maps.Map(document.getElementById("concert_map"),
+		        myOptions);
+		    <c:forEach var="eventMarker" items="${artist.locatedEvents}">
+		  	  var latlng = new google.maps.LatLng(${eventMarker.lat},${eventMarker.lng});
+			  var marker = new google.maps.Marker({
+			      position: latlng, 
+			      map: map, 
+			      title:"<strong>${artist.name}</strong><br />${eventMarker.venue} @ ${eventMarker.venue}"
+			  }); 
+		  </c:forEach>
+		  }
+		  
+		
+		</script>
+	</c:if>
+</head>
 <body onload="initialize()">
 
 <div id="header" class="cf">
@@ -60,7 +63,7 @@
 	</ul>
 </div>
 
-<div class="headline_wrapper">
+<div class="headline_wrapper<c:if test="${! empty artist.locatedEvents}"> tour</c:if>">
 	<div class="headline">
 		<img src="${artist.image}" alt="" class="search_result_image" />
 		<div class="h1-wrapper">
@@ -85,7 +88,7 @@
 			</c:forEach>
 		</ul>	
 	</div>
-	
+	<c:if test="${! empty artist.discography}">
 	<div class="discography full">
 		<h2>Discography</h2>
 		<div class="album_list_wrapper">
@@ -116,7 +119,8 @@
 			</div>
 		</div>
 	</div>
-	
+	</c:if>
+	<c:if test="${! empty artist.locatedEvents}">
 	<div class="concert full">
 		<h2>Upcoming concerts</h2>
 		<div class="concert_map">
@@ -137,6 +141,7 @@
 			</c:forEach>
 		</table>
 	</div>
+	</c:if>
 	
 	<div class="related_artists full">
 		<h2>Related Artists</h2>
