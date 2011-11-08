@@ -179,20 +179,23 @@ public class SearcherImpl implements Searcher {
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dbont: <http://dbpedia.org/ontology/> " +
 				"SELECT DISTINCT * WHERE {" +
-				id + "foaf:name ?name" + 
-				"OPTIONAL { ?artist foaf:name ?name; mo:image ?image}" +
-				"OPTIONAL { ?artist foaf:name ?name; mo:fanpage ?fanpage.} " +
-				"OPTIONAL { ?artist foaf:name ?name; mo:imdb ?imdb. } " +
-				"OPTIONAL { ?artist foaf:name ?name; mo:myspace ?myspace. } " +
-				"OPTIONAL { ?artist foaf:name ?name; foaf:homepage ?homepage. } " +
-				"OPTIONAL { ?artist foaf:name ?name; rdfs:comment ?shortDesc. }  " +
-				"OPTIONAL { ?artist foaf:name ?name; dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} " +
-				"OPTIONAL { ?artist foaf:name ?name; dbont:birthname ?birthname} " +
-				"OPTIONAL { ?artist foaf:name ?name; dbpedia:origin ?origin. } " +
-				"OPTIONAL { ?artist foaf:name ?name; dbpedia:yearsActive ?yearsactive. } " +
-				"OPTIONAL { ?artist foaf:name ?name; dbpedia:dateOfBirth ?birthdate. } " +
-				"OPTIONAL { ?artist foaf:name ?name; foaf:page ?wikipedia. } " +
-				"OPTIONAL { ?artist foaf:name ?name; foaf:page ?bbcpage. }}";
+//				id + "foaf:name ?name" + 
+				"OPTIONAL { ?artist1 foaf:name ?name; mo:image ?image}" +
+				"OPTIONAL { ?bbcartist foaf:name ?name; mo:fanpage ?fanpage.} " +
+				"OPTIONAL { ?bbcartist mo:imdb ?imdb. } " +
+				"OPTIONAL { ?bbcartist mo:myspace ?myspace. } " +
+				"OPTIONAL { ?bbcartist foaf:homepage ?homepage. } " +
+				"OPTIONAL { ?bbcartist rdfs:comment ?shortDesc. Filter (lang(?shortDesc) = '').}  " +
+				"OPTIONAL { ?dbartist dbpedia:shortDescription ?shortDescEn .}  " +
+				"OPTIONAL { ?dbartist dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} " +
+				"OPTIONAL { ?dbartist dbont:abstract ?bio. Filter (lang(?bio) = 'en').} " +
+				"OPTIONAL { ?dbartist dbont:birthname ?birthname} " +
+				"OPTIONAL { ?dbartist dbont:hometown ?origin. } " +
+				"OPTIONAL { ?dbartist dbpedia:origin ?origin. } " +
+				"OPTIONAL { ?dbartist dbpedia:yearsActive ?yearsactive. } " +
+				"OPTIONAL { ?dbartist  dbpedia:dateOfBirth ?birthdate. } " +
+//				"OPTIONAL { ?artist15 foaf:name ?name; foaf:page ?wikipedia. } " +
+				"OPTIONAL { ?bbcartist foaf:name ?name; foaf:page ?bbcpage. }}";
 
 		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
 		ResultSet results = ex.execSelect();
@@ -243,6 +246,10 @@ public class SearcherImpl implements Searcher {
 
 			if(query.get("shortDesc") != null) {
 				artist.setShortDescription(query.get("shortDesc").toString());
+			}else{
+				if(query.get("shortDescEn") != null){
+					artist.setShortDescription(query.get("shortDescEn").toString());
+				}
 			}
 
 			if(query.get("birthname") != null) {
