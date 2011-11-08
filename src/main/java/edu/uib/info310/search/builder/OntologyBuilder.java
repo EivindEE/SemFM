@@ -62,9 +62,9 @@ public class OntologyBuilder {
 
 		// get BBC_MUSIC & DB_PEDIA model and add to model
 		try {
-			model.add(GetArtistInfo.ArtistInfo(correctName));
+			model.add(GetArtistInfo.BBCMusic(correctName));
 			LOGGER.debug("Finished BBC");
-			model.add(GetArtistInfo.DbPediaArtistInfo(correctName));
+			model.add(GetArtistInfo.DBPedia(correctName));
 			LOGGER.debug("Finished DBPedia");
 		} catch (Exception e) {
 			e.printStackTrace();

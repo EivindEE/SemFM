@@ -179,13 +179,12 @@ public class SearcherImpl implements Searcher {
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dbont: <http://dbpedia.org/ontology/> " +
 				"SELECT DISTINCT * WHERE {" +
-//				id + "foaf:name ?name" + 
-				"OPTIONAL { ?artist1 foaf:name ?name; mo:image ?image}" +
 				"OPTIONAL { ?bbcartist foaf:name ?name; mo:fanpage ?fanpage.} " +
 				"OPTIONAL { ?bbcartist mo:imdb ?imdb. } " +
 				"OPTIONAL { ?bbcartist mo:myspace ?myspace. } " +
 				"OPTIONAL { ?bbcartist foaf:homepage ?homepage. } " +
 				"OPTIONAL { ?bbcartist rdfs:comment ?shortDesc. Filter (lang(?shortDesc) = '').}  " +
+				"OPTIONAL { ?bbcartist foaf:name ?name; mo:image ?image}" +
 				"OPTIONAL { ?dbartist dbpedia:shortDescription ?shortDescEn .}  " +
 				"OPTIONAL { ?dbartist dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} " +
 				"OPTIONAL { ?dbartist dbont:abstract ?bio. Filter (lang(?bio) = 'en').} " +
@@ -194,7 +193,7 @@ public class SearcherImpl implements Searcher {
 				"OPTIONAL { ?dbartist dbpedia:origin ?origin. } " +
 				"OPTIONAL { ?dbartist dbpedia:yearsActive ?yearsactive. } " +
 				"OPTIONAL { ?dbartist  dbpedia:dateOfBirth ?birthdate. } " +
-//				"OPTIONAL { ?artist15 foaf:name ?name; foaf:page ?wikipedia. } " +
+				"OPTIONAL { ?dbartist foaf:name ?name; foaf:page ?wikipedia. } " +
 				"OPTIONAL { ?bbcartist foaf:name ?name; foaf:page ?bbcpage. }}";
 
 		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
