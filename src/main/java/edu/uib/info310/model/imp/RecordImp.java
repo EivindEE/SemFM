@@ -16,6 +16,7 @@ public class RecordImp implements Record{
 	private List<Track> track;
 	private List<Artist> artist;
 	private List<Record> relatedRecord;
+	private String itunesLink;
 
 	
 	
@@ -49,6 +50,10 @@ public class RecordImp implements Record{
 	
 	public List<Artist> getArtist() {
 		return this.artist;
+	}
+	
+	public String getItunesLink() {
+		return this.itunesLink;
 	}
 
 	public List<Track> getTracks() {
@@ -88,6 +93,10 @@ public class RecordImp implements Record{
 	
 	public void setRelatedRecord(List<Record> relatedRecord) {
 		this.relatedRecord = relatedRecord;
+	}
+	
+	public void setItunesLink(String itunesLink) {
+		this.itunesLink = itunesLink;
 	}
 
 }

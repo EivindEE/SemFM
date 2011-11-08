@@ -454,8 +454,8 @@ a {
 			color: #0099FF;
 		}
 		.album_list > li:hover {
-			background: #000;
-			color: #fff;
+			/*background: #000;
+			color: #fff;*/
 		}
 		/* coverart */
 		.album_list img {
@@ -468,6 +468,7 @@ a {
 		/* album meta */
 		.album_list h3 {
 			margin-bottom: 10px;
+			font-size: 16px;
 		}
 		.album_list span {
 			clear:right;
@@ -549,8 +550,7 @@ a {
 			height: 168px;
 		}
 		.artist_list li .artist_name {
-			font-size: 
-			16px;
+			font-size: 16px;
 		}
 		.artist_list li a .artist_short_desc {
 			color: #333;
