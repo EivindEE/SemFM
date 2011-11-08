@@ -80,9 +80,10 @@ public class SearcherImpl implements Searcher {
 				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"SELECT DISTINCT " +
 				" ?artistId ?albumId ?release ?title ?image ?year ?labelId ?labelName ?track ?artist  "+
-				" WHERE { <" +
+				" WHERE { " +
 				//				"?artistId foaf:name  \"" + artist.getName() + "\". "+
-				this.artist.getId()+ "> foaf:made ?albumId."+ 
+				//"<" + this.artist.getId() + "> foaf:made ?albumId."+ 
+				"?artistId foaf:made ?albumId. " +
 				"?albumId dc:title ?title." +
 				"OPTIONAL {?albumId mo:publisher ?labelId. } "+
 				"OPTIONAL {?albumId dc:issued ?year. }" +
