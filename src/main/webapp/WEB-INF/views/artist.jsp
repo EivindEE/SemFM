@@ -94,17 +94,6 @@
 							<img src="${album.image}" alt="" />
 							<span class="album_year">${album.year}</span><br />
 							<span class="album_publisher">${album.label}</span>
-							<div class="album_tracks">
-								<h4>Tracks</h4>
-								<ul class="track_list">
-								
-									<c:forEach var="track" items="${album.tracks}">
-										<li> ${track.value} </li>
-										<c:out value="">
-										</c:out>
-									</c:forEach>
-								</ul>
-							</div>
 						</li>
 					</c:forEach>
 				</ul>
