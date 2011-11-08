@@ -37,14 +37,14 @@ public class OntologyBuilder {
 	private ITunesSearcher itunes = new ITunesSearcher();
 	public Model createArtistOntology(String search_string) {
 		Model model = ModelFactory.createDefaultModel();
-		Model discs = disc.getDiscography(search_string); 
-		LOGGER.debug("Number of items in discography: " + discs.size());
-		model.add(discs);
-		LOGGER.debug("Model size after getting artist discography: " + model.size());
-		Model tracks = disc.getTracks(search_string); 
-		LOGGER.debug("Number of tracks to discography: " + tracks.size());
-		model.add(tracks);
-		LOGGER.debug("Model size after getting artist tracks: " + model.size());
+//		Model discs = disc.getDiscography(search_string); 
+//		LOGGER.debug("Number of items in discography: " + discs.size());
+//		model.add(discs);
+//		LOGGER.debug("Model size after getting artist discography: " + model.size());
+//		Model tracks = disc.getTracks(search_string); 
+//		LOGGER.debug("Number of tracks to discography: " + tracks.size());
+//		model.add(tracks);
+//		LOGGER.debug("Model size after getting artist tracks: " + model.size());
 		try{
 			transformer.setXml(search.getSimilarArtist(search_string));
 			transformer.setXsl(new File(SIMILAR_XSL));
@@ -69,7 +69,9 @@ public class OntologyBuilder {
 		// get BBC_MUSIC & DB_PEDIA model and add to model
 		try {
 			model.add(GetArtistInfo.ArtistInfo(search_string));
+			LOGGER.debug("Finished BBC");
 			model.add(GetArtistInfo.DbPediaArtistInfo(search_string));
+			LOGGER.debug("Finished DBPedia");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 //			e.printStackTrace();

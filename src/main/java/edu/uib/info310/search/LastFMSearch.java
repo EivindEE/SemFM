@@ -35,12 +35,12 @@ public class LastFMSearch {
 	    try{ 
 
 		URL lastFMRequest = new URL(artistCorrection + search_string + apiKey);
-		System.out.println(lastFMRequest);
+		LOGGER.debug(lastFMRequest.toString());
         URLConnection lastFMConnection = lastFMRequest.openConnection();
-		System.out.println("Test1");
+		LOGGER.debug("Test1");
 		return lastFMConnection.getInputStream();
     } catch(IOException ioexc){ 
-        System.out.println("Unavailable: "+ioexc.getMessage()); 
+       LOGGER.debug("Unavailable: "+ioexc.getMessage()); 
     }
 		return null; 
 
@@ -58,7 +58,7 @@ public class LastFMSearch {
 	    doc = builder.parse(artistCorrection(safe_search));  
 
 
-		System.out.println("Test2");
+		LOGGER.debug("Test2");
 	    return doc;
 }
 	public String correctArtist(String artist) throws Exception {
