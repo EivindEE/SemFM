@@ -66,7 +66,9 @@ public class OntologyBuilder {
 			LOGGER.debug("Finished BBC");
 			model.add(GetArtistInfo.DbPediaArtistInfo(correctName));
 			LOGGER.debug("Finished DBPedia");
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
 				"	CONSTRUCT {?artist owl:sameAs ?artist2.} " +
@@ -76,7 +78,7 @@ public class OntologyBuilder {
 		LOGGER.debug("Model size after using construct statement: " + model.size());
 		
 //		Reasoner reasoner = ReasonerFactoryAssembler.
-		Reasoner reasoner = ReasonerRegistry.getOWLReasoner();
+		Reasoner reasoner = ReasonerRegistry.getOWLMicroReasoner();
 		reasoner.bindSchema(model);
 		return ModelFactory.createInfModel(reasoner, model);
 	}
