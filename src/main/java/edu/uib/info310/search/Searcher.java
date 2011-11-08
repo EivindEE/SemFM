@@ -7,7 +7,7 @@ import edu.uib.info310.model.Track;
 
 public interface Searcher {
 
-	public Artist searchArtist(String search_string);
+	public Artist searchArtist(String search_string) throws ArtistNotFoundException;
 	
 	public Event searchEvent(String search_string);
 	

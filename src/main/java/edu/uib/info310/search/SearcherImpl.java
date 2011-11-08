@@ -14,8 +14,10 @@ import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import edu.uib.info310.model.Artist;
@@ -36,7 +38,7 @@ public class SearcherImpl implements Searcher {
 	private ArtistImpl artist;
 
 
-	public Artist searchArtist(String search_string) {
+	public Artist searchArtist(String search_string) throws ArtistNotFoundException {
 		this.artist = new ArtistImpl();
 		this.model = builder.createArtistOntology(search_string);
 		LOGGER.debug("Size of infered model: " + model.size());
@@ -70,6 +72,7 @@ public class SearcherImpl implements Searcher {
 	private void setArtistDiscography() {
 		List<Record> discog = new LinkedList<Record>();
 		Map<String,Record> uniqueRecord = new HashMap<String, Record>();
+
 		String getDiscographyStr = 	"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
 				"PREFIX mo: <http://purl.org/ontology/mo/> " +
 				"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " +
@@ -78,14 +81,14 @@ public class SearcherImpl implements Searcher {
 				"SELECT DISTINCT " +
 				" ?artistId ?albumId ?release ?title ?image ?year ?labelId ?labelName ?track ?artist  "+
 				" WHERE { " +
-				"?artistId foaf:name  '" + this.artist.getName() + "'. "+
+				"?artistId foaf:name  \"" + artist.getName() + "\". "+
 				"?artistId foaf:made ?albumId."+ 
 				"?albumId dc:title ?title." +
 				"OPTIONAL {?albumId mo:publisher ?labelId. } "+
 				"OPTIONAL {?albumId dc:issued ?year. }" +
 				"OPTIONAL {?albumId foaf:depiction ?image. }" +
 				"}";
-
+		
 
 		LOGGER.debug("Search for albums for artist with name: " + this.artist.getName() + ", with query:" + getDiscographyStr);
 		QueryExecution execution = QueryExecutionFactory.create(getDiscographyStr, model);
@@ -258,7 +261,7 @@ public class SearcherImpl implements Searcher {
 		return null;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ArtistNotFoundException {
 		Searcher searcher = new SearcherImpl();
 		searcher.searchArtist("Rihanna");
 	}

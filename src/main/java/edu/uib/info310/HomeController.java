@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.uib.info310.search.ArtistNotFoundException;
 import edu.uib.info310.search.Searcher;
 
 /**
@@ -53,10 +54,13 @@ public class HomeController {
 		ModelAndView mav = new ModelAndView();
 		String searchType = "artist";
 		
-		mav.addObject(searchType, searcher.searchArtist(search_string));
-		
-		mav.setViewName(searchType);
-		
+		try {
+			mav.addObject(searchType, searcher.searchArtist(search_string));
+			mav.setViewName(searchType);
+		} catch (ArtistNotFoundException e) {
+			mav.setViewName("notFound");
+		}
+
 		return mav;
 	}
 }
