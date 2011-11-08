@@ -38,13 +38,10 @@ public class SearcherImpl implements Searcher {
 
 	public Artist searchArtist(String search_string) {
 		this.artist = new ArtistImpl();
-		this.artist.setName(search_string);
 		this.model = builder.createArtistOntology(search_string);
 		LOGGER.debug("Size of infered model: " + model.size());
-		// Write to file causes crash.
-//		writeModelToFile();
 		
-		setArtistId();
+		setArtistIdAndName();
 	
 		setSimilarArtist();
 		
@@ -52,33 +49,21 @@ public class SearcherImpl implements Searcher {
 		
 		setArtistDiscography();
 		
-		
 		setArtistInfo();
 
 		return this.artist;
 	}
 
-	private void setArtistId() {
-		String getIdStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/>  SELECT ?id WHERE {?id foaf:name '" + this.artist.getName() + "'; mo:similar-to ?something.}";
+	private void setArtistIdAndName() {
+		String getIdStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/>  SELECT ?id ?name WHERE {?id foaf:name ?name; mo:similar-to ?something.}";
 		QueryExecution execution = QueryExecutionFactory.create(getIdStr, model);
 		ResultSet similarResults = execution.execSelect();
-		this.artist.setId(similarResults.nextSolution().get("id").toString());
-		LOGGER.debug("Artist id set to " + this.artist.getId());
-		
-	}
-
-	private void writeModelToFile() {
-		FileOutputStream out;
-		try {
-			LOGGER.debug("Tried to write file with " + model.size() + " statements to log");
-			out = new FileOutputStream(new File("log/out.ttl"));
-			model.write(out, "TURTLE");
-			
-		} catch (FileNotFoundException e) {
-			LOGGER.error("Error writing model to file");
+		if(similarResults.hasNext()){
+			QuerySolution solution = similarResults.next();
+		this.artist.setId(solution.get("id").toString());
+		this.artist.setName(solution.get("name").toString());
 		}
-		LOGGER.debug("Model written to file.");
-		
+		LOGGER.debug("Artist id set to " + this.artist.getId());
 		
 	}
 
