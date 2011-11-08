@@ -10,7 +10,7 @@ import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
 import edu.uib.info310.model.Record;
 
-public class ArtistImp implements Artist {
+public class ArtistImpl implements Artist {
 
 	private String id;
 	private String name;
