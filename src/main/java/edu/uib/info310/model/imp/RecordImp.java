@@ -11,6 +11,7 @@ public class RecordImp implements Record{
 	private String image;
 	private String year;
 	private String label;
+	private String description;
 	private List<Track> track;
 
 	
@@ -33,6 +34,10 @@ public class RecordImp implements Record{
 
 	public String getLabel() {
 		return this.label;
+	}
+	
+	public String getDescription() {
+		return this.description;
 	}
 
 
@@ -58,6 +63,11 @@ public class RecordImp implements Record{
 	public void setLabel(String label) {
 		this.label = label;
 	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	public void setTrack(List<Track> track) {
 		this.track = track;
 	}

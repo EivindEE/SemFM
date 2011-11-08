@@ -15,6 +15,8 @@ public interface Record {
 	
 	public String getLabel();
 	
+	public String getDescription();
+	
 	public List<Track> getTracks();
 
 }
