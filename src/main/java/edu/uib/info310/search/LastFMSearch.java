@@ -30,7 +30,7 @@ public class LastFMSearch {
 	private static final String artistCorrection = "http://ws.audioscrobbler.com/2.0/?method=artist.getcorrection&artist=";
 	private static final String apiKey = "&api_key=a7123248beb0bbcb90a2e3a9ced3bee9";
 	private static final Logger LOGGER = LoggerFactory.getLogger(LastFMSearch.class);
-	
+
 	private InputStream artistCorrection(String search_string) throws ArtistNotFoundException  {
 		InputStream in = null;
 		try{ 
@@ -64,54 +64,59 @@ public class LastFMSearch {
 		return doc;
 	}
 	public String correctArtist(String artist) throws ArtistNotFoundException {
-		Document correction = docBuilder(artist);
-		NodeList nameList = correction.getElementsByTagName("name");
-		Node nameNode = nameList.item(0);
-		Element element = (Element) nameNode;
-		NodeList name = element.getChildNodes();
-		LOGGER.debug("Get node value of correct artist: " + (name.item(0)).getNodeValue());
-		return (name.item(0)).getNodeValue();
+		try{
+			Document correction = docBuilder(artist);
+			NodeList nameList = correction.getElementsByTagName("name");
+			Node nameNode = nameList.item(0);
+			Element element = (Element) nameNode;
+			NodeList name = element.getChildNodes();
+			LOGGER.debug("Get node value of correct artist: " + (name.item(0)).getNodeValue());
+			return (name.item(0)).getNodeValue();
+		}
+		catch (NullPointerException e) {
+			return artist;
+		}
 	}
-	
-	
+
+
 	public InputStream getArtistEvents (String artist) throws Exception {
 		String safeArtist = makeWebSafeString(artist);
-        URL lastFMRequest = new URL(artistEvents + safeArtist + apiKey);
-        URLConnection lastFMConnection = lastFMRequest.openConnection();
-        		
+		URL lastFMRequest = new URL(artistEvents + safeArtist + apiKey);
+		URLConnection lastFMConnection = lastFMRequest.openConnection();
+
 		return lastFMConnection.getInputStream();
-    }
-	
+	}
+
 	public InputStream getSimilarArtist(String artist) throws Exception {
 		String safeArtist = makeWebSafeString(artist);
-        URL lastFMRequest = new URL(similarArtistRequest + safeArtist + apiKey);
-        LOGGER.debug("LastFM request URL: " + lastFMRequest.toExternalForm());
-        URLConnection lastFMConnection = lastFMRequest.openConnection();
-        		
+		URL lastFMRequest = new URL(similarArtistRequest + safeArtist + apiKey);
+		LOGGER.debug("LastFM request URL: " + lastFMRequest.toExternalForm());
+		URLConnection lastFMConnection = lastFMRequest.openConnection();
+
 		return lastFMConnection.getInputStream();
-    }
-	
-	
+	}
+
+
 	public static void main(String[] args) throws Exception {
-		
+
 		File xsl = new File("src/main/resources/XSL/SimilarArtistLastFM.xsl");
-		
+
 		LastFMSearch search = new LastFMSearch();
 		XslTransformer transform = new XslTransformer();
-		
+
 		transform.setXml(search.getSimilarArtist("Iron & Wine"));
 		transform.setXsl(xsl);
-		
+
 		File file = new File("log/rdf-artist.xml");
-		
+
 		FileOutputStream fileOutputStream = new FileOutputStream(file);
 		transform.transform().writeTo(fileOutputStream);
-//		System.out.println(transform.transform());
+		//		System.out.println(transform.transform());
 		System.out.println(search.correctArtist("røyksopp"));
-		
+
 	}
-	
-	
+
+
 	public String makeWebSafeString(String unsafe){
 		try {
 			return URLEncoder.encode(unsafe, "UTF-8");
@@ -119,7 +124,7 @@ public class LastFMSearch {
 			return unsafe;
 		}
 	}
-	
-	
+
+
 
 }
