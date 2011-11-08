@@ -42,15 +42,15 @@ public class SearcherImpl implements Searcher {
 		this.artist = new ArtistImpl();
 		this.model = builder.createArtistOntology(search_string);
 		LOGGER.debug("Size of infered model: " + model.size());
-		
+
 		setArtistIdAndName();
-	
+
 		setSimilarArtist();
-		
+
 		setArtistEvents();
-		
+
 		setArtistDiscography();
-		
+
 		setArtistInfo();
 
 		return this.artist;
@@ -62,11 +62,11 @@ public class SearcherImpl implements Searcher {
 		ResultSet similarResults = execution.execSelect();
 		if(similarResults.hasNext()){
 			QuerySolution solution = similarResults.next();
-		this.artist.setId(solution.get("id").toString());
-		this.artist.setName(solution.get("name").toString());
+			this.artist.setId(solution.get("id").toString());
+			this.artist.setName(solution.get("name").toString());
 		}
 		LOGGER.debug("Artist id set to " + this.artist.getId());
-		
+
 	}
 
 	private void setArtistDiscography() {
@@ -80,15 +80,15 @@ public class SearcherImpl implements Searcher {
 				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"SELECT DISTINCT " +
 				" ?artistId ?albumId ?release ?title ?image ?year ?labelId ?labelName ?track ?artist  "+
-				" WHERE { " +
-				"?artistId foaf:name  \"" + artist.getName() + "\". "+
-				"?artistId foaf:made ?albumId."+ 
+				" WHERE { <" +
+				//				"?artistId foaf:name  \"" + artist.getName() + "\". "+
+				this.artist.getId()+ "> foaf:made ?albumId."+ 
 				"?albumId dc:title ?title." +
 				"OPTIONAL {?albumId mo:publisher ?labelId. } "+
 				"OPTIONAL {?albumId dc:issued ?year. }" +
 				"OPTIONAL {?albumId foaf:depiction ?image. }" +
 				"}";
-		
+
 
 		LOGGER.debug("Search for albums for artist with name: " + this.artist.getName() + ", with query:" + getDiscographyStr);
 		QueryExecution execution = QueryExecutionFactory.create(getDiscographyStr, model);
@@ -96,7 +96,7 @@ public class SearcherImpl implements Searcher {
 
 		LOGGER.debug("Found records? " + albums.hasNext());
 		while(albums.hasNext()){
-			
+
 			RecordImp recordResult = new RecordImp();
 			QuerySolution queryAlbum = albums.next();
 			recordResult.setId(queryAlbum.get("albumId").toString());
@@ -114,7 +114,7 @@ public class SearcherImpl implements Searcher {
 		for(Record record : uniqueRecord.values()){
 			discog.add(record);
 		}
-		
+
 		this.artist.setDiscography(discog);
 		LOGGER.debug("Found "+ artist.getDiscography().size() +"  artist records");
 	}
@@ -169,6 +169,7 @@ public class SearcherImpl implements Searcher {
 
 	private void setArtistInfo() {
 
+		String id = " <" + artist.getId() + "> ";
 		String getArtistInfoStr = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
 				"PREFIX mo: <http://purl.org/ontology/mo/> " +
@@ -177,22 +178,39 @@ public class SearcherImpl implements Searcher {
 				"PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dbont: <http://dbpedia.org/ontology/> " +
-				"SELECT * WHERE{?artistId foaf:name '"+ artist.getName() + "'; mo:image ?image. ?artistId mo:fanpage ?fanpage. OPTIONAL { ?artistId mo:imdb ?imdb. } OPTIONAL { ?artistId mo:myspace ?myspace. } OPTIONAL { ?artistId foaf:homepage ?homepage. } OPTIONAL { ?artistId rdfs:comment ?shortDesc. }  ?artistId owl:sameAs ?artistDb. OPTIONAL { ?artistDb dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} OPTIONAL { ?artistDb dbont:birthname ?birthname} OPTIONAL {?artistDb dbpedia:origin ?origin. } OPTIONAL {?artistDb dbpedia:yearsActive ?yearsactive. } OPTIONAL {?artistDb dbpedia:dateOfBirth ?birthdate. } OPTIONAL {?artistDb foaf:page ?wikipedia. } OPTIONAL {?artistId foaf:page ?bbcpage. }}";
+				"SELECT DISTINCT * WHERE {" +
+				id + "foaf:name ?name" + 
+				"OPTIONAL { ?artist foaf:name ?name; mo:image ?image}" +
+				"OPTIONAL { ?artist foaf:name ?name; mo:fanpage ?fanpage.} " +
+				"OPTIONAL { ?artist foaf:name ?name; mo:imdb ?imdb. } " +
+				"OPTIONAL { ?artist foaf:name ?name; mo:myspace ?myspace. } " +
+				"OPTIONAL { ?artist foaf:name ?name; foaf:homepage ?homepage. } " +
+				"OPTIONAL { ?artist foaf:name ?name; rdfs:comment ?shortDesc. }  " +
+				"OPTIONAL { ?artist foaf:name ?name; dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} " +
+				"OPTIONAL { ?artist foaf:name ?name; dbont:birthname ?birthname} " +
+				"OPTIONAL { ?artist foaf:name ?name; dbpedia:origin ?origin. } " +
+				"OPTIONAL { ?artist foaf:name ?name; dbpedia:yearsActive ?yearsactive. } " +
+				"OPTIONAL { ?artist foaf:name ?name; dbpedia:dateOfBirth ?birthdate. } " +
+				"OPTIONAL { ?artist foaf:name ?name; foaf:page ?wikipedia. } " +
+				"OPTIONAL { ?artist foaf:name ?name; foaf:page ?bbcpage. }}";
 
 		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
 		ResultSet results = ex.execSelect();
 		HashMap<String,String> metaMap = new HashMap<String,String>();
 		List<String> fanpages = new LinkedList<String>();
-
-
 		while(results.hasNext()) {
+			
 			// TODO: optimize (e.g storing in variables instead of performing query.get several times?)
 			QuerySolution query = results.next();
-			artist.setImage(query.get("image").toString());
-			String fanpage = "<a href=\"" + query.get("fanpage").toString() + "\">" + query.get("fanpage").toString() + "</a>";
+			if(query.get("image") != null){
+				artist.setImage(query.get("image").toString());
+			}
+			if(query.get("fanpage") != null){
+				String fanpage = "<a href=\"" + query.get("fanpage").toString() + "\">" + query.get("fanpage").toString() + "</a>";
 
-			if(!fanpages.contains(fanpage)) {
-				fanpages.add(fanpage);
+				if(!fanpages.contains(fanpage)) {
+					fanpages.add(fanpage);
+				}
 			}
 
 			if(query.get("bio") != null) {
@@ -244,6 +262,7 @@ public class SearcherImpl implements Searcher {
 			metaMap.put("Fanpages", fanpages.toString());
 		}
 		artist.setMeta(metaMap);
+		LOGGER.debug("Found " + artist.getMeta().size() + " fun facts.");
 	}
 
 	public Event searchEvent(String search_string) {
@@ -263,7 +282,7 @@ public class SearcherImpl implements Searcher {
 
 	public static void main(String[] args) throws ArtistNotFoundException {
 		Searcher searcher = new SearcherImpl();
-		searcher.searchArtist("Rihanna");
+		searcher.searchArtist("Guns N Roses");
 	}
 
 }
