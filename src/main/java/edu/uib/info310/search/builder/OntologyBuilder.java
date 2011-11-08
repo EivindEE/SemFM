@@ -75,14 +75,15 @@ public class OntologyBuilder {
 //			e.printStackTrace();
 		}
 		
-		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX owl:<http://www.w3.org/2002/07/owl#> CONSTRUCT {?artist owl:sameAs ?artist2.} " +
-				" WHERE {?artist foaf:name ?name. ?artist2 foaf:name ?name}";
+		String queryStr = "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX mo:<http://purl.org/ontology/mo/> PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX owl:<http://www.w3.org/2002/07/owl#> " +
+				"	CONSTRUCT {?artist owl:sameAs ?artist2.} " +
+				" WHERE {?artist foaf:name ?name. ?artist2 foaf:name ?name.  FILTER(?artist != ?artist2)}";
 		QueryExecution execution = QueryExecutionFactory.create(queryStr, model);
 		model.add(execution.execConstruct());
 		LOGGER.debug("Model size after using construct statement: " + model.size());
 		
 //		Reasoner reasoner = ReasonerFactoryAssembler.
-		Reasoner reasoner = ReasonerRegistry.getOWLMicroReasoner();
+		Reasoner reasoner = ReasonerRegistry.getOWLReasoner();
 		reasoner.bindSchema(model);
 		return ModelFactory.createInfModel(reasoner, model);
 	}
