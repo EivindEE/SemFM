@@ -21,7 +21,7 @@ public class ArtistImpl implements Artist {
 	private List<Record> discography;
 	private List<Artist> similar;
 	private List<Event> events;
-	private Map<String, String> meta;
+	private Map<String, Object> meta;
 
 	public String getId() {
 		return this.id;
@@ -59,7 +59,7 @@ public class ArtistImpl implements Artist {
 		return this.events;
 	}
 
-	public Map<String, String> getMeta() {
+	public Map<String, Object> getMeta() {
 		return this.meta;
 	}
 
@@ -99,7 +99,7 @@ public class ArtistImpl implements Artist {
 		this.events = events;
 	}
 
-	public void setMeta(Map<String, String> meta) {
+	public void setMeta(Map<String, Object> meta) {
 		this.meta = meta;
 	}
 

@@ -40,12 +40,12 @@ public class MockArtist implements Artist {
 
 
 
-	public Map<String, String> getMeta() {
+	public Map<String, Object> getMeta() {
 		return createMeta();
 	}
 
-	private Map<String, String> createMeta() {
-		Map<String, String> meta = new HashMap<String,String>();
+	private Map<String, Object> createMeta() {
+		Map<String, Object> meta = new HashMap<String,Object>();
 		meta.put("Age", "22");
 		meta.put("Sex", "Female");
 		meta.put("Born", "Alebama");

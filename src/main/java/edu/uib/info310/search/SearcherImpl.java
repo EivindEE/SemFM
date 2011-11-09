@@ -199,7 +199,7 @@ public class SearcherImpl implements Searcher {
 
 		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
 		ResultSet results = ex.execSelect();
-		HashMap<String,String> metaMap = new HashMap<String,String>();
+		HashMap<String,Object> metaMap = new HashMap<String,Object>();
 		List<String> fanpages = new LinkedList<String>();
 		List<String> bands = new LinkedList<String>();
 		List<String> formerBands = new LinkedList<String>();
