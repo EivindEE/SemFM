@@ -44,7 +44,7 @@ public class RecordImp implements Record{
 		return this.description;
 	}
 
-	public List<Record> getRelatedRecord() {
+	public List<Record> getRelatedRecords() {
 		return this.relatedRecord;
 	}
 	

@@ -54,7 +54,7 @@ public class MockRecord implements Record {
 		return artists;
 	}
 	
-	public List<Record> getRelatedRecord(){
+	public List<Record> getRelatedRecords(){
 		List<Record> records = new LinkedList<Record>();
 		records.add(new MockRecord());
 		records.add(new MockRecord());
