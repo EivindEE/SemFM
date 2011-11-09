@@ -26,41 +26,50 @@ public class HomeController {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(HomeController.class);
-	
+
 	@Autowired
 	private Searcher searcher;
-	
+
 
 	/**
 	 * Selects the home page and populates the model with a message
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
-			String helloWrold = null;
-			try {
-				helloWrold = GetUrl.getContent("http://www.tastekid.com/ask/ws?q=rihanna"); // RIHANNA FUCK YEAH!
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			model.addAttribute("controllerMessage",
-					helloWrold);
+		String helloWrold = null;
+		try {
+			helloWrold = GetUrl.getContent("http://www.tastekid.com/ask/ws?q=rihanna"); // RIHANNA FUCK YEAH!
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		model.addAttribute("controllerMessage",
+				helloWrold);
 		return "home";
 	}
-	
-	@RequestMapping(value = "/search")
+
+	@RequestMapping(value = "/artist")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ModelAndView search(@RequestParam String search_string){
-		logger.debug("Got search string: " + search_string);
+	public ModelAndView artist(@RequestParam String search_string){
+		logger.debug("Artist got search string: " + search_string);
 		ModelAndView mav = new ModelAndView();
-		String searchType = "artist";
-		
+
 		try {
-			mav.addObject(searchType, searcher.searchArtist(search_string));
-			mav.setViewName(searchType);
+			mav.addObject("artist", searcher.searchArtist(search_string));
+			mav.setViewName("artist");
 		} catch (ArtistNotFoundException e) {
 			mav.setViewName("notFound");
 		}
 
+		return mav;
+	}
+	@RequestMapping(value = "/album")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ModelAndView album(@RequestParam String search_string){
+		logger.debug("Album got search string: " + search_string);
+		ModelAndView mav = new ModelAndView();
+
+		mav.addObject("record", searcher.searchRecord(search_string));
+		mav.setViewName("album");
 		return mav;
 	}
 }

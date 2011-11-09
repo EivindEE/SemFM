@@ -17,14 +17,14 @@
 		<img src="${record.image}" alt="" class="search_result_image" />
 		<div class="h1-wrapper">
 			<h1>${record.name}</h1>
-			<span class="h1-description">by ${record.artist}</span>
+			<span class="h1-description">by <ul><c:forEach var="artist" items="${record.artist}"> <li>${artist.name}</li></c:forEach></ul></span>
 		</div>
 	</div>
 </div>
 <div class="full main_wrapper">
 	<div class="album_description left half">
 		<h2>Description</h2>
-		$(record.description);
+		${record.description};
 	</div>
 	<div class="meta right half">
 		<h2>Meta Facts</h2>
@@ -56,7 +56,7 @@
 	</div>
 	<div class="alternative_releases full">
 		<h2>Alternative Releases</h2>
-		<c:forEach var="related" items="record.relatedRecord">
+		<c:forEach var="related" items="${record.relatedRecords}">
 			<li>${related.image} ${related.name}</li>
 		</c:forEach>
 	</div>
