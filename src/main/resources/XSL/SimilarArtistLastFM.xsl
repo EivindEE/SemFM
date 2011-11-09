@@ -15,7 +15,7 @@
 			
 	
 			<xsl:variable name="artistSafe">
-				<xsl:value-of select="similarartists/@artist"/>
+			<xsl:value-of select="similarartists/@artist"/>
 			</xsl:variable>
 			
 			<xsl:variable name="artistSafe2" select="translate($artistSafe,' ','+')" />
@@ -36,8 +36,8 @@
 					<foaf:name>
 						<xsl:value-of select="name" />
 					</foaf:name>
+
 					<mo:image rdf:resource="{image[@size='extralarge']}" />
-<!-- 					<mo:musicbrainz_guid rdf:resource="{mbid}" /> -->
 				</rdf:Description>
 			</xsl:for-each>
 
