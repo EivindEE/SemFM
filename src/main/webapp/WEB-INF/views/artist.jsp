@@ -73,11 +73,11 @@
 	</div>
 	</c:if>
 	<c:if test="${! empty artist.meta}">
-	<div class="artist_meta right half">
+	<div class="artist_meta meta_list right half">
 		<h2>Meta Facts</h2>
 		<ul>
 			<c:forEach var="metaTidbit" items="${artist.meta}">
-				<li>${metaTidbit.key}: ${metaTidbit.value.class}</li>
+				<li>${metaTidbit.key}: <ul><c:forEach var ="item" items="${metaTidbit.value}"><li>${item}</li></c:forEach></ul></li>
 			</c:forEach>
 		</ul>	
 	</div>

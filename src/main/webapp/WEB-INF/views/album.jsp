@@ -17,10 +17,19 @@
 		<img src="${record.image}" alt="" class="search_result_image" />
 		<div class="h1-wrapper">
 			<h1>${record.name}</h1>
-			<span class="h1-description">
-				<ul><c:forEach var="genre" items="${record.genres}"><li>${genre}</li></c:forEach></ul><br />
-				by <ul><c:forEach var="artist" items="${record.artist}"><li>${artist.name}</li></c:forEach></ul><br />
-			</span>
+			<div class="h1-description">
+				<ul>
+					<c:forEach var="genre" items="${record.genres}">
+						<li>${genre}</li>
+					</c:forEach>
+				</ul><br />
+				by
+				 <ul>
+					<c:forEach var="artist" items="${record.artist}">
+						<li>${artist.name}</li>
+					</c:forEach>
+				</ul>
+			</div>
 		</div>
 	</div>
 	<ul class="headline_links">
@@ -33,7 +42,7 @@
 		<h2>Description</h2>
 		${record.description};
 	</div>
-	<div class="album_meta right half">
+	<div class="album_meta meta_list right half">
 		<h2>Meta Facts</h2>
 		<ul>
 			<li>Artist: ${record.artist}</li>

@@ -333,24 +333,41 @@ a {
 		.h1-description ul {
 			display: inline;
 		}
-		.h1-description li {
-			display:inline;
+		.h1-description ul li {
+			display:inline-block;
 		}
-		.h1-description li:after {
-			content ", ";
+		.h1-description ul li:after {
+			content ', ';
+			display: block;
 		}
-		.h1-description li:last-child:after {
-			content: "";
+		.h1-description ul li:last-child:after {
+			content: ' ';
+		}
+	.headline_links {
+		position: absolute;
+		bottom: 0;
+		left:0;
+	}
+		.headline_links li {
+			display: inline-block;
+			background: #ccc;
+			padding: 5px;
+			border-bottom-right-margin: 5px;
+			border-bottom-left-margin: 5px;
 		}
 
-.artist_meta li, .album_meta li {
+.meta_list > ul > li {
 	padding: 5px;
 }
-	.artist_meta li:nth-child(odd), .album_meta li:nth-child(odd) {
+	.meta_list > ul > li:nth-child(odd) {
 		background: #eee;
 	}
-	.artist_meta li:last-child, .album_meta li:last-child {
+	.meta_list > ul > li:last-child {
 		border: none;
+	}
+	.meta_list > ul > li ul li {
+		list-style: disc inside;
+		margin-left: 10px;
 	}
 
 /* used in upcoming concerts */
