@@ -315,10 +315,10 @@ public class SearcherImpl implements Searcher {
 			metaMap.put("Fanpages", fanpages.toString());
 		}
 		if(!bands.isEmpty()) {
-			metaMap.put("Member of band", bands.toString());
+			metaMap.put("Bandmember", bands.toString());
 		}
 		if(!formerBands.isEmpty()) {
-			metaMap.put("Former member of", formerBands.toString());
+			metaMap.put("Former bandmember", formerBands.toString());
 		}
 		if(!currentMembers.isEmpty()) {
 			metaMap.put("Current Members", currentMembers.toString());
