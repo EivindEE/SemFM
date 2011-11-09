@@ -222,10 +222,10 @@ a {
 				background: url('http://localhost:8080/SemFM/spring/resources/images/search-magnifier.png') center center no-repeat;
 			}
 			#search_form button:active {
-				background: url('http://localhost:8080/SemFM/spring/resources/images/search-magnifier.png') bottom center no-repeat;
+				top: 11px;
 			}
 	
-	.header_meta_links {
+	#header .header_meta_links {
 		position: absolute; 
 		right: 0;
 		bottom: 30px;
@@ -238,12 +238,9 @@ a {
 		.header_meta_links li:first-child {
 			list-style:none;
 		}
-	.home .header_meta_links {
-		position: static;
-		text-align: center;
-		display: block;
-		float: none;
-		margin: 0 auto;
+	.home_meta_link {
+		clear:both;
+		float:right;
 	}
 			
 .main_wrapper {
@@ -551,7 +548,7 @@ a {
 	.artist_list {
 		background: #eee;
 		width: 980px;
-		height: 463px;
+		height: 450px;
 		overflow:auto;
 		border: 1px solid #ccc;
 		border-radius: 10px;
