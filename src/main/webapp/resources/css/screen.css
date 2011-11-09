@@ -330,14 +330,26 @@ a {
 		font-size: 20px;
 		color: #fff;
 	}
+		.h1-description ul {
+			display: inline;
+		}
+		.h1-description li {
+			display:inline;
+		}
+		.h1-description li:after {
+			content ", ";
+		}
+		.h1-description li:last-child:after {
+			content: "";
+		}
 
-.artist_meta li {
+.artist_meta li, .album_meta li {
 	padding: 5px;
 }
-	.artist_meta li:nth-child(odd) {
+	.artist_meta li:nth-child(odd), , .album_meta li:nth-child(odd) {
 		background: #eee;
 	}
-	.artist_meta li:last-child {
+	.artist_meta li:last-child, , .album_meta li:last-child {
 		border: none;
 	}
 
@@ -352,46 +364,46 @@ a {
 		width: 100%;
 		height: 100%;
 	}
-.concert_table {
+.zebra_table {
 	width:960px;
 	margin:0 auto;
 }
 	/* table header */
-	.concert_table tr:first-child {
+	.zebra_table tr:first-child {
 		border: 0 !important;
 	}
-	.concert_table th {
+	.zebra_table th {
 		font-size: 16px;
 		color: #DD0000;
 		text-align:left;
 	}
 	
 	/* rest of table */
-	.concert_table tr:nth-child(even) {
+	.zebra_table tr:nth-child(even) {
 		background: #eee;
 		border-left: 1px solid #ccc;
 		border-right: 1px solid #ccc;
 	}
-	.concert_table tr:nth-child(odd) {
+	.zebra_table tr:nth-child(odd) {
 		background: #fff;
 		border-left: 1px solid #ccc;
 		border-right: 1px solid #ccc;
 	}
-	.concert_table tr:nth-child(2) {
+	.zebra_table tr:nth-child(2) {
 		border: 1px solid #ccc;
 		border-bottom: 0;
 		border-left-top-radius: 10px;
 		border-top-right-radius: 10px;
 	}
 	
-	.concert_table tr:last-child {
+	.zebra_table tr:last-child {
 		border: 1px solid #ccc;
 		border-top: 0;
 		border-bottom-left-radius: 10px;
 		border-bottom-right-radius: 10px;
 	}
 	
-	.concert_table td, .concert_table th {
+	.zebra_table td, .zebra_table th {
 		padding: 10px;
 	}
 
@@ -545,7 +557,7 @@ a {
 	.related_artists {
 		
 	}
-	.artist_list {
+	.artist_list, .related_list {
 		background: #eee;
 		width: 980px;
 		height: 450px;
@@ -553,11 +565,11 @@ a {
 		border: 1px solid #ccc;
 		border-radius: 10px;
 	}
-		.artist_list li {
+		.artist_list li, .related_list li {
 			display:inline-block;
 			
 		}
-		.artist_list li a {
+		.artist_list li a, .related_list li a {
 			display: block;
 			
 			background: #fff;
@@ -568,15 +580,15 @@ a {
 			
 			border-radius: 10px;
 		}
-			.artist_list li a:hover {
+			.artist_list li a:hover, .related_list li a:hover {
 				background: #0099FF;
 				color: #fff;
 			}
-		.artist_list li img {
+		.artist_list li img, .related_list li img {
 			width: 210px;
 			height: 168px;
 		}
-		.artist_list li .artist_name {
+		.artist_list li .artist_name, .related_list li .related_name {
 			font-size: 16px;
 		}
 		.artist_list li a .artist_short_desc {

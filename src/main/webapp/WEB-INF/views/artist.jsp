@@ -49,7 +49,7 @@
 		</script>
 	</c:if>
 </head>
-<body onload="initialize()">
+<body onload="initialize()" class="artist">
 
 <jsp:include page="includes/header.jsp" />
 
@@ -109,7 +109,7 @@
 		<div class="concert_map">
 			<div id="concert_map"></div>
 		</div>
-		<table class="concert_table full">
+		<table class="concert_table zebra_table full">
 			<tr>
 				<th>Date</th>
 				<th>Location</th>

@@ -13,7 +13,7 @@
 <body class="home">
 	<div class="full main_wrapper">
 		<a href="http://localhost:8080/SemFM" id="logo"><img src="http://localhost:8080/SemFM/spring/resources/images/SemFM-large.png" alt="SemFM" /></a>
-		<form id="search_form" action="search" method="post">
+		<form id="search_form" action="artist" method="post">
 			<input type="text" name="search_string" id="search_string" placeholder="Artist name" />
 			<button>Submit Search</button>
 		</form>
