@@ -138,7 +138,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 
 			String whereStr ="} WHERE {?artist foaf:name \"" + artistName + "\"@en ." +
 					"OPTIONAL{?artist dbpedia:shortDescription ?comment} . " +
-					"OPTIONAL{?artist dbont:abstract ?bio . FILTER(lang(bio) = 'en')} . " +
+					"OPTIONAL{?artist dbont:abstract ?bio . FILTER(lang(?bio) = 'en')} . " +
 					"OPTIONAL{?artist dbont:birthname ?birthname} ." +
 					"OPTIONAL{?artist dbont:hometown ?hometown} ." +
 					"OPTIONAL{?artist dbpedia:origin ?origin} ." +
