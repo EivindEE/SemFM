@@ -19,6 +19,8 @@ public interface Record {
 	
 	public String getItunesLink();
 	
+	public String getPlaytime();
+	
 	public List<Artist> getArtist();
 	
 	public List<Track> getTracks();

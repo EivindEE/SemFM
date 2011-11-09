@@ -68,7 +68,7 @@ public class HomeController {
 		logger.debug("Album got search string: " + search_string);
 		ModelAndView mav = new ModelAndView();
 
-		mav.addObject("album", searcher.searchRecord(search_string));
+		mav.addObject("record", searcher.searchRecord(search_string));
 		mav.setViewName("album");
 		return mav;
 	}
