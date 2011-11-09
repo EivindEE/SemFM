@@ -71,4 +71,35 @@ public class MockRecord implements Record {
 		return "73 min";
 	}
 
+	public List<String> getReviews() {
+		LinkedList<String> reviews = new LinkedList<String>();
+		reviews.add("A review is an evaluation of a publication, a product or a service, such as a movie (a movie review), video game, musical composition (music review of a composition or recording), book (book review); a piece of hardware like a car, home appliance, or computer; or an event or performance, such as a live music concert, a play, musical theater show or dance show. In addition to a critical evaluation, the review's author may assign the work a rating to indicate its relative merit. More loosely, an author may review current events, trends, or items in the news. A compilation of reviews may itself be called a review. The New York Review of Books, for instance, is a collection of essays on literature, culture, and current affairs. National Review, founded by William F. Buckley, Jr., is an influential conservative magazine, and Monthly Review is a long-running socialist periodical.");
+		reviews.add("The Wireless Speed Wheel is marred by a couple of bad design decisions, and the effort of holding it in racing position can make longer racing sessions tiring. Yet it’s accurate and responsive, and it does make playing Forza 4 – and other racers – a more exciting and immersive experience. What’s more, it’s an awful lot more convenient to pick up, play and put away than a proper racing wheel setup. ");
+		return reviews; 
+	}
+
+	public List<String> getGenres() {
+		LinkedList<String> genres = new LinkedList<String>();
+		genres.add("Pop");
+		genres.add("Classical");
+		return genres;
+	}
+
+	public String getSpotifyUri() {
+		return "http://open.spotify.com/track/1x6ACsKV4UdWS2FMuPFUiT";
+	}
+
+	public Map<String, Object> getMeta() {
+		HashMap<String, Object> meta = new HashMap<String, Object>();
+		meta.put("Producer", "Tim Alen");
+		meta.put("Year", "2008");
+		meta.put("Playtime", "1H 20M");
+		meta.put("Label", "EMU");
+		return meta;
+	}
+
+	public String getItunesPreview() {
+		return "http://a1099.itunes.apple.com/r10/Music/f9/54/43/mzi.gqvqlvcq.aac.p.m4p";
+	}
+
 }

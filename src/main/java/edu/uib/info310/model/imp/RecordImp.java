@@ -1,6 +1,7 @@
 package edu.uib.info310.model.imp;
 
 import java.util.List;
+import java.util.Map;
 
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Record;
@@ -18,6 +19,11 @@ public class RecordImp implements Record{
 	private List<Record> relatedRecord;
 	private String itunesLink;
 	private String playTime;
+	private List<String> reviews;
+	private List<String> genres;
+	private String spotifyUri;
+	private Map<String, Object> meta;
+	private String itunesPreview;
 
 	
 	
@@ -107,6 +113,62 @@ public class RecordImp implements Record{
 	
 	public String getPlaytime() {
 		return this.playTime;
+	}
+
+	public List<String> getReviews() {
+		return this.reviews;
+	}
+
+	public List<String> getGenres() {
+		return this.genres;
+	}
+
+	public String getSpotifyUri() {
+		return this.spotifyUri;
+	}
+
+	public Map<String, Object> getMeta() {
+		return this.meta;
+	}
+
+	public String getItunesPreview() {
+		return this.itunesPreview;
+	}
+
+	public String getPlayTime() {
+		return playTime;
+	}
+
+	public void setPlayTime(String playTime) {
+		this.playTime = playTime;
+	}
+
+	public List<Track> getTrack() {
+		return track;
+	}
+
+	public List<Record> getRelatedRecord() {
+		return relatedRecord;
+	}
+
+	public void setReviews(List<String> reviews) {
+		this.reviews = reviews;
+	}
+
+	public void setGenres(List<String> genres) {
+		this.genres = genres;
+	}
+
+	public void setSpotifyUri(String spotifyUri) {
+		this.spotifyUri = spotifyUri;
+	}
+
+	public void setMeta(Map<String, Object> meta) {
+		this.meta = meta;
+	}
+
+	public void setItunesPreview(String itunesPreview) {
+		this.itunesPreview = itunesPreview;
 	}
 
 }
