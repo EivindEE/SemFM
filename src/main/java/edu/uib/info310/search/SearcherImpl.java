@@ -79,7 +79,7 @@ public class SearcherImpl implements Searcher {
 				"PREFIX dc: <http://purl.org/dc/terms/> " + 
 				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"SELECT DISTINCT " +
-				" ?artistId ?albumId ?release ?title ?image ?year ?labelId ?labelName ?track ?artist  "+
+				" ?artistId ?albumId ?title ?image ?year ?labelId"+
 				" WHERE { " +
 				//				"?artistId foaf:name  \"" + artist.getName() + "\". "+
 				//"<" + this.artist.getId() + "> foaf:made ?albumId."+ 
@@ -186,7 +186,7 @@ public class SearcherImpl implements Searcher {
 				"OPTIONAL { ?bbcartist foaf:homepage ?homepage. } " +
 				"OPTIONAL { ?bbcartist rdfs:comment ?shortDesc. Filter (lang(?shortDesc) = '').}  " +
 				"OPTIONAL { ?bbcartist foaf:name ?name; mo:image ?image}" +
-				"OPTIONAL { ?dbartist dbpedia:shortDescription ?shortDescEn .}  " +
+				"OPTIONAL { ?dbartist dbpedia:shortDescription ?shortDescEn. }  " +
 				"OPTIONAL { ?dbartist dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} " +
 				"OPTIONAL { ?dbartist dbont:abstract ?bio. Filter (lang(?bio) = 'en').} " +
 				"OPTIONAL { ?dbartist dbont:birthname ?birthname} " +

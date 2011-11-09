@@ -55,7 +55,9 @@
 
 <div class="headline_wrapper<c:if test="${! empty artist.locatedEvents}"> tour</c:if>">
 	<div class="headline">
+		<c:if test="${! empty artist.image}">
 		<img src="${artist.image}" alt="" class="search_result_image" />
+		</c:if>
 		<div class="h1-wrapper">
 			<h1>${artist.name}</h1>
 			<span class="h1-description">${artist.shortDescription}</span>

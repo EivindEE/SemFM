@@ -48,7 +48,10 @@ table {
 /* --- END CSS RESET --- */
 
 /* CSS by Torstein Thune */
-
+html {
+	box-shadow: inset 0px 0px 20px #ccc;
+	min-height: 100%;
+}
 body {
 	font-family: Arial;
 	color: #333;
@@ -127,6 +130,21 @@ a {
 	width: 480px;
 }
 
+.hidden {
+	display:block;
+}
+#sources, #help {
+	display:none;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	padding: 10px;
+	border-radius: 10px;
+}
+#sources:active, #help:active {
+	display: block;
+}
+
 /* image formating */
 .rounded_image {
 }
@@ -160,20 +178,31 @@ a {
 		.home #search_form input {
 			width: 734px !important;
 		}
-	#search_form {
-		display: block;
-		margin: 0 auto;
-		
-		width: 310px;
+	#search_form input {
+		display: inline-block;
+		width: 275px;
+		padding-left: 10px;
+		padding-right: 25px;
 		height: 36px;
+		position: absolute;
+		left:0;
 		
 		border: 1px solid #999;
 		
 		border-radius: 8px;
 		box-shadow: 0px 0px 10px #ccc;
-		padding:0;
+		
+		-webkit-transition: all 0.2s ease-in;
+		-moz-transition: all 0.2s ease-in;
+		-o-transition: all 0.2s eas-in;
+		transition: all 0.2s ease-in;
 	}
-		#search_form input {
+		#search_form {
+			width: 310px;
+			margin: 0 auto;
+			position:relative;
+		}
+		/*#search_form input {
 			border:0;
 			margin-left:0;
 			margin-right: 2px;
@@ -187,13 +216,22 @@ a {
 			
 			background: transparent;
 			font-size: 15px;
-		}
+			
+			-webkit-transition: all 0.2s ease-in;
+			-moz-transition: all 0.2s ease-in;
+			-o-transition: all 0.2s eas-in;
+			transition: all 0.2s ease-in;
+		}*/
 			#search_form input:focus {
 				color: #333;
+				box-shadow: 0px 0px 10px #FF0000;
 			}
 		#search_form button {
 			text-indent: -10000px;
 			width: 20px;
+			position: absolute;
+			right: 10px;
+			top: 10px;
 			height: 21px;
 			background: url('http://localhost:8080/SemFM/spring/resources/images/search-magnifier.png') top center no-repeat;
 			border:0;
@@ -221,7 +259,10 @@ a {
 		}
 	.home .header_meta_links {
 		position: static;
-		display: inline;
+		text-align: center;
+		display: block;
+		float: none;
+		margin: 0 auto;
 	}
 			
 .main_wrapper {
@@ -245,6 +286,8 @@ a {
 	
 	border-top: 1px solid #666;
 	border-bottom: 1px solid #666;
+	
+	min-height: 100px;
 	
 	padding-top: 30px;
 	padding-bottom: 30px;
@@ -282,7 +325,10 @@ a {
 	.headline {
 		text-align: left;
 		display: inline-block;
+		max-width: 980px;
 		margin: 0 auto;
+		position:relative;
+		text-align:center;
 	}
 	.headline_wrapper h1 {
 		clear:right;
@@ -291,12 +337,15 @@ a {
 		line-height: 1;
 	}
 	.headline_wrapper img {
-		vertical_align: center;
-		float:left;
 		margin-right: 20px;
+		float:left;
 	}
 	.h1-wrapper {
-		margin-top: 45px;
+		text-align:left;
+		float:left;
+		max-width: 410px;
+		margin-top: 40px;
+		margin-bottom: 40px;
 		display: inline-block;
 	}
 	.h1-description {
