@@ -89,7 +89,11 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"dbont:birthDate ?birth ;" +
 					"dbont:deathDate ?death ;" +
 					"mo:wikipedia ?wikipedia ;" +
-					"owl:sameAs ?artist" ;
+					"owl:sameAs ?artist;" +
+					"dbont:bandMember ?currentMember;" +
+					"dbont:formerBandMember ?pastMember;" +
+					"dbpedia:currentMembers ?currentMembers;" +
+					"dbpedia:pastMembers ?pastMembers" ;
 
 
 			String whereStr ="} WHERE {?artist foaf:name \"" + artistName + "\"@en." +
@@ -103,7 +107,9 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"OPTIONAL{?artist dbont:activeYearsStartYear ?start} ." +
 					"OPTIONAL{?artist dbont:birthDate ?birth} ." +
 					"OPTIONAL{?artist dbont:deathDate ?death} ." +
-					"OPTIONAL{?artist foaf:page ?wikipedia}" +
+					"OPTIONAL{?artist foaf:page ?wikipedia}. "+
+					"OPTIONAL {{{?currentMembers dbpedia:currentMembers ?artist} UNION {?artist dbpedia:currentMembers ?currentMember}} UNION"+
+					"{ {?pastMembers dbpedia:pastMembers ?artist} UNION {?artist dbpedia:pastMembers ?pastMember}}}" +
 					"}";
 			qep.setQuery(prefix + constructStr + whereStr);
 			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
@@ -116,8 +122,6 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 	public static void main(String[] args) throws Exception{
 		LOGGER.debug("started query");
 		Model test = ModelFactory.createDefaultModel();
-		//test.add(BBCMusic("Moby"));
-		//test.add(DBPedia("Moby"));
 		LOGGER.debug("ended query");
 
 		FileOutputStream out = new FileOutputStream(new File("log/getartistinfoout.ttl"));

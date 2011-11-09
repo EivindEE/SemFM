@@ -75,7 +75,7 @@ public class SearcherImpl implements Searcher {
 				"PREFIX dc: <http://purl.org/dc/terms/> " + 
 				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"SELECT DISTINCT " +
-				" ?artistId ?albumId ?title ?image ?year ?labelId"+
+				" ?artistId ?albumId ?release ?title ?image ?year ?labelId ?labelName ?track ?artist  "+
 				" WHERE { " +
 				//				"?artistId foaf:name  \"" + artist.getName() + "\". "+
 				//"<" + this.artist.getId() + "> foaf:made ?albumId."+ 
@@ -176,7 +176,6 @@ public class SearcherImpl implements Searcher {
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dbont: <http://dbpedia.org/ontology/> " +
 				"SELECT DISTINCT * WHERE {" +
-
 				"OPTIONAL { ?artist mo:fanpage ?fanpage.} " +
 				"OPTIONAL { ?artist mo:imdb ?imdb. } " +
 				"OPTIONAL { ?artist mo:myspace ?myspace. } " +
@@ -192,13 +191,20 @@ public class SearcherImpl implements Searcher {
 				"OPTIONAL { ?artist dbont:birthDate ?birthdate. } " +
 				"OPTIONAL { ?artist dbont:deathDate ?deathdate. } " +
 				"OPTIONAL { ?artist mo:wikipedia ?wikipedia. } " +
-				"OPTIONAL { ?artist foaf:page ?bbcpage. }}";
-
+				"OPTIONAL { ?artist foaf:page ?bbcpage. }" +
+				"OPTIONAL { ?artist dbont:bandMember ?memberOf. }" +
+				"OPTIONAL { ?artist dbont:formerBandMember ?pastMemberOf. }" +
+				"OPTIONAL { ?artist dbpedia:currentMembers ?currentMembers. }" +
+				"OPTIONAL { ?artist dbpedia:pastMembers ?pastMembers. }}" ;
 
 		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
 		ResultSet results = ex.execSelect();
 		HashMap<String,String> metaMap = new HashMap<String,String>();
 		List<String> fanpages = new LinkedList<String>();
+		List<String> bands = new LinkedList<String>();
+		List<String> formerBands = new LinkedList<String>();
+		List<String> currentMembers = new LinkedList<String>();
+		List<String> pastMembers = new LinkedList<String>();
 		while(results.hasNext()) {
 			
 			// TODO: optimize (e.g storing in variables instead of performing query.get several times?)
@@ -211,6 +217,34 @@ public class SearcherImpl implements Searcher {
 
 				if(!fanpages.contains(fanpage)) {
 					fanpages.add(fanpage);
+				}
+			}
+			if(query.get("memberOf") != null){
+				String memberOf = "<a href=\"" + query.get("memberOf").toString() + "\">" + query.get("memberOf").toString() + "</a>";
+
+				if(!bands.contains(memberOf)) {
+					bands.add(memberOf);
+				}
+			}
+			if(query.get("pastMemberOf") != null){
+				String pastMemberOf = "<a href=\"" + query.get("pastMemberOf").toString() + "\">" + query.get("pastMemberOf").toString() + "</a>";
+
+				if(!formerBands.contains(pastMemberOf)) {
+					formerBands.add(pastMemberOf);
+				}
+			}
+			if(query.get("currentMembers") != null){
+				String currentMember = "<a href=\"" + query.get("currentMembers").toString() + "\">" + query.get("currentMembers").toString() + "</a>";
+
+				if(!currentMembers.contains(currentMember)) {
+					currentMembers.add(currentMember);
+				}
+			}
+			if(query.get("pastMembers") != null){
+				String pastMember = "<a href=\"" + query.get("pastMembers").toString() + "\">" + query.get("pastMembers").toString() + "</a>";
+
+				if(!pastMembers.contains(pastMember)) {
+					pastMembers.add(pastMember);
 				}
 			}
 
@@ -279,6 +313,18 @@ public class SearcherImpl implements Searcher {
 
 		if(!fanpages.isEmpty()) {
 			metaMap.put("Fanpages", fanpages.toString());
+		}
+		if(!bands.isEmpty()) {
+			metaMap.put("Member of band", bands.toString());
+		}
+		if(!formerBands.isEmpty()) {
+			metaMap.put("Former member of", formerBands.toString());
+		}
+		if(!currentMembers.isEmpty()) {
+			metaMap.put("Current Members", currentMembers.toString());
+		}
+		if(!pastMembers.isEmpty()) {
+			metaMap.put("Past Members", pastMembers.toString());
 		}
 		artist.setMeta(metaMap);
 		LOGGER.debug("Found " + artist.getMeta().size() + " fun facts.");
