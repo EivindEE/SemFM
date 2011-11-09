@@ -23,6 +23,6 @@ public interface Record {
 	
 	public List<Track> getTracks();
 	
-	public List<Record> getRelatedRecord();
+	public List<Record> getRelatedRecords();
 
 }

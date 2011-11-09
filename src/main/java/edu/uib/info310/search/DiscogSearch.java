@@ -1,5 +1,8 @@
 package edu.uib.info310.search;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -60,8 +63,13 @@ public class DiscogSearch {
 		
 		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
 		
-
-		
 		return queryExecution.execDescribe();
+	}
+	
+	
+	public static void main(String[] args) throws FileNotFoundException {
+		DiscogSearch search = new DiscogSearch();
+		FileOutputStream out = new FileOutputStream(new File("log/discog.xml"));
+		search.getDiscography("Rihanna").write(out);
 	}
 }

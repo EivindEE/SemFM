@@ -1,8 +1,5 @@
 package edu.uib.info310.search;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,10 +11,8 @@ import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import edu.uib.info310.model.Artist;
@@ -27,6 +22,7 @@ import edu.uib.info310.model.Track;
 import edu.uib.info310.model.imp.ArtistImpl;
 import edu.uib.info310.model.imp.EventImpl;
 import edu.uib.info310.model.imp.RecordImp;
+import edu.uib.info310.model.mock.MockRecord;
 import edu.uib.info310.search.builder.OntologyBuilder;
 
 @Component
@@ -292,8 +288,7 @@ public class SearcherImpl implements Searcher {
 	}
 
 	public Record searchRecord(String search_string) {
-		// TODO Auto-generated method stub
-		return null;
+		return new MockRecord();
 	}
 
 	public Track searchTrack(String search_string) {
