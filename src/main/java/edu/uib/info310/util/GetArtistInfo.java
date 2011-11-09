@@ -136,7 +136,8 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"owl:sameAs ?artist" ;
 
 
-			String whereStr ="} WHERE {?artist foaf:name \"" + artistName + "\"@en." +
+			String whereStr ="} WHERE {?artist foaf:name \"" + artistName + "\"@en;" +
+					"dbpedia-owl:artist ?something. " +
 					"OPTIONAL{?artist dbpedia:shortDescription ?comment} . " +
 					"OPTIONAL{?artist dbont:abstract ?bio . FILTER(lang(?bio) = 'en')} . " +
 					"OPTIONAL{?artist dbont:birthname ?birthname} ." +
@@ -147,7 +148,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"OPTIONAL{?artist dbont:birthDate ?birth} ." +
 					"OPTIONAL{?artist dbont:deathDate ?death} ." +
 					"OPTIONAL{?artist foaf:page ?wikipedia}" +
-					"FILTER(rdf:type(?artist) = dbont:Artist)}";
+					"}";
 			qep.setQuery(prefix + constructStr + whereStr);
 			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
 			Model model = qep.describeStatement();
