@@ -195,7 +195,11 @@ public class SearcherImpl implements Searcher {
 				"OPTIONAL { ?artist dbont:birthDate ?birthdate. } " +
 				"OPTIONAL { ?artist dbont:deathDate ?deathdate. } " +
 				"OPTIONAL { ?artist mo:wikipedia ?wikipedia. } " +
-				"OPTIONAL { ?artist foaf:page ?bbcpage. }}";
+				"OPTIONAL { ?artist foaf:page ?bbcpage. }" +
+				"OPTIONAL { ?artist dbont:bandMember ?currentMember. }" +
+				"OPTIONAL { ?artist dbont:formerBandMember ?pastMember. }" +
+				"OPTIONAL { ?artist dbpedia:currentMembers ?currentMembers. }" +
+				"OPTIONAL { ?artist dbpedia:pastMembers ?pastMembers. }}" ;
 
 		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
 		ResultSet results = ex.execSelect();

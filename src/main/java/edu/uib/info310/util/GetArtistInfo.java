@@ -136,7 +136,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"owl:sameAs ?artist;" +
 					"dbont:bandMember ?currentMember;" +
 					"dbont:formerBandMember ?pastMember;" +
-					"dbpedia:currentMembers ?currentMember;" +
+					"dbpedia:currentMembers ?currentMembers;" +
 					"dbpedia:pastMembers ?pastMembers" ;
 
 
@@ -152,8 +152,8 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"OPTIONAL{?artist dbont:birthDate ?birth} ." +
 					"OPTIONAL{?artist dbont:deathDate ?death} ." +
 					"OPTIONAL{?artist foaf:page ?wikipedia}. "+
-					"OPTIONAL {{{?currentMember dbpedia:currentMembers ?artist} UNION {?artist dbpedia:currentMembers ?currentMembers}} UNION"+
-					"{ {?pastMember dbpedia:pastMembers ?artist} UNION {?artist dbpedia:pastMembers ?pastMembers}}}" +
+					"OPTIONAL {{{?currentMembers dbpedia:currentMembers ?artist} UNION {?artist dbpedia:currentMembers ?currentMember}} UNION"+
+					"{ {?pastMembers dbpedia:pastMembers ?artist} UNION {?artist dbpedia:pastMembers ?pastMember}}}" +
 					"}";
 			qep.setQuery(prefix + constructStr + whereStr);
 			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
