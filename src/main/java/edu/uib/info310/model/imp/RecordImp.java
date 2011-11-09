@@ -17,6 +17,7 @@ public class RecordImp implements Record{
 	private List<Artist> artist;
 	private List<Record> relatedRecord;
 	private String itunesLink;
+	private String playTime;
 
 	
 	
@@ -97,6 +98,15 @@ public class RecordImp implements Record{
 	
 	public void setItunesLink(String itunesLink) {
 		this.itunesLink = itunesLink;
+	}
+
+	public void setPlaytime(String time) {
+		this.playTime = time;
+	}
+
+	
+	public String getPlaytime() {
+		return this.playTime;
 	}
 
 }

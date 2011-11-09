@@ -67,4 +67,8 @@ public class MockRecord implements Record {
 		return records;
 	}
 
+	public String getPlaytime() {
+		return "73 min";
+	}
+
 }
