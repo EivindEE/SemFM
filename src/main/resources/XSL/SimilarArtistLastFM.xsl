@@ -39,8 +39,8 @@
 					<foaf:name>
 						<xsl:value-of select="name" />
 					</foaf:name>
-					<mo:image rdf:resource="{image[@size='extralarge']}" />
-					<mo:musicbrainz_guid rdf:resource="{mbid}" />
+					<mo:image rdf:resource="{image[@size='large']}" />
+<!-- 					<mo:musicbrainz_guid rdf:resource="{mbid}" /> -->
 				</rdf:Description>
 			</xsl:for-each>
 
