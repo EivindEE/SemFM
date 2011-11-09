@@ -19,15 +19,6 @@ public class MockRecord implements Record {
 	public String getImage() {
 		return "http://images.uulyrics.com/cover/r/rihanna/album-music-of-the-sun.jpg";
 	}
-
-	public String getYear() {
-		return "2005";
-	}
-
-	public String getLabel() {
-		
-		return "Def Jam Recordings";
-	}
 	
 	public List<Track> getTracks(){
 		List<Track> tracks = new LinkedList<Track>();
@@ -67,10 +58,6 @@ public class MockRecord implements Record {
 		return records;
 	}
 
-	public String getPlaytime() {
-		return "73 min";
-	}
-
 	public List<String> getReviews() {
 		LinkedList<String> reviews = new LinkedList<String>();
 		reviews.add("A review is an evaluation of a publication, a product or a service, such as a movie (a movie review), video game, musical composition (music review of a composition or recording), book (book review); a piece of hardware like a car, home appliance, or computer; or an event or performance, such as a live music concert, a play, musical theater show or dance show. In addition to a critical evaluation, the review's author may assign the work a rating to indicate its relative merit. More loosely, an author may review current events, trends, or items in the news. A compilation of reviews may itself be called a review. The New York Review of Books, for instance, is a collection of essays on literature, culture, and current affairs. National Review, founded by William F. Buckley, Jr., is an influential conservative magazine, and Monthly Review is a long-running socialist periodical.");
@@ -100,6 +87,10 @@ public class MockRecord implements Record {
 
 	public String getItunesPreview() {
 		return "http://a1099.itunes.apple.com/r10/Music/f9/54/43/mzi.gqvqlvcq.aac.p.m4p";
+	}
+
+	public String getYear() {
+		return "2008";
 	}
 
 }
