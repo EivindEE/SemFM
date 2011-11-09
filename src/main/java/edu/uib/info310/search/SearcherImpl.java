@@ -180,22 +180,22 @@ public class SearcherImpl implements Searcher {
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dbont: <http://dbpedia.org/ontology/> " +
 				"SELECT DISTINCT * WHERE {" +
-				"OPTIONAL { ?bbcartist mo:fanpage ?fanpage.} " +
-				"OPTIONAL { ?bbcartist mo:imdb ?imdb. } " +
-				"OPTIONAL { ?bbcartist mo:myspace ?myspace. } " +
-				"OPTIONAL { ?bbcartist foaf:homepage ?homepage. } " +
-				"OPTIONAL { ?bbcartist rdfs:comment ?shortDesc. Filter (lang(?shortDesc) = '').}  " +
-				"OPTIONAL { ?image foaf:name ?name; mo:image ?image}" +
-				"OPTIONAL { ?dbartist dbpedia:shortDescription ?shortDescEn .}  " +
-				"OPTIONAL { ?dbartist dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} " +
-				"OPTIONAL { ?dbartist dbont:abstract ?bio. Filter (lang(?bio) = 'en').} " +
-				"OPTIONAL { ?dbartist dbont:birthname ?birthname} " +
-				"OPTIONAL { ?dbartist dbont:hometown ?origin. } " +
-				"OPTIONAL { ?dbartist dbpedia:origin ?origin. } " +
-				"OPTIONAL { ?dbartist dbpedia:yearsActive ?yearsactive. } " +
-				"OPTIONAL { ?dbartist  dbpedia:dateOfBirth ?birthdate. } " +
-				"OPTIONAL { ?dbartist foaf:name ?name; foaf:page ?wikipedia. } " +
-				"OPTIONAL { ?bbcartist foaf:name ?name; foaf:page ?bbcpage. }}";
+				"OPTIONAL { ?artist mo:fanpage ?fanpage.} " +
+				"OPTIONAL { ?artist mo:imdb ?imdb. } " +
+				"OPTIONAL { ?artist mo:myspace ?myspace. } " +
+				"OPTIONAL { ?artist mo:homepage ?homepage. } " +
+				"OPTIONAL { ?artist rdfs:comment ?shortDesc.}  " +
+				"OPTIONAL { ?artist mo:image ?image}" +
+				"OPTIONAL { ?artist mo:biography ?bio. } " +
+				"OPTIONAL { ?artist dbont:birthname ?birthname} " +
+				"OPTIONAL { ?artist dbont:hometown ?hometown. } " +
+				"OPTIONAL { ?artist mo:origin ?origin. } " +
+				"OPTIONAL { ?artist mo:activity_start ?start. } " +
+				"OPTIONAL { ?artist mo:activity_end ?end. } " +
+				"OPTIONAL { ?artist dbont:birthDate ?birthdate. } " +
+				"OPTIONAL { ?artist dbont:deathDate ?deathdate. } " +
+				"OPTIONAL { ?artist mo:wikipedia ?wikipedia. } " +
+				"OPTIONAL { ?artist foaf:page ?bbcpage. }}";
 
 		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
 		ResultSet results = ex.execSelect();
@@ -246,23 +246,37 @@ public class SearcherImpl implements Searcher {
 
 			if(query.get("shortDesc") != null) {
 				artist.setShortDescription(query.get("shortDesc").toString());
-			}else{
-				if(query.get("shortDescEn") != null){
-					artist.setShortDescription(query.get("shortDescEn").toString());
-				}
 			}
 
 			if(query.get("birthname") != null) {
 				metaMap.put("Name", (query.get("birthname").toString()));
 			}
+			
+			if(query.get("birthdate") != null) {
+				metaMap.put("Born", (query.get("birthdate").toString()));
+			}
+			
+			if(query.get("deathdate") != null) {
+				metaMap.put("Died", (query.get("deathdate").toString()));
+			}
+			
 
 			if(query.get("origin") != null) {
 				metaMap.put("From", (query.get("origin").toString()));
 			}
 
-			if(query.get("yearsactive") != null) {
-				metaMap.put("Active", (query.get("yearsactive").toString()));
+			if(query.get("hometown") != null) {
+				metaMap.put("Living", (query.get("hometown").toString()));
 			}
+			if(query.get("start") != null) {
+				String activityStart = query.get("start").toString();
+				if(query.get("end") != null) {
+					activityStart += "-" + query.get("end").toString();
+					
+				}
+				metaMap.put("Active",activityStart);
+			}
+			
 		}
 
 		if(!fanpages.isEmpty()) {
