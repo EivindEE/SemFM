@@ -11,19 +11,17 @@ public class RecordImp implements Record{
 	private String id;
 	private String name;
 	private String image;
-	private String year;
-	private String label;
 	private String description;
 	private List<Track> track;
 	private List<Artist> artist;
 	private List<Record> relatedRecord;
 	private String itunesLink;
-	private String playTime;
 	private List<String> reviews;
 	private List<String> genres;
 	private String spotifyUri;
 	private Map<String, Object> meta;
 	private String itunesPreview;
+	private String year;
 
 	
 	
@@ -37,14 +35,6 @@ public class RecordImp implements Record{
 
 	public String getImage() {
 		return this.image;
-	}
-
-	public String getYear() {
-		return this.year;
-	}
-
-	public String getLabel() {
-		return this.label;
 	}
 	
 	public String getDescription() {
@@ -78,13 +68,6 @@ public class RecordImp implements Record{
 		this.image = image;
 	}
 
-	public void setYear(String year) {
-		this.year = year;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
 	
 	public void setDescription(String description) {
 		this.description = description;
@@ -106,15 +89,6 @@ public class RecordImp implements Record{
 		this.itunesLink = itunesLink;
 	}
 
-	public void setPlaytime(String time) {
-		this.playTime = time;
-	}
-
-	
-	public String getPlaytime() {
-		return this.playTime;
-	}
-
 	public List<String> getReviews() {
 		return this.reviews;
 	}
@@ -133,14 +107,6 @@ public class RecordImp implements Record{
 
 	public String getItunesPreview() {
 		return this.itunesPreview;
-	}
-
-	public String getPlayTime() {
-		return playTime;
-	}
-
-	public void setPlayTime(String playTime) {
-		this.playTime = playTime;
 	}
 
 	public List<Track> getTrack() {
@@ -169,6 +135,14 @@ public class RecordImp implements Record{
 
 	public void setItunesPreview(String itunesPreview) {
 		this.itunesPreview = itunesPreview;
+	}
+
+	public String getYear() {
+		return this.year;
+	}
+	
+	public void setYear(String year){
+		this.year = year;
 	}
 
 }

@@ -12,6 +12,8 @@ public interface Record {
 	
 	public String getImage();
 	
+	public String getYear();
+	
 	public String getDescription();
 	
 	public String getItunesLink();
