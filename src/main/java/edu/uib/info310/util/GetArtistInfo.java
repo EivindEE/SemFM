@@ -59,12 +59,14 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 		else {
 			QueryEndPoint qep = new QueryEndPointImp();
 			String artist = "<" + artistUri + ">";
-			String constructStr = "CONSTRUCT { "+artist+" 	 mo:fanpage ?fanpage; " +
-					"mo:imdb ?imdb; " +
-					"mo:myspace ?myspace; " +
-					"mo:homepage ?homepage; " +
-					"rdfs:comment ?comment; " +
-					"mo:image ?image" +
+			String constructStr = "CONSTRUCT { "+artist+" 	 " +
+					"mo:fanpage ?fanpage ; " +
+					"mo:imdb ?imdb ; " +
+					"mo:myspace ?myspace ; " +
+					"mo:homepage ?homepage ; " +
+					"rdfs:comment ?comment ; " +
+					"mo:image ?image ;" +
+					"owl:sameAs ?artist" +
 					"} " ;
 			String whereStr =" WHERE {?artist foaf:name \"" + artistName + "\" " + "." +
 					"OPTIONAL{?artist mo:fanpage ?fanpage}" +
@@ -130,7 +132,8 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"mo:activity_end ?end ;" +
 					"dbont:birthDate ?birth ;" +
 					"dbont:deathDate ?death ;" +
-					"mo:wikipedia ?wikipedia ;" ;
+					"mo:wikipedia ?wikipedia ;" +
+					"owl:sameAs ?artist" ;
 
 
 			String whereStr ="} WHERE {?artist foaf:name \"" + artistName + "\"@en ." +
@@ -144,7 +147,6 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"OPTIONAL{?artist dbont:birthDate ?birth} ." +
 					"OPTIONAL{?artist dbont:deathDate ?death} ." +
 					"OPTIONAL{?artist foaf:page ?wikipedia}}";
-			LOGGER.debug("Sent dbpedia query: " + prefix + constructStr + whereStr);
 			qep.setQuery(prefix + constructStr + whereStr);
 			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
 			Model model = qep.describeStatement();
