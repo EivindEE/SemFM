@@ -346,10 +346,10 @@ a {
 .artist_meta li, .album_meta li {
 	padding: 5px;
 }
-	.artist_meta li:nth-child(odd), , .album_meta li:nth-child(odd) {
+	.artist_meta li:nth-child(odd), .album_meta li:nth-child(odd) {
 		background: #eee;
 	}
-	.artist_meta li:last-child, , .album_meta li:last-child {
+	.artist_meta li:last-child, .album_meta li:last-child {
 		border: none;
 	}
 
