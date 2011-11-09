@@ -26,6 +26,7 @@ import com.hp.hpl.jena.vocabulary.DC;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.DC_10;
 import com.hp.hpl.jena.vocabulary.DC_11;
+import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import edu.uib.info310.vocabulary.MO;
@@ -35,9 +36,9 @@ import edu.uib.info310.vocabulary.MO;
 
 public class ITunesSearcher {
 	private static String DEFAULT_URL = "http://itunes.apple.com/search?entity=album&limit=200&term=";
+	
 
-
-	public Model getRecords(String artist){
+	public Model getRecords(String artist, String artistUri){
 		Model model = ModelFactory.createDefaultModel();
 		Resource subject;
 		Property property;
@@ -77,16 +78,16 @@ public class ITunesSearcher {
 					model.add(subject, property, rdfObject);
 
 					property = FOAF.maker;
-					rdfObject = model.createResource(jObject.get("artistViewUrl").toString());
+					rdfObject = model.createResource(artistUri);
 					model.add(subject, property, rdfObject);
 					
-					subject = model.createResource(jObject.get("artistViewUrl").toString());
-					property = FOAF.name;
-					rdfObject = model.createLiteral(jObject.get("artistName").toString());
-					model.add(subject, property, rdfObject);
-
+					subject = model.createResource(artistUri);
 					property = FOAF.made;
 					rdfObject = model.createResource(jObject.get("collectionViewUrl").toString());
+					model.add(subject, property, rdfObject);
+					
+					property = OWL.sameAs;
+					rdfObject = model.createResource(jObject.get("artistViewUrl").toString());
 					model.add(subject, property, rdfObject);
 				}
 			}
@@ -107,9 +108,5 @@ public class ITunesSearcher {
 			model.write(out, "TURTLE");
 		} catch (FileNotFoundException e) {		}
 		return model;
-	}
-	public static void main(String[] args) {
-		ITunesSearcher searcher = new ITunesSearcher();
-		searcher.getRecords("Michael Jackson");
 	}
 }
