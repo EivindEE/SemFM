@@ -92,5 +92,9 @@ public class MockRecord implements Record {
 	public String getYear() {
 		return "2008";
 	}
+	
+	public String getLabel() {
+		return "EMI";
+	}
 
 }

@@ -49,13 +49,15 @@
 		</script>
 	</c:if>
 </head>
-<body onload="initialize()">
+<body onload="initialize()" class="artist">
 
 <jsp:include page="includes/header.jsp" />
 
 <div class="headline_wrapper<c:if test="${! empty artist.locatedEvents}"> tour</c:if>">
 	<div class="headline">
+		<c:if test="${! empty artist.image}">
 		<img src="${artist.image}" alt="" class="search_result_image" />
+		</c:if>
 		<div class="h1-wrapper">
 			<h1>${artist.name}</h1>
 			<span class="h1-description">${artist.shortDescription}</span>
@@ -75,7 +77,7 @@
 		<h2>Meta Facts</h2>
 		<ul>
 			<c:forEach var="metaTidbit" items="${artist.meta}">
-				<li>${metaTidbit.key}: ${metaTidbit.value}</li>
+				<li>${metaTidbit.key}: ${metaTidbit.value.class}</li>
 			</c:forEach>
 		</ul>	
 	</div>
@@ -107,7 +109,7 @@
 		<div class="concert_map">
 			<div id="concert_map"></div>
 		</div>
-		<table class="concert_table full">
+		<table class="concert_table zebra_table full">
 			<tr>
 				<th>Date</th>
 				<th>Location</th>

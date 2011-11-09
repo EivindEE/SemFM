@@ -14,6 +14,8 @@ public interface Record {
 	
 	public String getYear();
 	
+	public String getLabel();
+	
 	public String getDescription();
 	
 	public String getItunesLink();

@@ -9,7 +9,7 @@
 	<link rel="icon" type="image/png" href="http://localhost:8080/SemFM/spring/resources/images/favicon.png" />
 	<link rel="stylesheet" type="text/css" href="http://localhost:8080/SemFM/spring/resources/css/screen.css" />
 </head>
-<body>
+<body class="album">
 <jsp:include page="includes/header.jsp" />
 
 <div class="headline_wrapper">
@@ -17,27 +17,32 @@
 		<img src="${record.image}" alt="" class="search_result_image" />
 		<div class="h1-wrapper">
 			<h1>${record.name}</h1>
-			<span class="h1-description">by <ul><c:forEach var="artist" items="${record.artist}"> <li>${artist.name}</li></c:forEach></ul></span>
+			<span class="h1-description">
+				<ul><c:forEach var="genre" items="${record.genres}"><li>${genre}</li></c:forEach></ul><br />
+				by <ul><c:forEach var="artist" items="${record.artist}"><li>${artist.name}</li></c:forEach></ul><br />
+			</span>
 		</div>
 	</div>
+	<ul class="headline_links">
+		<li><a href="${itunesLink}" class="itunes">iTunes</a></li>
+		<li><a href="${spotifyUri}" class="spotify">Spotify</a></li>
+	</ul>
 </div>
 <div class="full main_wrapper">
 	<div class="album_description left half">
 		<h2>Description</h2>
 		${record.description};
 	</div>
-	<div class="meta right half">
+	<div class="album_meta right half">
 		<h2>Meta Facts</h2>
 		<ul>
 			<li>Artist: ${record.artist}</li>
-			<li>Released: ${record.year}</li>
-			<li>Play time: ${record.playtime}</li>
-			<li>Label: ${record.label}</li>
+
 		</ul>	
 	</div>
 	<div class="tracks full">
 		<h2>Tracks</h2>
-		<table>
+		<table class="zebra_table">
 			<tr>
 				<th>#</th>
 				<th>Song Title</th>
@@ -56,9 +61,11 @@
 	</div>
 	<div class="alternative_releases full">
 		<h2>Alternative Releases</h2>
+		<ul class="related_list">
 		<c:forEach var="related" items="${record.relatedRecords}">
-			<li>${related.image} ${related.name}</li>
+			<li> <a href="" clas="related_name"><img src="${related.image}" alt="" /> ${related.name}</a></li>
 		</c:forEach>
+		</ul>
 	</div>
 </div>
 

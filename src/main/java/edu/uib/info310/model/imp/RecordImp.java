@@ -22,6 +22,7 @@ public class RecordImp implements Record{
 	private Map<String, Object> meta;
 	private String itunesPreview;
 	private String year;
+	private String label;
 
 	
 	
@@ -47,6 +48,10 @@ public class RecordImp implements Record{
 	
 	public List<Artist> getArtist() {
 		return this.artist;
+	}
+	
+	public String getLabel() {
+		return this.itunesLink;
 	}
 	
 	public String getItunesLink() {
@@ -87,6 +92,10 @@ public class RecordImp implements Record{
 	
 	public void setItunesLink(String itunesLink) {
 		this.itunesLink = itunesLink;
+	}
+	
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public List<String> getReviews() {

@@ -48,7 +48,10 @@ table {
 /* --- END CSS RESET --- */
 
 /* CSS by Torstein Thune */
-
+html {
+	box-shadow: inset 0px 0px 20px #ccc;
+	min-height: 100%;
+}
 body {
 	font-family: Arial;
 	color: #333;
@@ -127,6 +130,21 @@ a {
 	width: 480px;
 }
 
+.hidden {
+	display:block;
+}
+#sources, #help {
+	display:none;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	padding: 10px;
+	border-radius: 10px;
+}
+#sources:active, #help:active {
+	display: block;
+}
+
 /* image formating */
 .rounded_image {
 }
@@ -155,45 +173,46 @@ a {
 		margin-bottom: 30px;
 	}
 	.home #search_form {
-		width: 784px !important;
+		width: 785px !important;
 	}
 		.home #search_form input {
-			width: 734px !important;
+			width: 750px !important;
 		}
 	#search_form {
-		display: block;
-		margin: 0 auto;
-		
 		width: 310px;
-		height: 36px;
-		
-		border: 1px solid #999;
-		
-		border-radius: 8px;
-		box-shadow: 0px 0px 10px #ccc;
-		padding:0;
+		margin: 0 auto;
+		position:relative;
 	}
 		#search_form input {
-			border:0;
-			margin-left:0;
-			margin-right: 2px;
-			width: 265px;
-			height: 36px;
-			
-			padding:0;
+			display: inline-block;
+			width: 275px;
 			padding-left: 10px;
+			padding-right: 25px;
+			height: 36px;
+			position: absolute;
+			left:0;
 			
-			color: #666;
+			border: 1px solid #999;
 			
-			background: transparent;
-			font-size: 15px;
+			border-radius: 8px;
+			box-shadow: 0px 0px 10px #ccc;
+			
+			-webkit-transition: all 0.2s ease-in;
+			-moz-transition: all 0.2s ease-in;
+			-o-transition: all 0.2s eas-in;
+			transition: all 0.2s ease-in;
 		}
-			#search_form input:focus {
-				color: #333;
-			}
+		#search_form input:focus {
+			color: #333;
+			box-shadow: 0px 0px 10px #FF0000;
+			outline: none;
+		}
 		#search_form button {
 			text-indent: -10000px;
 			width: 20px;
+			position: absolute;
+			right: 10px;
+			top: 10px;
 			height: 21px;
 			background: url('http://localhost:8080/SemFM/spring/resources/images/search-magnifier.png') top center no-repeat;
 			border:0;
@@ -203,10 +222,10 @@ a {
 				background: url('http://localhost:8080/SemFM/spring/resources/images/search-magnifier.png') center center no-repeat;
 			}
 			#search_form button:active {
-				background: url('http://localhost:8080/SemFM/spring/resources/images/search-magnifier.png') bottom center no-repeat;
+				top: 11px;
 			}
 	
-	.header_meta_links {
+	#header .header_meta_links {
 		position: absolute; 
 		right: 0;
 		bottom: 30px;
@@ -219,9 +238,9 @@ a {
 		.header_meta_links li:first-child {
 			list-style:none;
 		}
-	.home .header_meta_links {
-		position: static;
-		display: inline;
+	.home_meta_link {
+		clear:both;
+		float:right;
 	}
 			
 .main_wrapper {
@@ -245,6 +264,8 @@ a {
 	
 	border-top: 1px solid #666;
 	border-bottom: 1px solid #666;
+	
+	min-height: 100px;
 	
 	padding-top: 30px;
 	padding-bottom: 30px;
@@ -282,7 +303,10 @@ a {
 	.headline {
 		text-align: left;
 		display: inline-block;
+		max-width: 980px;
 		margin: 0 auto;
+		position:relative;
+		text-align:center;
 	}
 	.headline_wrapper h1 {
 		clear:right;
@@ -291,26 +315,41 @@ a {
 		line-height: 1;
 	}
 	.headline_wrapper img {
-		vertical_align: center;
-		float:left;
 		margin-right: 20px;
+		float:left;
 	}
 	.h1-wrapper {
-		margin-top: 45px;
+		text-align:left;
+		float:left;
+		max-width: 410px;
+		margin-top: 40px;
+		margin-bottom: 40px;
 		display: inline-block;
 	}
 	.h1-description {
 		font-size: 20px;
 		color: #fff;
 	}
+		.h1-description ul {
+			display: inline;
+		}
+		.h1-description li {
+			display:inline;
+		}
+		.h1-description li:after {
+			content ", ";
+		}
+		.h1-description li:last-child:after {
+			content: "";
+		}
 
-.artist_meta li {
+.artist_meta li, .album_meta li {
 	padding: 5px;
 }
-	.artist_meta li:nth-child(odd) {
+	.artist_meta li:nth-child(odd), .album_meta li:nth-child(odd) {
 		background: #eee;
 	}
-	.artist_meta li:last-child {
+	.artist_meta li:last-child, .album_meta li:last-child {
 		border: none;
 	}
 
@@ -325,46 +364,46 @@ a {
 		width: 100%;
 		height: 100%;
 	}
-.concert_table {
+.zebra_table {
 	width:960px;
 	margin:0 auto;
 }
 	/* table header */
-	.concert_table tr:first-child {
+	.zebra_table tr:first-child {
 		border: 0 !important;
 	}
-	.concert_table th {
+	.zebra_table th {
 		font-size: 16px;
 		color: #DD0000;
 		text-align:left;
 	}
 	
 	/* rest of table */
-	.concert_table tr:nth-child(even) {
+	.zebra_table tr:nth-child(even) {
 		background: #eee;
 		border-left: 1px solid #ccc;
 		border-right: 1px solid #ccc;
 	}
-	.concert_table tr:nth-child(odd) {
+	.zebra_table tr:nth-child(odd) {
 		background: #fff;
 		border-left: 1px solid #ccc;
 		border-right: 1px solid #ccc;
 	}
-	.concert_table tr:nth-child(2) {
+	.zebra_table tr:nth-child(2) {
 		border: 1px solid #ccc;
 		border-bottom: 0;
 		border-left-top-radius: 10px;
 		border-top-right-radius: 10px;
 	}
 	
-	.concert_table tr:last-child {
+	.zebra_table tr:last-child {
 		border: 1px solid #ccc;
 		border-top: 0;
 		border-bottom-left-radius: 10px;
 		border-bottom-right-radius: 10px;
 	}
 	
-	.concert_table td, .concert_table th {
+	.zebra_table td, .zebra_table th {
 		padding: 10px;
 	}
 
@@ -518,19 +557,19 @@ a {
 	.related_artists {
 		
 	}
-	.artist_list {
+	.artist_list, .related_list {
 		background: #eee;
 		width: 980px;
-		height: 463px;
+		height: 450px;
 		overflow:auto;
 		border: 1px solid #ccc;
 		border-radius: 10px;
 	}
-		.artist_list li {
+		.artist_list li, .related_list li {
 			display:inline-block;
 			
 		}
-		.artist_list li a {
+		.artist_list li a, .related_list li a {
 			display: block;
 			
 			background: #fff;
@@ -541,15 +580,15 @@ a {
 			
 			border-radius: 10px;
 		}
-			.artist_list li a:hover {
+			.artist_list li a:hover, .related_list li a:hover {
 				background: #0099FF;
 				color: #fff;
 			}
-		.artist_list li img {
+		.artist_list li img, .related_list li img {
 			width: 210px;
 			height: 168px;
 		}
-		.artist_list li .artist_name {
+		.artist_list li .artist_name, .related_list li .related_name {
 			font-size: 16px;
 		}
 		.artist_list li a .artist_short_desc {

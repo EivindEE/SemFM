@@ -30,28 +30,6 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 	 * Returns a model with data from BBC_MUSIC SPARQL search
 	 * @returns a Model
 	 */
-	public static Model BBCMusic(String artistName) throws Exception{
-		if(artistName.isEmpty()){
-			throw new NullPointerException("artistName cannot be empty string in GetArtistInfo.DbPediaArtistInfo");
-		}
-		else {
-			QueryEndPoint qep = new QueryEndPointImp();
-
-			String constructStr = "CONSTRUCT {} WHERE {}";
-
-			String queryStr = "DESCRIBE ?artist WHERE { " +
-					"?artist foaf:name \""+ artistName + "\". " +
-					" }";
-			qep.setQuery(prefix + queryStr);
-			qep.setEndPoint(QueryEndPoint.BBC_MUSIC);
-			Model model = qep.describeStatement();
-			LOGGER.debug("BBC search found " + model.size() + " statements" );
-			//			FileOutputStream out = new FileOutputStream(new File("log/bbcout.ttl"));
-			//			model.write(out, "TURTLE");
-			return model;
-		}
-	}
-
 	public static Model BBCMusic(String artistName, String artistUri) throws Exception{
 		if(artistName.isEmpty()){
 			throw new NullPointerException("artistName cannot be empty string in GetArtistInfo.DbPediaArtistInfo");
@@ -91,28 +69,6 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 	 * Returns a model with data from DB_PEDIA SPARQL search
 	 * @returns a Model
 	 */
-	public static Model DBPedia(String artistName) throws Exception{
-		if(artistName.isEmpty()){
-			throw new NullPointerException("artistName cannot be empty string in GetArtistInfo.DbPediaArtistInfo");
-		}
-		else {
-			QueryEndPoint qep = new QueryEndPointImp();
-
-			//			Fanger ikke opp Michael Jacksom siden han er oppført med foaf:name Michael Joseph Jackson
-
-			String queryStr = "DESCRIBE ?artist WHERE { " +
-					"?artist foaf:name \""+ artistName + "\"@en. " +
-					" }";
-			qep.setQuery(prefix + queryStr);
-			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
-			Model model = qep.describeStatement();
-			LOGGER.debug("DBPedia search found " + model.size() + " statements" );
-			//			FileOutputStream out = new FileOutputStream(new File("log/dbpediaout.ttl"));
-			//			model.write(out, "TURTLE");
-			return model;
-		}				
-	}
-
 	public static Model DBPedia(String artistName, String artistUri) throws Exception{
 		if(artistName.isEmpty()){
 			throw new NullPointerException("artistName cannot be empty string in GetArtistInfo.DbPediaArtistInfo");
@@ -133,7 +89,11 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"dbont:birthDate ?birth ;" +
 					"dbont:deathDate ?death ;" +
 					"mo:wikipedia ?wikipedia ;" +
-					"owl:sameAs ?artist" ;
+					"owl:sameAs ?artist;" +
+					"dbont:bandMember ?currentMember;" +
+					"dbont:formerBandMember ?pastMember;" +
+					"dbpedia:currentMembers ?currentMembers;" +
+					"dbpedia:pastMembers ?pastMembers" ;
 
 
 			String whereStr ="} WHERE {?artist foaf:name \"" + artistName + "\"@en." +
@@ -147,7 +107,9 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"OPTIONAL{?artist dbont:activeYearsStartYear ?start} ." +
 					"OPTIONAL{?artist dbont:birthDate ?birth} ." +
 					"OPTIONAL{?artist dbont:deathDate ?death} ." +
-					"OPTIONAL{?artist foaf:page ?wikipedia}" +
+					"OPTIONAL{?artist foaf:page ?wikipedia}. "+
+					"OPTIONAL {{{?currentMembers dbpedia:currentMembers ?artist} UNION {?artist dbpedia:currentMembers ?currentMember}} UNION"+
+					"{ {?pastMembers dbpedia:pastMembers ?artist} UNION {?artist dbpedia:pastMembers ?pastMember}}}" +
 					"}";
 			qep.setQuery(prefix + constructStr + whereStr);
 			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
@@ -160,8 +122,6 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 	public static void main(String[] args) throws Exception{
 		LOGGER.debug("started query");
 		Model test = ModelFactory.createDefaultModel();
-		test.add(BBCMusic("Moby"));
-		test.add(DBPedia("Moby"));
 		LOGGER.debug("ended query");
 
 		FileOutputStream out = new FileOutputStream(new File("log/getartistinfoout.ttl"));
