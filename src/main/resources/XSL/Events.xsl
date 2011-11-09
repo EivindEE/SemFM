@@ -17,11 +17,20 @@
 						<xsl:value-of select="title" />
 					</rdfs:label>
 					<xsl:for-each select="artists/artist">
-						<foaf:hasAgent rdf:resource="http://www.last.fm/music/{.}"/>
+						<xsl:variable name="artistSafe">
+							<xsl:value-of select="." />
+						</xsl:variable>
+
+						<xsl:variable name="artistSafe2" select="translate($artistSafe,' ','+')" />
+
+						<foaf:hasAgent
+							rdf:resource="http://www.last.fm/music/{translate($artistSafe2,'&#38;','&#38;amp;')}" />
 					</xsl:for-each>
 
-					<event:place rdf:resource="http://www.last.fm/venue/{venue/id}"/>
-					<event:time><xsl:value-of select="startDate" /></event:time>
+					<event:place rdf:resource="http://www.last.fm/venue/{venue/id}" />
+					<event:time>
+						<xsl:value-of select="startDate" />
+					</event:time>
 				</rdf:Description>
 			</xsl:for-each>
 			<xsl:for-each select="events/event/venue">
@@ -37,39 +46,47 @@
 						<xsl:value-of select="location/geo:point/geo:long" />
 					</geo:long>
 
-					<v:country-name>
-						<xsl:value-of select="location/country" />
-					</v:country-name>
+<!-- 					<v:country-name> -->
+<!-- 						<xsl:value-of select="location/country" /> -->
+<!-- 					</v:country-name> -->
 
 					<v:locality>
 						<xsl:value-of select="location/city" />
 					</v:locality>
 
-					<v:postal-code>
-						<xsl:value-of select="location/postalcode" />
-					</v:postal-code>
+<!-- 					<v:postal-code> -->
+<!-- 						<xsl:value-of select="location/postalcode" /> -->
+<!-- 					</v:postal-code> -->
 
-					<v:street-address>
-						<xsl:value-of select="location/street" />
-					</v:street-address>
+<!-- 					<v:street-address> -->
+<!-- 						<xsl:value-of select="location/street" /> -->
+<!-- 					</v:street-address> -->
 
-					<foaf:image>
-						<xsl:value-of select="image[@size='extralarge']" />
-					</foaf:image>
+<!-- 					<foaf:image> -->
+<!-- 						<xsl:value-of select="image[@size='extralarge']" /> -->
+<!-- 					</foaf:image> -->
 
-					<v:telephone>
-						<xsl:value-of select="phonenumber" />
-					</v:telephone>
+<!-- 					<v:telephone> -->
+<!-- 						<xsl:value-of select="phonenumber" /> -->
+<!-- 					</v:telephone> -->
 
-					<foaf:homepage>
-						<xsl:value-of select="website" />
-					</foaf:homepage>
+<!-- 					<foaf:homepage> -->
+<!-- 						<xsl:value-of select="website" /> -->
+<!-- 					</foaf:homepage> -->
 
 
 				</rdf:Description>
 			</xsl:for-each>
 			<xsl:for-each select="events/event/artists/artist">
-				<rdf:Description rdf:about="http://www.last.fm/music/{.}">
+				<xsl:variable name="artistSafe">
+					<xsl:value-of select="." />
+				</xsl:variable>
+
+				<xsl:variable name="artistSafe2" select="translate($artistSafe,' ','+')" />
+
+				<rdf:Description
+					rdf:about="http://www.last.fm/music/{translate($artistSafe2,'&#38;','&#38;amp;')}">
+					<!-- <rdf:Description rdf:about="http://www.last.fm/music/{.}"> -->
 					<foaf:name>
 						<xsl:value-of select="." />
 					</foaf:name>

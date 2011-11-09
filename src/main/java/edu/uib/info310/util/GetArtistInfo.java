@@ -24,7 +24,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 			"PREFIX dbpedia: <http://dbpedia.org/property/>" +
 			"PREFIX dbont: <http://dbpedia.org/ontology/>" +
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-			"PREFIX owl: <http://www.w3.org/2002/07/owl#>";
+			"PREFIX owl: <http://www.w3.org/2002/07/owl#> ";
 
 	/**
 	 * Returns a model with data from BBC_MUSIC SPARQL search
@@ -36,7 +36,9 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 		}
 		else {
 			QueryEndPoint qep = new QueryEndPointImp();
-			
+
+			String constructStr = "CONSTRUCT {} WHERE {}";
+
 			String queryStr = "DESCRIBE ?artist WHERE { " +
 					"?artist foaf:name \""+ artistName + "\". " +
 					" }";
@@ -44,12 +46,47 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 			qep.setEndPoint(QueryEndPoint.BBC_MUSIC);
 			Model model = qep.describeStatement();
 			LOGGER.debug("BBC search found " + model.size() + " statements" );
-//			FileOutputStream out = new FileOutputStream(new File("log/bbcout.ttl"));
-//			model.write(out, "TURTLE");
+			//			FileOutputStream out = new FileOutputStream(new File("log/bbcout.ttl"));
+			//			model.write(out, "TURTLE");
 			return model;
 		}
 	}
-	
+
+	public static Model BBCMusic(String artistName, String artistUri) throws Exception{
+		if(artistName.isEmpty()){
+			throw new NullPointerException("artistName cannot be empty string in GetArtistInfo.DbPediaArtistInfo");
+		}
+		else {
+			QueryEndPoint qep = new QueryEndPointImp();
+			String artist = "<" + artistUri + ">";
+			String constructStr = "CONSTRUCT { "+artist+" 	 " +
+					"mo:fanpage ?fanpage ; " +
+					"mo:imdb ?imdb ; " +
+					"mo:myspace ?myspace ; " +
+					"mo:homepage ?homepage ; " +
+					"rdfs:comment ?comment ; " +
+					"mo:image ?image ;" +
+					"owl:sameAs ?artist" +
+					"} " ;
+			String whereStr =" WHERE {?artist foaf:name \"" + artistName + "\" " + "." +
+					"OPTIONAL{?artist mo:fanpage ?fanpage}" +
+					"OPTIONAL{?artist mo:imdb ?imdb}" +
+					"OPTIONAL{?artist mo:myspace ?myspace}" +
+					"OPTIONAL{?artist foaf:homepage ?homepage}" +
+					"OPTIONAL{?artist rdfs:comment ?comment. FILTER (lang(?comment) = '')}" +
+					"OPTIONAL{?artist mo:image ?image}}";
+
+			LOGGER.debug("Sending Query: " + prefix + constructStr + whereStr );
+			qep.setQuery(prefix + constructStr + whereStr);
+			qep.setEndPoint(QueryEndPoint.BBC_MUSIC);
+			Model model = qep.describeStatement();
+			LOGGER.debug("BBC with URI search found " + model.size() + " statements" );
+			FileOutputStream out = new FileOutputStream(new File("log/bbcout.ttl"));
+			model.write(out, "TURTLE");
+			return model;
+		}
+	}
+
 	/**
 	 * Returns a model with data from DB_PEDIA SPARQL search
 	 * @returns a Model
@@ -60,9 +97,9 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 		}
 		else {
 			QueryEndPoint qep = new QueryEndPointImp();
-			
-//			Fanger ikke opp Michael Jacksom siden han er oppført med foaf:name Michael Joseph Jackson
-			
+
+			//			Fanger ikke opp Michael Jacksom siden han er oppført med foaf:name Michael Joseph Jackson
+
 			String queryStr = "DESCRIBE ?artist WHERE { " +
 					"?artist foaf:name \""+ artistName + "\"@en. " +
 					" }";
@@ -70,8 +107,50 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
 			Model model = qep.describeStatement();
 			LOGGER.debug("DBPedia search found " + model.size() + " statements" );
-//			FileOutputStream out = new FileOutputStream(new File("log/dbpediaout.ttl"));
-//			model.write(out, "TURTLE");
+			//			FileOutputStream out = new FileOutputStream(new File("log/dbpediaout.ttl"));
+			//			model.write(out, "TURTLE");
+			return model;
+		}				
+	}
+
+	public static Model DBPedia(String artistName, String artistUri) throws Exception{
+		if(artistName.isEmpty()){
+			throw new NullPointerException("artistName cannot be empty string in GetArtistInfo.DbPediaArtistInfo");
+		}
+		else {
+			QueryEndPoint qep = new QueryEndPointImp();
+
+			//			Fanger ikke opp Michael Jacksom siden han er oppført med foaf:name Michael Joseph Jackson
+			String artist = "<" + artistUri + ">";
+			String constructStr = "CONSTRUCT { "+artist +" " +
+					"rdfs:comment ?comment ; " +
+					"mo:biography ?bio ; " +
+					"dbont:birthname ?birthname ; " +
+					"dbont:hometown ?hometown ; " +
+					"mo:origin ?origin ; " +
+					"mo:activity_start ?start; " +
+					"mo:activity_end ?end ;" +
+					"dbont:birthDate ?birth ;" +
+					"dbont:deathDate ?death ;" +
+					"mo:wikipedia ?wikipedia ;" +
+					"owl:sameAs ?artist" ;
+
+
+			String whereStr ="} WHERE {?artist foaf:name \"" + artistName + "\"@en ." +
+					"OPTIONAL{?artist dbpedia:shortDescription ?comment} . " +
+					"OPTIONAL{?artist dbont:abstract ?bio} . " +
+					"OPTIONAL{?artist dbont:birthname ?birthname} ." +
+					"OPTIONAL{?artist dbont:hometown ?hometown} ." +
+					"OPTIONAL{?artist dbpedia:origin ?origin} ." +
+					"OPTIONAL{?artist dbont:activeYearsEndYear ?end} ." +
+					"OPTIONAL{?artist dbont:activeYearsStartYear ?start} ." +
+					"OPTIONAL{?artist dbont:birthDate ?birth} ." +
+					"OPTIONAL{?artist dbont:deathDate ?death} ." +
+					"OPTIONAL{?artist foaf:page ?wikipedia}}";
+			qep.setQuery(prefix + constructStr + whereStr);
+			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
+			Model model = qep.describeStatement();
+			LOGGER.debug("DBPedia search found " + model.size() + " statements" );
 			return model;
 		}				
 	}
