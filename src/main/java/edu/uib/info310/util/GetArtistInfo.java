@@ -136,8 +136,8 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"owl:sameAs ?artist" ;
 
 
-			String whereStr ="} WHERE {?artist foaf:name \"" + artistName + "\"@en;" +
-					"dbpedia-owl:artist ?something. " +
+			String whereStr ="} WHERE {?artist foaf:name \"" + artistName + "\"@en." +
+					"{?artist rdf:type dbont:Artist.} UNION {?artist rdf:type dbont:Band.}. " +
 					"OPTIONAL{?artist dbpedia:shortDescription ?comment} . " +
 					"OPTIONAL{?artist dbont:abstract ?bio . FILTER(lang(?bio) = 'en')} . " +
 					"OPTIONAL{?artist dbont:birthname ?birthname} ." +
