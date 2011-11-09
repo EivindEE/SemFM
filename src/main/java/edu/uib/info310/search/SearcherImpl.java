@@ -180,12 +180,12 @@ public class SearcherImpl implements Searcher {
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dbont: <http://dbpedia.org/ontology/> " +
 				"SELECT DISTINCT * WHERE {" +
-				"OPTIONAL { ?bbcartist foaf:name ?name; mo:fanpage ?fanpage.} " +
+				"OPTIONAL { ?bbcartist mo:fanpage ?fanpage.} " +
 				"OPTIONAL { ?bbcartist mo:imdb ?imdb. } " +
 				"OPTIONAL { ?bbcartist mo:myspace ?myspace. } " +
 				"OPTIONAL { ?bbcartist foaf:homepage ?homepage. } " +
 				"OPTIONAL { ?bbcartist rdfs:comment ?shortDesc. Filter (lang(?shortDesc) = '').}  " +
-				"OPTIONAL { ?bbcartist foaf:name ?name; mo:image ?image}" +
+				"OPTIONAL { ?image foaf:name ?name; mo:image ?image}" +
 				"OPTIONAL { ?dbartist dbpedia:shortDescription ?shortDescEn .}  " +
 				"OPTIONAL { ?dbartist dbpedia:abstract ?bio. Filter (lang(?bio) = 'en').} " +
 				"OPTIONAL { ?dbartist dbont:abstract ?bio. Filter (lang(?bio) = 'en').} " +
