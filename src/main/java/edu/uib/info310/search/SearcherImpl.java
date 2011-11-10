@@ -192,10 +192,10 @@ public class SearcherImpl implements Searcher {
 				"OPTIONAL { "+ id +" dbont:deathDate ?deathdate. } " +
 				"OPTIONAL { "+ id +" mo:wikipedia ?wikipedia. } " +
 				"OPTIONAL { "+ id +" foaf:page ?bbcpage. }" +
-				"OPTIONAL { "+ id +" dbont:bandMember ?memberOf. }" +
-				"OPTIONAL { "+ id +" dbont:formerBandMember ?pastMemberOf. }" +
-				"OPTIONAL { "+ id +" dbpedia:currentMembers ?currentMembers. }" +
-				"OPTIONAL { "+ id +" dbpedia:pastMembers ?pastMembers. }}" ;
+				"OPTIONAL { "+ id +" dbont:bandMember ?memberOf. ?memberOf rdfs:label ?name1 }" +
+				"OPTIONAL { "+ id +" dbont:formerBandMember ?pastMemberOf. ?pastMemberOf rdfs:label ?name2 }" +
+				"OPTIONAL { "+ id +" dbpedia:currentMembers ?currentMembers. ?currentMembers rdfs:label ?name3 }" +
+				"OPTIONAL { "+ id +" dbpedia:pastMembers ?pastMembers. ?pastMembers rdfs:label ?name4 }}" ;
 
 		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
 		ResultSet results = ex.execSelect();
@@ -213,35 +213,35 @@ public class SearcherImpl implements Searcher {
 				artist.setImage(query.get("image").toString());
 			}
 			if(query.get("fanpage") != null){
-				String fanpage = "<a href=\"" + query.get("fanpage").toString() + "\">" + query.get("fanpage").toString() + "</a>";
+				String fanpage = "<a href=\"" + query.get("fanpage").toString().replace("@en", "") + "\">" + query.get("fanpage").toString().replace("@en", "") + "</a>";
 
 				if(!fanpages.contains(fanpage)) {
 					fanpages.add(fanpage);
 				}
 			}
 			if(query.get("memberOf") != null){
-				String memberOf = "<a href=\"" + query.get("memberOf").toString() + "\">" + query.get("memberOf").toString() + "</a>";
+				String memberOf = "<a href=\"" + query.get("name1").toString().replace("@en", "") + "\">" + query.get("name1").toString().replace("@en", "") + "</a>";
 
 				if(!bands.contains(memberOf)) {
 					bands.add(memberOf);
 				}
 			}
 			if(query.get("pastMemberOf") != null){
-				String pastMemberOf = "<a href=\"" + query.get("pastMemberOf").toString() + "\">" + query.get("pastMemberOf").toString() + "</a>";
+				String pastMemberOf = "<a href=\"" + query.get("name2").toString().replace("@en", "") + "\">" + query.get("name2").toString().replace("@en", "") + "</a>";
 
 				if(!formerBands.contains(pastMemberOf)) {
 					formerBands.add(pastMemberOf);
 				}
 			}
 			if(query.get("currentMembers") != null){
-				String currentMember = "<a href=\"" + query.get("currentMembers").toString() + "\">" + query.get("currentMembers").toString() + "</a>";
+				String currentMember = "<a href=\"" + query.get("name3").toString().replace("@en", "") + "\">" + query.get("name3").toString().replace("@en", "") + "</a>";
 
 				if(!currentMembers.contains(currentMember)) {
 					currentMembers.add(currentMember);
 				}
 			}
 			if(query.get("pastMembers") != null){
-				String pastMember = "<a href=\"" + query.get("pastMembers").toString() + "\">" + query.get("pastMembers").toString() + "</a>";
+				String pastMember = "<a href=\"" + query.get("name4").toString().replace("@en", "") + "\">" + query.get("name4").toString().replace("@en", "") + "</a>";
 
 				if(!pastMembers.contains(pastMember)) {
 					pastMembers.add(pastMember);
@@ -315,16 +315,16 @@ public class SearcherImpl implements Searcher {
 			metaMap.put("Fanpages", fanpages.toString());
 		}
 		if(!bands.isEmpty()) {
-			metaMap.put("Bandmember", bands);
+			metaMap.put("Bandmembers", bands);
 		}
 		if(!formerBands.isEmpty()) {
-			metaMap.put("Former bandmember", formerBands);
+			metaMap.put("Former bandmembers", formerBands);
 		}
 		if(!currentMembers.isEmpty()) {
-			metaMap.put("Current Members", currentMembers);
+			metaMap.put("Member of", currentMembers);
 		}
 		if(!pastMembers.isEmpty()) {
-			metaMap.put("Past Members", pastMembers);
+			metaMap.put("Past member of", pastMembers);
 		}
 		artist.setMeta(metaMap);
 		LOGGER.debug("Found " + artist.getMeta().size() + " fun facts.");

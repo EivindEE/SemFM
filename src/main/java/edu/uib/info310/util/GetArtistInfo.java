@@ -85,7 +85,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"dbont:hometown ?hometown ; " +
 					"mo:origin ?origin ; " +
 					"mo:activity_start ?start; " +
-					"mo:activity_end ?end ;" +
+					"mo:activity_end ?end ;" +	
 					"dbont:birthDate ?birth ;" +
 					"dbont:deathDate ?death ;" +
 					"mo:wikipedia ?wikipedia ;" +
@@ -93,7 +93,11 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"dbont:bandMember ?currentMember;" +
 					"dbont:formerBandMember ?pastMember;" +
 					"dbpedia:currentMembers ?currentMembers;" +
-					"dbpedia:pastMembers ?pastMembers" ;
+					"dbpedia:pastMembers ?pastMembers." +
+					"?currentMember rdfs:label ?name1." +
+					"?pastMember rdfs:label ?name2." +
+					"?currentMembers rdfs:label ?name3." +
+					"?pastMembers rdfs:label ?name4.";
 
 
 			String whereStr ="} WHERE { {?artist foaf:name \"" + artistName + "\"@en.} UNION {?artist rdfs:label \"" + artistName + "\"@it} . " +
@@ -108,8 +112,8 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"OPTIONAL{?artist dbont:birthDate ?birth} ." +
 					"OPTIONAL{?artist dbont:deathDate ?death} ." +
 					"OPTIONAL{?artist foaf:page ?wikipedia}. "+
-					"OPTIONAL {{{?currentMembers dbpedia:currentMembers ?artist} UNION {?artist dbpedia:currentMembers ?currentMember}} UNION"+
-					"{ {?pastMembers dbpedia:pastMembers ?artist} UNION {?artist dbpedia:pastMembers ?pastMember}}}" +
+					"OPTIONAL {{{?currentMembers dbpedia:currentMembers ?artist. ?currentMembers rdfs:label ?name3. FILTER(lang(?name3) = 'en') } UNION {?artist dbont:bandMember ?currentMember. ?currentMember rdfs:label ?name1. FILTER(lang(?name1) = 'en')}} UNION"+
+					"{ {?pastMembers dbpedia:pastMembers ?artist. ?pastMembers rdfs:label ?name4. FILTER(lang(?name4) = 'en')} UNION {?artist dbont:formerBandMember ?pastMember. ?pastMember rdfs:label ?name2. FILTER(lang(?name2) = 'en')}}}" +
 					"}";
 			qep.setQuery(prefix + constructStr + whereStr);
 			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
