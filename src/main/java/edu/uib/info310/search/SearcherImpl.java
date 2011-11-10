@@ -61,7 +61,7 @@ public class SearcherImpl implements Searcher {
 			this.artist.setId(solution.get("id").toString());
 			this.artist.setName(solution.get("name").toString());
 		}
-		LOGGER.debug("Artist id set to " + this.artist.getId());
+		LOGGER.debug("Artist id set to: " + this.artist.getId() + ", Artist name set to: " + this.artist.getName());
 
 	}
 
@@ -176,26 +176,26 @@ public class SearcherImpl implements Searcher {
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dbont: <http://dbpedia.org/ontology/> " +
 				"SELECT DISTINCT * WHERE {" +
-				"OPTIONAL { ?artist mo:fanpage ?fanpage.} " +
-				"OPTIONAL { ?artist mo:imdb ?imdb. } " +
-				"OPTIONAL { ?artist mo:myspace ?myspace. } " +
-				"OPTIONAL { ?artist mo:homepage ?homepage. } " +
-				"OPTIONAL { ?artist rdfs:comment ?shortDesc.}  " +
-				"OPTIONAL { ?artist mo:image ?image}" +
-				"OPTIONAL { ?artist mo:biography ?bio. } " +
-				"OPTIONAL { ?artist dbont:birthname ?birthname} " +
-				"OPTIONAL { ?artist dbont:hometown ?hometown. } " +
-				"OPTIONAL { ?artist mo:origin ?origin. } " +
-				"OPTIONAL { ?artist mo:activity_start ?start. } " +
-				"OPTIONAL { ?artist mo:activity_end ?end. } " +
-				"OPTIONAL { ?artist dbont:birthDate ?birthdate. } " +
-				"OPTIONAL { ?artist dbont:deathDate ?deathdate. } " +
-				"OPTIONAL { ?artist mo:wikipedia ?wikipedia. } " +
-				"OPTIONAL { ?artist foaf:page ?bbcpage. }" +
-				"OPTIONAL { ?artist dbont:bandMember ?memberOf. }" +
-				"OPTIONAL { ?artist dbont:formerBandMember ?pastMemberOf. }" +
-				"OPTIONAL { ?artist dbpedia:currentMembers ?currentMembers. }" +
-				"OPTIONAL { ?artist dbpedia:pastMembers ?pastMembers. }}" ;
+				"OPTIONAL { "+ id +" mo:fanpage ?fanpage.} " +
+				"OPTIONAL { "+ id +" mo:imdb ?imdb. } " +
+				"OPTIONAL { "+ id +" mo:myspace ?myspace. } " +
+				"OPTIONAL { "+ id +" mo:homepage ?homepage. } " +
+				"OPTIONAL { "+ id +" rdfs:comment ?shortDesc.}  " +
+				"OPTIONAL { "+ id +" mo:image ?image}" +
+				"OPTIONAL { "+ id +" mo:biography ?bio. } " +
+				"OPTIONAL { "+ id +" dbont:birthname ?birthname} " +
+				"OPTIONAL { "+ id +" dbont:hometown ?hometown. } " +
+				"OPTIONAL { "+ id +" mo:origin ?origin. } " +
+				"OPTIONAL { "+ id +" mo:activity_start ?start. } " +
+				"OPTIONAL { "+ id +" mo:activity_end ?end. } " +
+				"OPTIONAL { "+ id +" dbont:birthDate ?birthdate. } " +
+				"OPTIONAL { "+ id +" dbont:deathDate ?deathdate. } " +
+				"OPTIONAL { "+ id +" mo:wikipedia ?wikipedia. } " +
+				"OPTIONAL { "+ id +" foaf:page ?bbcpage. }" +
+				"OPTIONAL { "+ id +" dbont:bandMember ?memberOf. }" +
+				"OPTIONAL { "+ id +" dbont:formerBandMember ?pastMemberOf. }" +
+				"OPTIONAL { "+ id +" dbpedia:currentMembers ?currentMembers. }" +
+				"OPTIONAL { "+ id +" dbpedia:pastMembers ?pastMembers. }}" ;
 
 		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
 		ResultSet results = ex.execSelect();

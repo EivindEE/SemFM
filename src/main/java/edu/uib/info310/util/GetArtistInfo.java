@@ -37,7 +37,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 		else {
 			QueryEndPoint qep = new QueryEndPointImp();
 			String artist = "<" + artistUri + ">";
-			String constructStr = "CONSTRUCT { "+artist+" 	 " +
+			String constructStr = "CONSTRUCT { " + artist +
 					"mo:fanpage ?fanpage ; " +
 					"mo:imdb ?imdb ; " +
 					"mo:myspace ?myspace ; " +

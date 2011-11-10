@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -15,6 +16,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -36,7 +39,7 @@ import edu.uib.info310.vocabulary.MO;
 
 public class ITunesSearcher {
 	private static String DEFAULT_URL = "http://itunes.apple.com/search?entity=album&limit=200&term=";
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ITunesSearcher.class);
 
 	public Model getRecords(String artist, String artistUri){
 		Model model = ModelFactory.createDefaultModel();
@@ -54,8 +57,8 @@ public class ITunesSearcher {
 			JSONArray results = (JSONArray) response.get("results");
 			for (Object object : results) {
 				JSONObject jObject = (JSONObject) object;
-
-				if(jObject.get("artistName").equals(artist) && !jObject.get("collectionName").toString().contains(")")){
+				String iTunesArtist = jObject.get("artistName").toString().toLowerCase();
+				if(iTunesArtist.equals(artist.toLowerCase()) && !jObject.get("collectionName").toString().contains(")")){
 					subject = model.createResource(jObject.get("collectionViewUrl").toString());
 					property = FOAF.depiction;
 					rdfObject = model.createResource(jObject.get("artworkUrl100").toString());
@@ -93,20 +96,23 @@ public class ITunesSearcher {
 			}
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Got MalformedURLException: " + e.toString());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Got IOException: " + e.toString());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Got ParseException: " + e.toString());
 		}
 
 		try {
 			FileOutputStream out = new FileOutputStream(new File("log/iTunesOut.ttl"));
 			model.write(out, "TURTLE");
-		} catch (FileNotFoundException e) {		}
+		} catch (FileNotFoundException e) {	LOGGER.error("Got FileNotFoundException: " + e.toString());	}
+		
+		if(model.isEmpty()){
+			try {
+				LOGGER.debug("Got 0 results for query: " + DEFAULT_URL + URLEncoder.encode(artist, "UTF-8"));
+			} catch (UnsupportedEncodingException e) {			}
+		}
 		return model;
 	}
 }
