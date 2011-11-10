@@ -18,6 +18,11 @@
 		<div class="h1-wrapper">
 			<h1>${record.name}</h1>
 			<div class="h1-description">
+				<c:if test="${! empty record.itunesPreview}">
+					<audio controls="controls">
+					  <source src="${record.itunesPreview}" type="audio/aac" />
+					</audio>
+				</c:if>
 				<ul>
 					<c:forEach var="genre" items="${record.genres}">
 						<li>${genre}</li>
@@ -29,6 +34,7 @@
 						<li>${artist.name}</li>
 					</c:forEach>
 				</ul>
+				
 			</div>
 		</div>
 	</div>
