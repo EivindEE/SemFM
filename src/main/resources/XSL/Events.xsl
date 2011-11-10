@@ -29,7 +29,9 @@
 
 					<event:place rdf:resource="http://www.last.fm/venue/{venue/id}" />
 					<event:time>
-						<xsl:value-of select="startDate" />
+						<xsl:call-template name="formatdate">
+							<xsl:with-param name="datestr" select="startDate" />
+						</xsl:call-template>
 					</event:time>
 				</rdf:Description>
 			</xsl:for-each>
@@ -46,33 +48,33 @@
 						<xsl:value-of select="location/geo:point/geo:long" />
 					</geo:long>
 
-<!-- 					<v:country-name> -->
-<!-- 						<xsl:value-of select="location/country" /> -->
-<!-- 					</v:country-name> -->
+					<!-- <v:country-name> -->
+					<!-- <xsl:value-of select="location/country" /> -->
+					<!-- </v:country-name> -->
 
 					<v:locality>
 						<xsl:value-of select="location/city" />
 					</v:locality>
 
-<!-- 					<v:postal-code> -->
-<!-- 						<xsl:value-of select="location/postalcode" /> -->
-<!-- 					</v:postal-code> -->
+					<!-- <v:postal-code> -->
+					<!-- <xsl:value-of select="location/postalcode" /> -->
+					<!-- </v:postal-code> -->
 
-<!-- 					<v:street-address> -->
-<!-- 						<xsl:value-of select="location/street" /> -->
-<!-- 					</v:street-address> -->
+					<!-- <v:street-address> -->
+					<!-- <xsl:value-of select="location/street" /> -->
+					<!-- </v:street-address> -->
 
-<!-- 					<foaf:image> -->
-<!-- 						<xsl:value-of select="image[@size='extralarge']" /> -->
-<!-- 					</foaf:image> -->
+					<!-- <foaf:image> -->
+					<!-- <xsl:value-of select="image[@size='extralarge']" /> -->
+					<!-- </foaf:image> -->
 
-<!-- 					<v:telephone> -->
-<!-- 						<xsl:value-of select="phonenumber" /> -->
-<!-- 					</v:telephone> -->
+					<!-- <v:telephone> -->
+					<!-- <xsl:value-of select="phonenumber" /> -->
+					<!-- </v:telephone> -->
 
-<!-- 					<foaf:homepage> -->
-<!-- 						<xsl:value-of select="website" /> -->
-<!-- 					</foaf:homepage> -->
+					<!-- <foaf:homepage> -->
+					<!-- <xsl:value-of select="website" /> -->
+					<!-- </foaf:homepage> -->
 
 
 				</rdf:Description>
@@ -96,4 +98,39 @@
 
 
 	</xsl:template>
+	<xsl:template name="formatdate">
+		<xsl:param name="datestr" />
+		<!-- input format ddmmyyyy -->
+		<!-- output format dd/mm/yyyy -->
+
+		<xsl:variable name="weekday">
+			<xsl:value-of select="substring($datestr,1,3)" />
+		</xsl:variable>
+
+
+		<xsl:variable name="dd">
+			<xsl:value-of select="substring($datestr,6,2)" />
+		</xsl:variable>
+
+		<xsl:variable name="mm">
+			<xsl:value-of select="substring($datestr,9,3)" />
+		</xsl:variable>
+
+		<xsl:variable name="yyyy">
+			<xsl:value-of select="substring($datestr,13,4)" />
+		</xsl:variable>
+		
+		<xsl:variable name="time">
+			<xsl:value-of select="substring($datestr,18,5)" />
+		</xsl:variable>
+		
+		<xsl:value-of select="$dd" />
+		<xsl:value-of select="'/'" />
+		<xsl:value-of select="$mm" />
+		<xsl:value-of select="'/'" />
+		<xsl:value-of select="$yyyy" />
+		<xsl:value-of select="'/'" />
+		<xsl:value-of select="$time" />
+	</xsl:template>
+
 </xsl:stylesheet>
