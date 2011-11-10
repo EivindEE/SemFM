@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page session="false" %>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -12,7 +13,7 @@
 	<c:if test="${! empty artist.discography}">
 	<script type="text/javascript" src="http://localhost:8080/SemFM/spring/resources/javascript/thune.scroller.js"></script>
 	<script type="text/javascript">
-		$(function() {
+		$(document).ready(function()  {
 			$(".album_list_carousel").thuneScroller({
 				btnNext: ".next",
 				btnPrev: ".prev",
@@ -22,7 +23,10 @@
 			});
 		});
 	</script>
+	<script type="text/javascript">
+	</script>
 	</c:if>
+
 	<c:if test="${! empty artist.locatedEvents}">
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 		<script type="text/javascript">
@@ -92,7 +96,7 @@
 				<ul class="album_list">
 					<c:forEach var="album" items="${artist.discography}">
 						<li class="album">
-							<h3><a href="">${album.name}</a></h3>
+							<h3><a href="album?search_string=${album.name}">${album.name}</a></h3>
 							<img src="${album.image}" alt="" />
 							<span class="album_year">${album.year}</span><br />
 							<span class="album_publisher">${album.label}</span>
@@ -131,7 +135,7 @@
 		<ul class="artist_list">
 			<c:forEach var="relatedArtist" items="${artist.similar}">
 				<li>
-					<a href="search?search_string=${relatedArtist.safeName}">
+					<a href="artist?search_string=${relatedArtist.safeName}">
 						<img src="${relatedArtist.image}" alt="" /> 
 						<span class="artist_name">${relatedArtist.name}</span><br />
 						<span class="artist_short_desc">${relatedArtist.shortDescription}</span>
