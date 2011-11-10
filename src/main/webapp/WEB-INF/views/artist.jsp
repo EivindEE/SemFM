@@ -12,7 +12,7 @@
 	<c:if test="${! empty artist.discography}">
 	<script type="text/javascript" src="http://localhost:8080/SemFM/spring/resources/javascript/thune.scroller.js"></script>
 	<script type="text/javascript">
-		$(function() {
+		$(document).ready(function()  {
 			$(".album_list_carousel").thuneScroller({
 				btnNext: ".next",
 				btnPrev: ".prev",
@@ -22,7 +22,10 @@
 			});
 		});
 	</script>
+	<script type="text/javascript">
+	</script>
 	</c:if>
+
 	<c:if test="${! empty artist.locatedEvents}">
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 		<script type="text/javascript">
