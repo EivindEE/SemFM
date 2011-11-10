@@ -96,7 +96,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"dbpedia:pastMembers ?pastMembers" ;
 
 
-			String whereStr ="} WHERE {?artist foaf:name \"" + artistName + "\"@en." +
+			String whereStr ="} WHERE { {?artist foaf:name \"" + artistName + "\"@en.} UNION {?artist rdfs:label \"" + artistName + "\"@it} . " +
 					"{?artist rdf:type dbont:Artist.} UNION {?artist rdf:type dbont:Band.}. " +
 					"OPTIONAL{?artist dbpedia:shortDescription ?comment} . " +
 					"OPTIONAL{?artist dbont:abstract ?bio . FILTER(lang(?bio) = 'en')} . " +
