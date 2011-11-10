@@ -39,8 +39,8 @@
 		</div>
 	</div>
 	<ul class="headline_links">
-		<li><a href="${itunesLink}" class="itunes">iTunes</a></li>
-		<li><a href="${spotifyUri}" class="spotify">Spotify</a></li>
+		<li><a href="${record.itunesLink}" class="itunes">iTunes</a></li>
+		<li><a href="${record.spotifyUri}" class="spotify">Spotify</a></li>
 	</ul>
 </div>
 <div class="full main_wrapper">
@@ -69,7 +69,15 @@
 					<td>${track.trackNr}</td>
 					<td>${track.name}</td>
 					<td>${track.length}</td>
-					<td>${track.artist}</td>
+					<td><c:if test="${! empty track.artist}">
+							<a href="artist?search_string=${track.artist}">${track.artist}</a>
+						</c:if>
+						<c:if test="${empty track.artist}">
+							<c:forEach var="artist" items="${record.artist}">
+								<a href="artist?search_string=${artist.name}">${artist.name}</a> 
+							</c:forEach>
+						</c:if>
+						</td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -78,7 +86,7 @@
 		<h2>Alternative Releases</h2>
 		<ul class="related_list">
 		<c:forEach var="related" items="${record.relatedRecords}">
-			<li> <a href="" clas="related_name"><img src="${related.image}" alt="" /> ${related.name}</a></li>
+			<li><a href="album?search_string=${related.name}" class="related_name"><img src="${related.image}" alt="" /> ${related.name}</a></li>
 		</c:forEach>
 		</ul>
 	</div>
