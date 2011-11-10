@@ -38,7 +38,7 @@ import edu.uib.info310.vocabulary.MO;
 
 
 public class ITunesSearcher {
-	private static String DEFAULT_URL = "http://itunes.apple.com/search?entity=album&limit=200&term=";
+	private static String DEFAULT_URL = "http://itunes.apple.com/search?entity=album&limit=200&country=NO&term=";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ITunesSearcher.class);
 
 	public Model getRecords(String artist, String artistUri){
