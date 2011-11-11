@@ -47,14 +47,33 @@ public class HomeController {
 		return "home";
 	}
 
+
+	@RequestMapping(value = "/search")
+	@ResponseStatus(value = HttpStatus.OK)
+	public ModelAndView search(@RequestParam String q){
+		logger.debug("Artist got search string: " + q);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("q", q);
+		try {
+			mav.addObject("artist", searcher.searchArtist(q));
+			mav.setViewName("artist");
+		} catch (ArtistNotFoundException e) {
+			mav.addObject("records", searcher.searchRecord(q));
+			mav.setViewName("searchResult");
+		}
+
+		return mav;
+	}
+	
+	
 	@RequestMapping(value = "/artist")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ModelAndView artist(@RequestParam String search_string){
-		logger.debug("Artist got search string: " + search_string);
+	public ModelAndView artist(@RequestParam String q){
+		logger.debug("Artist got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 
 		try {
-			mav.addObject("artist", searcher.searchArtist(search_string));
+			mav.addObject("artist", searcher.searchArtist(q));
 			mav.setViewName("artist");
 		} catch (ArtistNotFoundException e) {
 			mav.setViewName("notFound");
@@ -62,13 +81,16 @@ public class HomeController {
 
 		return mav;
 	}
+	
+	
+	
 	@RequestMapping(value = "/album")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ModelAndView album(@RequestParam String search_string){
-		logger.debug("Album got search string: " + search_string);
+	public ModelAndView album(@RequestParam String q){
+		logger.debug("Album got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 
-		mav.addObject("record", searcher.searchRecord(search_string));
+		mav.addObject("record", searcher.searchRecord(q));
 		mav.setViewName("album");
 		return mav;
 	}
