@@ -54,9 +54,20 @@
 		<ul>
 				<li>Artist: 
 					<ul>
-						<c:forEach var="artist" items="${record.artist}"><li><a href="artist?q=${artist.name}">${artist.name}</a></li></c:forEach>
+						<c:forEach var="artist" items="${record.artist}">
+							<li><a href="artist?q=${artist.name}">${artist.name}</a></li>
+						</c:forEach>
 					</ul>
 				</li>
+				<c:forEach var="metaTidbit" items="${record.meta}">
+					<li>${metaTidbit.key}: 
+						<ul>
+							<c:forEach var="item" items="${metaTidbit.value}">
+								<li>${item}</li>
+							</c:forEach>
+						</ul>
+					</li>
+				</c:forEach>
 		</ul>	
 	</div>
 	<div class="tracks full">

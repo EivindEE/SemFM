@@ -81,7 +81,13 @@
 		<h2>Meta Facts</h2>
 		<ul>
 			<c:forEach var="metaTidbit" items="${artist.meta}">
-				<li>${metaTidbit.key}: <ul><c:forEach var="item" items="${metaTidbit.value}"><li>${item}</li></c:forEach></ul></li>
+				<li>${metaTidbit.key}: 
+					<ul>
+						<c:forEach var="item" items="${metaTidbit.value}">
+							<li>${item}</li>
+						</c:forEach>
+					</ul>
+				</li>
 			</c:forEach>
 		</ul>	
 	</div>
