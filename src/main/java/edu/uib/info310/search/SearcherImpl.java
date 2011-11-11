@@ -161,7 +161,6 @@ public class SearcherImpl implements Searcher {
 			event.setLng(queryEvent.get("lng").toString());
 			
 			String dateString = queryEvent.get("date").toString();
-			LOGGER.debug("Here is the orignal date string: " + dateString);
 			Date date = new Date();
 			SimpleDateFormat stf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss",Locale.US);
 			try {
@@ -276,7 +275,8 @@ public class SearcherImpl implements Searcher {
 			}
 
 			if(query.get("birthdate") != null) {
-				metaMap.put("Born", (query.get("birthdate").toString()));
+		
+				metaMap.put("Born",(makeDate(query.get("birthdate").toString())));
 			}
 
 			if(query.get("homepage") != null) {
@@ -299,14 +299,12 @@ public class SearcherImpl implements Searcher {
 				metaMap.put("Name", (query.get("birthname").toString()));
 			}
 			
-			if(query.get("birthdate") != null) {
-				metaMap.put("Born", (query.get("birthdate").toString()));
-			}
 			
 			if(query.get("deathdate") != null) {
-				metaMap.put("Died", (query.get("deathdate").toString()));
+				
+				metaMap.put("Died", (makeDate(query.get("deathdate").toString())));
+				
 			}
-			
 
 			if(query.get("origin") != null) {
 				metaMap.put("From", (query.get("origin").toString()));
@@ -316,9 +314,10 @@ public class SearcherImpl implements Searcher {
 				metaMap.put("Living", (query.get("hometown").toString()));
 			}
 			if(query.get("start") != null) {
-				String activityStart = query.get("start").toString();
+				String activityStart = makeDate(query.get("start").toString());
 				if(query.get("end") != null) {
-					activityStart += "-" + query.get("end").toString();
+					
+					activityStart += "-" + makeDate(query.get("end").toString());
 					
 				}
 				metaMap.put("Active",activityStart);
@@ -363,5 +362,17 @@ public class SearcherImpl implements Searcher {
 		Searcher searcher = new SearcherImpl();
 		searcher.searchArtist("Guns N Roses");
 	}
+	
+	public String makeDate(String dateString){
+		Date date = new Date();
+		SimpleDateFormat stf = new SimpleDateFormat("yyyy-mm-dd",Locale.US);
+		try {
+			date = stf.parse(dateString);
+		} catch (ParseException e) {
+			LOGGER.error("Couldnt parse date");
+		}
+		return date.toString();
+	}
 
+	
 }
