@@ -96,7 +96,7 @@
 				<ul class="album_list">
 					<c:forEach var="album" items="${artist.discography}">
 						<li class="album">
-							<h3><a href="album?search_string=${album.name}">${album.name}</a></h3>
+							<h3><a href="album?q=${album.discogId}">${album.name}</a></h3>
 							<img src="${album.image}" alt="" />
 							<span class="album_year">${album.year}</span><br />
 							<span class="album_publisher">${album.label}</span>
@@ -135,7 +135,7 @@
 		<ul class="artist_list">
 			<c:forEach var="relatedArtist" items="${artist.similar}">
 				<li>
-					<a href="artist?search_string=${relatedArtist.safeName}">
+					<a href="artist?q=${relatedArtist.safeName}">
 						<img src="${relatedArtist.image}" alt="" /> 
 						<span class="artist_name">${relatedArtist.name}</span><br />
 						<span class="artist_short_desc">${relatedArtist.shortDescription}</span>

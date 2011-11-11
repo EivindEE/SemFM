@@ -5,7 +5,7 @@
 <html dir="ltr" lang="en">
 <head>
 	<meta charset="UTF-8" />
-	<title>${album.name} - SemFM</title>
+	<title>${record.name} - SemFM</title>
 	<link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico" />
 	<link rel="icon" type="image/png" href="resources/images/favicon.png" />
 	<link rel="stylesheet" type="text/css" href="resources/css/screen.css" />
@@ -52,8 +52,11 @@
 	<div class="album_meta meta_list right half">
 		<h2>Meta Facts</h2>
 		<ul>
-			<li>Artist: ${record.artist}</li>
-
+				<li>Artist: 
+					<ul>
+						<c:forEach var="artist" items="${record.artist}"><li><a href="artist?q=${artist.name}">${artist.name}</a></li></c:forEach>
+					</ul>
+				</li>
 		</ul>	
 	</div>
 	<div class="tracks full">
@@ -70,15 +73,16 @@
 					<td>${track.trackNr}</td>
 					<td>${track.name}</td>
 					<td>${track.length}</td>
-					<td><c:if test="${! empty track.artist}">
-							<a href="artist?search_string=${track.artist}">${track.artist}</a>
+					<td>
+						<c:if test="${! empty track.artist}">
+							<a href="artist?q=${track.artist}">${track.artist}</a>
 						</c:if>
 						<c:if test="${empty track.artist}">
 							<c:forEach var="artist" items="${record.artist}">
-								<a href="artist?search_string=${artist.name}">${artist.name}</a> 
+								<a href="artist?q=${artist.name}">${artist.name}</a> 
 							</c:forEach>
 						</c:if>
-						</td>
+					</td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -87,7 +91,7 @@
 		<h2>Alternative Releases</h2>
 		<ul class="related_list">
 		<c:forEach var="related" items="${record.relatedRecords}">
-			<li><a href="album?search_string=${related.name}" class="related_name"><img src="${related.image}" alt="" /> ${related.name}</a></li>
+			<li><a href="album?q=${related.discogId}" class="related_name"><img src="${related.image}" alt="" /> ${related.name}</a></li>
 		</c:forEach>
 		</ul>
 	</div>
