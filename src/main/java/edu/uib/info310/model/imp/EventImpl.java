@@ -7,6 +7,7 @@ import edu.uib.info310.model.Event;
 public class EventImpl implements Event {
 
 	
+	private String website;
 	private String id;
 	private Date date;
 	private String location;
@@ -91,6 +92,13 @@ public class EventImpl implements Event {
 
 	public int compareTo(Event o) {
 		return this.date.compareTo(o.getDate());
+	}
+
+	public String getWebsite() {
+		return this.website;
+	}
+	public String setWebsite(String string){
+		return this.website;
 	}
 
 }

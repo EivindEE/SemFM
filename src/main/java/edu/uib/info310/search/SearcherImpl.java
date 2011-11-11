@@ -148,8 +148,8 @@ public class SearcherImpl implements Searcher {
 
 	private void setArtistEvents(){
 		List<Event> events = new LinkedList<Event>();
-		String getArtistEventsStr = " PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX event: <http://purl.org/NET/c4dm/event.owl#> PREFIX v: <http://www.w3.org/2006/vcard/ns#> PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
-				"SELECT ?venueId ?venueName ?date ?lng ?lat ?location " +
+		String getArtistEventsStr = " PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX event: <http://purl.org/NET/c4dm/event.owl#> PREFIX v: <http://www.w3.org/2006/vcard/ns#> PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
+				"SELECT ?venueId ?venueName ?date ?lng ?lat ?location ?preformance " +
 				" WHERE {?preformance foaf:hasAgent <" + this.artist.getId() + ">; event:place ?venueId; event:time ?date. ?venueId v:organisation-name ?venueName; geo:lat ?lat; geo:long ?lng; v:locality ?location}";
 		QueryExecution execution = QueryExecutionFactory.create(getArtistEventsStr, model);
 		ResultSet eventResults = execution.execSelect();
@@ -173,7 +173,7 @@ public class SearcherImpl implements Searcher {
 			
 			event.setDate(date);
 			event.setLocation(queryEvent.get("location").toString());
-
+			event.setWebsite(queryEvent.get("preformance").toString());
 			events.add(event);
 		}
 		this.artist.setEvents(events);

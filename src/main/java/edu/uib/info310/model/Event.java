@@ -12,6 +12,8 @@ public interface Event extends Comparable<Event> {
 	
 	public String getVenue();
 	
+	public String getWebsite();
+	
 	public String getLng();
 	
 	public String getLat();
