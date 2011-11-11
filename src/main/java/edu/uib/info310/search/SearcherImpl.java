@@ -1,5 +1,7 @@
 package edu.uib.info310.search;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,11 +15,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
@@ -36,7 +41,7 @@ public class SearcherImpl implements Searcher {
 	private OntologyBuilder builder = new OntologyBuilder();
 	private Model model;
 	private ArtistImpl artist;
-
+	private RecordImp record;
 
 	public Artist searchArtist(String search_string) throws ArtistNotFoundException {
 		this.artist = new ArtistImpl();
@@ -54,6 +59,57 @@ public class SearcherImpl implements Searcher {
 		setArtistInfo();
 
 		return this.artist;
+	}
+	public Record searchalbums(String search_string) {
+		this.record = new RecordImp();
+//		this.model = builder.createAlbumOntology(search_string);
+		LOGGER.debug("Size of infered model: " + model.size());
+		
+		return record;
+	}
+	public Map<String, Record> searchRecords(String albumName) {
+		List<Record> records = new LinkedList<Record>();
+		Map<String,Record> uniqueRecord = new HashMap<String, Record>();
+		String safe_search = "";
+		try {
+			safe_search = URLEncoder.encode(albumName, "UTF-8");
+		} catch (UnsupportedEncodingException e) {/*ignore*/}
+		
+		String prefix = 
+				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
+				"PREFIX dc: <http://purl.org/dc/elements/1.1/>" +
+				"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+				"PREFIX mo: <http://purl.org/ontology/mo/>" +
+				"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
+				"PREFIX dc: <http://purl.org/dc/terms/>" +
+				"PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>";
+		
+		String albums =  "SELECT ?artistName ?albumName ?discogs" +
+				" WHERE {	?record dc:title \""+ safe_search + "\" ;" +
+									"rdf:type mo:Record;" +
+									"foaf:maker ?artist;" +
+									"mo:discogs ?discogs;" +
+									"dc:title ?albumName." +
+									"?artist foaf:name ?artistName}";
+
+		Query query = QueryFactory.create(prefix + albums);
+		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
+		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
+		ResultSet recordResults = queryExecution.execSelect();
+		
+		while(recordResults.hasNext()){
+			List<Artist> artists = new LinkedList<Artist>();
+			RecordImp recordResult = new RecordImp();
+			QuerySolution querySol = recordResults.next();
+			recordResult.setName(querySol.get("albumName").toString());
+			ArtistImpl artist = new ArtistImpl();
+			artist.setName(querySol.get("artistName").toString());
+			artists.add(artist);
+			recordResult.setArtist(artists);
+			recordResult.setDiscogId(querySol.get("discogs").toString());
+			uniqueRecord.put(recordResult.getArtist().get(0).getName(), recordResult);
+		}
+		return uniqueRecord; 
 	}
 
 	private void setArtistIdAndName() {
@@ -355,15 +411,6 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		return null;
 	}
 
-	public Map<String,Record> searchRecords(String search_string) {
-		Map<String, Record> map = new HashMap<String, Record>();
-		for(int i = 0; i < search_string.length() ; i++){
-			
-			map.put(String.valueOf(search_string.charAt(i)), new MockRecord());
-		}
-		return map;
-	}
-
 	public Record searchRecord(String search_string) {
 		return new MockRecord();
 	}
@@ -375,7 +422,11 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 
 	public static void main(String[] args) throws ArtistNotFoundException {
 		Searcher searcher = new SearcherImpl();
-		searcher.searchArtist("Guns N Roses");
+//		searcher.searchArtist("Guns N Roses");
+		Map<String, Record> records = searcher.searchRecords("Thriller");
+		for(Record record:records.values()){
+			System.out.println(record.getName()+", " + record.getDiscogId()+ ", " + record.getArtist().get(0).getName());
+		}
 	}
 	
 	public Date makeDate(String dateString){
@@ -391,5 +442,4 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		return date;
 	}
 
-	
 }
