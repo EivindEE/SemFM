@@ -52,4 +52,9 @@ public class MockEvent implements Event {
 		return 0;
 	}
 
+	public String getWebsite() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
