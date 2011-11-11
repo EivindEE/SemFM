@@ -1,13 +1,14 @@
 package edu.uib.info310.model.mock;
 
+import java.util.Date;
 import java.util.Random;
 
 import edu.uib.info310.model.Event;
 
 public class MockEvent implements Event {
 
-	public String getDate() {
-		return "20.10.2011";
+	public Date getDate() {
+		return new Date();
 	}
 
 	public String getLocation() {
@@ -44,6 +45,11 @@ public class MockEvent implements Event {
 
 	public String getImage() {
 		return "http://userserve-ak.last.fm/serve/252/53005163.jpg";
+	}
+
+	public int compareTo(Event o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

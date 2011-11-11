@@ -1,10 +1,12 @@
 package edu.uib.info310.model;
 
-public interface Event {
+import java.util.Date;
+
+public interface Event extends Comparable<Event> {
 	
 	public String getId();
 	
-	public String getDate();
+	public Date getDate();
 	
 	public String getLocation();
 	

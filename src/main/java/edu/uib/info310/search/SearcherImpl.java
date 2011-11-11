@@ -1,8 +1,12 @@
 package edu.uib.info310.search;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -145,7 +149,7 @@ public class SearcherImpl implements Searcher {
 		List<Event> events = new LinkedList<Event>();
 		String getArtistEventsStr = " PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX event: <http://purl.org/NET/c4dm/event.owl#> PREFIX v: <http://www.w3.org/2006/vcard/ns#> PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
 				"SELECT ?venueId ?venueName ?date ?lng ?lat ?location " +
-				" WHERE {?preformance foaf:hasAgent <" + this.artist.getId() + ">; event:place ?venueId; event:time ?date. ?venueId v:organisation-name ?venueName; geo:lat ?lat; geo:long ?lng; v:locality ?location} ORDER BY ?date";
+				" WHERE {?preformance foaf:hasAgent <" + this.artist.getId() + ">; event:place ?venueId; event:time ?date. ?venueId v:organisation-name ?venueName; geo:lat ?lat; geo:long ?lng; v:locality ?location}";
 		QueryExecution execution = QueryExecutionFactory.create(getArtistEventsStr, model);
 		ResultSet eventResults = execution.execSelect();
 		while(eventResults.hasNext()){
@@ -155,7 +159,18 @@ public class SearcherImpl implements Searcher {
 			event.setVenue(queryEvent.get("venueName").toString());
 			event.setLat(queryEvent.get("lat").toString());
 			event.setLng(queryEvent.get("lng").toString());
-			event.setDate(queryEvent.get("date").toString());
+			
+			String dateString = queryEvent.get("date").toString();
+			LOGGER.debug("Here is the orignal date string: " + dateString);
+			Date date = new Date();
+			SimpleDateFormat stf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss",Locale.US);
+			try {
+				date = stf.parse(dateString);
+			} catch (ParseException e) {
+				LOGGER.error("Couldnt parse date");
+			}
+			
+			event.setDate(date);
 			event.setLocation(queryEvent.get("location").toString());
 
 			events.add(event);
