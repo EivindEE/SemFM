@@ -29,9 +29,7 @@
 
 					<event:place rdf:resource="http://www.last.fm/venue/{venue/id}" />
 					<event:time>
-						<xsl:call-template name="formatdate">
-							<xsl:with-param name="datestr" select="startDate" />
-						</xsl:call-template>
+						<xsl:value-of select="startDate"/>
 					</event:time>
 				</rdf:Description>
 			</xsl:for-each>
@@ -95,42 +93,5 @@
 				</rdf:Description>
 			</xsl:for-each>
 		</rdf:RDF>
-
-
 	</xsl:template>
-	<xsl:template name="formatdate">
-		<xsl:param name="datestr" />
-		<!-- input format ddmmyyyy -->
-		<!-- output format dd/mm/yyyy -->
-
-		<xsl:variable name="weekday">
-			<xsl:value-of select="substring($datestr,1,3)" />
-		</xsl:variable>
-
-
-		<xsl:variable name="dd">
-			<xsl:value-of select="substring($datestr,6,2)" />
-		</xsl:variable>
-
-		<xsl:variable name="mm">
-			<xsl:value-of select="substring($datestr,9,3)" />
-		</xsl:variable>
-
-		<xsl:variable name="yyyy">
-			<xsl:value-of select="substring($datestr,13,4)" />
-		</xsl:variable>
-		
-		<xsl:variable name="time">
-			<xsl:value-of select="substring($datestr,18,5)" />
-		</xsl:variable>
-		
-		<xsl:value-of select="$dd" />
-		<xsl:value-of select="'/'" />
-		<xsl:value-of select="$mm" />
-		<xsl:value-of select="'/'" />
-		<xsl:value-of select="$yyyy" />
-		<xsl:value-of select="'/'" />
-		<xsl:value-of select="$time" />
-	</xsl:template>
-
 </xsl:stylesheet>

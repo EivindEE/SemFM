@@ -111,10 +111,42 @@ public class DiscogSearch {
 	}
 	
 	
+	public Model getAlbums(String search_string){
+		String safe_search = "";
+		try {
+			safe_search = URLEncoder.encode(search_string, "UTF-8");
+		} catch (UnsupportedEncodingException e) {/*ignore*/}
+		
+		String constructStr = "CONSTRUCT {?artist foaf:made ?record;" +
+												 "foaf:name ?artistName;" +
+												 "rdf:type mo:MusicArtist ." +
+										 "?record rdf:type mo:Record;" +
+										 		 "mo:discogs ?discogs;" +
+										 		 "dc:title ?record.";
+		
+		
+		String whereStr = "} WHERE {?record dc:title \""+ safe_search + "\" ;" +
+										   "rdf:type mo:Record;" +
+										   "foaf:maker ?artist;" +
+										   "mo:discogs ?discogs;" +
+										   "dc:title ?recordName." +
+									"?artist foaf:name ?artistName}";
+		
+		
+		Query query = QueryFactory.create(PREFIX + constructStr + whereStr);
+		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
+		
+		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
+		
+
+		
+		return queryExecution.execConstruct();
+	}
+	
 	public static void main(String[] args) throws FileNotFoundException {
 		DiscogSearch search = new DiscogSearch();
 		FileOutputStream out = new FileOutputStream(new File("log/album.xml"));
-		Model model = search.getAlbum("The Debt");
+		Model model = search.getAlbums("Thriller");
 		model.write(out);
 		System.out.println(model.size());
 	}

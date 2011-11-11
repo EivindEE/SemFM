@@ -1,12 +1,14 @@
 package edu.uib.info310.model.imp;
 
+import java.util.Date;
+
 import edu.uib.info310.model.Event;
 
 public class EventImpl implements Event {
 
 	
 	private String id;
-	private String date;
+	private Date date;
 	private String location;
 	private String venue;
 	private String lng;
@@ -19,7 +21,7 @@ public class EventImpl implements Event {
 		return this.id;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return this.date;
 	}
 
@@ -43,7 +45,7 @@ public class EventImpl implements Event {
 		this.id = id;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -85,6 +87,10 @@ public class EventImpl implements Event {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public int compareTo(Event o) {
+		return this.date.compareTo(o.getDate());
 	}
 
 }
