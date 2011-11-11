@@ -6,9 +6,9 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>${album.name} - SemFM</title>
-	<link rel="shortcut icon" type="image/x-icon" href="http://localhost:8080/SemFM/spring/resources/images/favicon.ico" />
-	<link rel="icon" type="image/png" href="http://localhost:8080/SemFM/spring/resources/images/favicon.png" />
-	<link rel="stylesheet" type="text/css" href="http://localhost:8080/SemFM/spring/resources/css/screen.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico" />
+	<link rel="icon" type="image/png" href="resources/images/favicon.png" />
+	<link rel="stylesheet" type="text/css" href="resources/css/screen.css" />
 </head>
 <body class="album">
 <jsp:include page="includes/header.jsp" />

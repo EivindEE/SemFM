@@ -6,12 +6,12 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>${artist.name} - SemFM</title>
-	<link rel="shortcut icon" type="image/x-icon" href="http://localhost:8080/SemFM/spring/resources/images/favicon.ico" />
-	<link rel="icon" type="image/png" href="http://localhost:8080/SemFM/spring/resources/images/favicon.png" />
-	<link rel="stylesheet" type="text/css" href="http://localhost:8080/SemFM/spring/resources/css/screen.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico" />
+	<link rel="icon" type="image/png" href="resources/images/favicon.png" />
+	<link rel="stylesheet" type="text/css" href="resources/css/screen.css" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 	<c:if test="${! empty artist.discography}">
-	<script type="text/javascript" src="http://localhost:8080/SemFM/spring/resources/javascript/thune.scroller.js"></script>
+	<script type="text/javascript" src="resources/javascript/thune.scroller.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function()  {
 			$(".album_list_carousel").thuneScroller({

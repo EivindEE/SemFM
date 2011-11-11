@@ -2,6 +2,7 @@ package edu.uib.info310.model.imp;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +98,7 @@ public class ArtistImpl implements Artist {
 
 	public void setEvents(List<Event> events) {
 		this.events = events;
+		Collections.sort(this.events);
 	}
 
 	public void setMeta(Map<String, Object> meta) {
