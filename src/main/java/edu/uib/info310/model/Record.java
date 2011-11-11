@@ -34,6 +34,8 @@ public interface Record {
 	
 	public Map<String,Object> getMeta();
 	
+	public String getDiscogId();
+	
 	public String getItunesPreview();
 	
 	

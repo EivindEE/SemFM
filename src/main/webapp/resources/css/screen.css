@@ -130,6 +130,12 @@ a {
 .half {
 	width: 480px;
 }
+.text_center {
+	text-align:center;
+}
+.standard_margin {
+	margin-bottom: 20px;
+}
 
 .hidden {
 	display:block;
@@ -403,6 +409,27 @@ a {
 	#concert_map {
 		width: 100%;
 		height: 100%;
+	}
+.zebra_list {
+	box-shadow: 3px 3px 6px #ddd;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+}
+	.zebra_list li {
+		padding: 10px;
+	}
+	.zebra_list li:first-child {
+		border: none;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+	}
+	.zebra_list li:last-child {
+		border: none;
+		border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
+	}
+	.zebra_list li:nth-child(odd) {
+		background: #eee;
 	}
 .zebra_table {
 	width:960px;

@@ -15,8 +15,8 @@
 <body class="home">
 	<div class="full main_wrapper">
 		<a href="SemFM" id="logo"><img src="resources/images/SemFM-large.png" alt="SemFM" /></a>
-		<form id="search_form" action="artist" method="post">
-			<input type="text" name="search_string" id="search_string" placeholder="Artist name" />
+		<form id="search_form" action="search" method="post">
+			<input type="text" name="q" id="q" placeholder="Search" />
 			<button>Submit Search</button>
 		</form>
 		<ul class="home_meta_link">

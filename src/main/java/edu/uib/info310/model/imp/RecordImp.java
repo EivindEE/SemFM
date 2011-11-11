@@ -23,7 +23,7 @@ public class RecordImp implements Record{
 	private String itunesPreview;
 	private String year;
 	private String label;
-
+	private String discogId;
 	
 	
 	public String getId() {
@@ -145,9 +145,16 @@ public class RecordImp implements Record{
 	public void setItunesPreview(String itunesPreview) {
 		this.itunesPreview = itunesPreview;
 	}
+	public void setDiscogId(String discogId) {
+		this.discogId = discogId;
+	}
 
 	public String getYear() {
 		return this.year;
+	}
+	
+	public String getDiscogId() {
+		return this.discogId;
 	}
 	
 	public void setYear(String year){

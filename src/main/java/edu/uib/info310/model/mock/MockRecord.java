@@ -96,5 +96,9 @@ public class MockRecord implements Record {
 	public String getLabel() {
 		return "EMI";
 	}
+	
+	public String getDiscogId() {
+		return "sexydiscogid";
+	}
 
 }

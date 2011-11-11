@@ -60,7 +60,7 @@ public class HomeController {
 		} catch (ArtistNotFoundException e) {
 			
 			mav.addObject("records", searcher.searchRecords(q));
-			mav.setViewName("searchResult");
+			mav.setViewName("searchResults");
 		}
 
 		return mav;
