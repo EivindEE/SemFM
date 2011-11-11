@@ -106,7 +106,8 @@ public class SearcherImpl implements Searcher {
 				recordResult.setImage(queryAlbum.get("image").toString());
 			}
 			if(queryAlbum.get("year") != null) {
-				recordResult.setYear(queryAlbum.get("year").toString());
+				SimpleDateFormat format = new SimpleDateFormat("yyyy",Locale.US);
+				recordResult.setYear(format.format(makeDate(queryAlbum.get("year").toString())));
 			}
 			if(recordResult.getImage() != null){
 				uniqueRecord.put(recordResult.getName(), recordResult);
@@ -165,6 +166,7 @@ public class SearcherImpl implements Searcher {
 			SimpleDateFormat stf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss",Locale.US);
 			try {
 				date = stf.parse(dateString);
+				
 			} catch (ParseException e) {
 				LOGGER.error("Couldnt parse date");
 			}
@@ -275,8 +277,8 @@ public class SearcherImpl implements Searcher {
 			}
 
 			if(query.get("birthdate") != null) {
-		
-				metaMap.put("Born",(makeDate(query.get("birthdate").toString())));
+				SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);	
+				metaMap.put("Born", (format.format(makeDate(query.get("birthdate").toString()))));
 			}
 
 			if(query.get("homepage") != null) {
@@ -301,8 +303,9 @@ public class SearcherImpl implements Searcher {
 			
 			
 			if(query.get("deathdate") != null) {
-				
-				metaMap.put("Died", (makeDate(query.get("deathdate").toString())));
+SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);	
+					
+				metaMap.put("Died", (format.format(makeDate(query.get("deathdate").toString()))));
 				
 			}
 
@@ -314,10 +317,13 @@ public class SearcherImpl implements Searcher {
 				metaMap.put("Living", (query.get("hometown").toString()));
 			}
 			if(query.get("start") != null) {
-				String activityStart = makeDate(query.get("start").toString());
+			SimpleDateFormat format = new SimpleDateFormat("yyyy",Locale.US);	
+				
+				String activityStart = format.format(makeDate(query.get("start").toString()));
 				if(query.get("end") != null) {
 					
-					activityStart += "-" + makeDate(query.get("end").toString());
+					
+					activityStart += "-" + format.format(makeDate(query.get("end").toString()));
 					
 				}
 				metaMap.put("Active",activityStart);
@@ -363,15 +369,17 @@ public class SearcherImpl implements Searcher {
 		searcher.searchArtist("Guns N Roses");
 	}
 	
-	public String makeDate(String dateString){
+	public Date makeDate(String dateString){
 		Date date = new Date();
 		SimpleDateFormat stf = new SimpleDateFormat("yyyy-mm-dd",Locale.US);
 		try {
 			date = stf.parse(dateString);
+			
+			
 		} catch (ParseException e) {
 			LOGGER.error("Couldnt parse date");
 		}
-		return date.toString();
+		return date;
 	}
 
 	
