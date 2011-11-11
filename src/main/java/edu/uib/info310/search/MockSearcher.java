@@ -1,6 +1,7 @@
 package edu.uib.info310.search;
 
-import org.springframework.stereotype.Component;
+import java.util.Collections;
+import java.util.Map;
 
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
@@ -28,5 +29,9 @@ public class MockSearcher implements Searcher {
 
 	public Track searchTrack(String search_string) {
 		return new MockTrack();
+	}
+
+	public Map<String, Record> searchRecords(String q) {
+		return Collections.emptyMap();
 	}
 }

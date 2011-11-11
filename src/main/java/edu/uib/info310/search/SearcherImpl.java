@@ -355,10 +355,19 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		return null;
 	}
 
+	public Map<String,Record> searchRecords(String search_string) {
+		Map<String, Record> map = new HashMap<String, Record>();
+		for(int i = 0; i < search_string.length() ; i++){
+			
+			map.put(String.valueOf(search_string.charAt(i)), new MockRecord());
+		}
+		return map;
+	}
+
 	public Record searchRecord(String search_string) {
 		return new MockRecord();
 	}
-
+	
 	public Track searchTrack(String search_string) {
 		// TODO Auto-generated method stub
 		return null;
