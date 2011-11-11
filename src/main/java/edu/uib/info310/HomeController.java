@@ -72,7 +72,7 @@ public class HomeController {
 	public ModelAndView artist(@RequestParam String q){
 		logger.debug("Artist got search string: " + q);
 		ModelAndView mav = new ModelAndView();
-
+		mav.addObject("q", q);
 		try {
 			mav.addObject("artist", searcher.searchArtist(q));
 			mav.setViewName("artist");
@@ -90,7 +90,7 @@ public class HomeController {
 	public ModelAndView album(@RequestParam String q){
 		logger.debug("Album got search string: " + q);
 		ModelAndView mav = new ModelAndView();
-
+		mav.addObject("q", q);
 		mav.addObject("record", searcher.searchRecord(q));
 		mav.setViewName("record");
 		return mav;
