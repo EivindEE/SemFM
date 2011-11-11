@@ -29,9 +29,9 @@
 					</foaf:hasAgent>
 				</xsl:for-each>
 
-				<foaf:name>
+				<rdfs:label>
 					<xsl:value-of select="release/title" />
-				</foaf:name>
+				</rdfs:label>
 				<mo:label>
 					<xsl:value-of select="release/labels/label/@name" />
 				</mo:label>
@@ -74,9 +74,9 @@
 							<xsl:value-of select="position" />
 						</mo:track_number>
 
-						<foaf:name>
+						<rdfs:label>
 							<xsl:value-of select="title" />
-						</foaf:name>
+						</rdfs:label>
 						<xsd:duration>
 							<xsl:value-of select="duration"/>
 						</xsd:duration>
