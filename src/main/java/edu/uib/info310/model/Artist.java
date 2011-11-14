@@ -25,7 +25,28 @@ public interface Artist {
 	
 	public List<Event> getEvents();
 	
+	public List<Event> getLocatedEvents();
+	
 	public Map<String, Object> getMeta();
 	
-	public List<Event> getLocatedEvents();
+	public void setId(String id);
+	
+	public void setName(String name);
+	
+	public void setShortDescription(String shortDescription);
+	
+	public void setDescription(String Description);
+	
+	public void setBio(String bio);
+	
+	public void setImage(String image);
+	
+	public void setDiscography(List<Record> discography);
+	
+	public void setSimilar(List<Artist> similar);
+	
+	public void setEvents(List<Event> events);
+	
+	public void setMeta(Map<String, Object> meta);
+
 }

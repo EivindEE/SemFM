@@ -12,9 +12,9 @@ public class RecordImp implements Record{
 	private String name;
 	private String image;
 	private String description;
-	private List<Track> track;
+	private List<Track> tracks;
 	private List<Artist> artist;
-	private List<Record> relatedRecord;
+	private List<Record> relatedRecords;
 	private String itunesLink;
 	private List<String> reviews;
 	private List<String> genres;
@@ -43,7 +43,7 @@ public class RecordImp implements Record{
 	}
 
 	public List<Record> getRelatedRecords() {
-		return this.relatedRecord;
+		return this.relatedRecords;
 	}
 	
 	public List<Artist> getArtist() {
@@ -59,7 +59,7 @@ public class RecordImp implements Record{
 	}
 
 	public List<Track> getTracks() {
-		return this.track;
+		return this.tracks;
 	}
 	public void setId(String id) {
 		this.id = id;
@@ -79,15 +79,15 @@ public class RecordImp implements Record{
 	}
 	
 	public void setTrack(List<Track> track) {
-		this.track = track;
+		this.tracks = track;
 	}
 	
 	public void setArtist(List<Artist> artist) {
 		this.artist = artist;
 	}
 	
-	public void setRelatedRecord(List<Record> relatedRecord) {
-		this.relatedRecord = relatedRecord;
+	public void setRelatedRecords(List<Record> relatedRecord) {
+		this.relatedRecords = relatedRecord;
 	}
 	
 	public void setItunesLink(String itunesLink) {
@@ -118,12 +118,8 @@ public class RecordImp implements Record{
 		return this.itunesPreview;
 	}
 
-	public List<Track> getTrack() {
-		return track;
-	}
-
 	public List<Record> getRelatedRecord() {
-		return relatedRecord;
+		return relatedRecords;
 	}
 
 	public void setReviews(List<String> reviews) {
@@ -161,4 +157,7 @@ public class RecordImp implements Record{
 		this.year = year;
 	}
 
+	public void setTracks(List<Track> tracks) {
+		this.tracks = tracks;
+	}
 }
