@@ -16,11 +16,8 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.reasoner.Reasoner;
-import com.hp.hpl.jena.reasoner.ReasonerRegistry;
 
 import edu.uib.info310.search.ArtistNotFoundException;
-import edu.uib.info310.search.DiscogSearch;
 import edu.uib.info310.search.ITunesSearcher;
 import edu.uib.info310.search.LastFMSearch;
 import edu.uib.info310.transformation.XslTransformer;

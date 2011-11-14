@@ -1,6 +1,5 @@
 package edu.uib.info310.model.factory;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import edu.uib.info310.model.Artist;
