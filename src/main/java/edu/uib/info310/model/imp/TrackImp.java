@@ -1,7 +1,10 @@
 package edu.uib.info310.model.imp;
 
+import org.springframework.stereotype.Component;
+
 import edu.uib.info310.model.Track;
 
+@Component
 public class TrackImp implements Track {
 	private Integer trackNr;
 	private String name;

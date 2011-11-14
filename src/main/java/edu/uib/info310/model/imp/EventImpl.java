@@ -2,8 +2,11 @@ package edu.uib.info310.model.imp;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import edu.uib.info310.model.Event;
 
+@Component
 public class EventImpl implements Event {
 
 	
@@ -97,8 +100,8 @@ public class EventImpl implements Event {
 	public String getWebsite() {
 		return this.website;
 	}
-	public String setWebsite(String string){
-		return this.website;
+	public void setWebsite(String website){
+		this.website = website;
 	}
 
 }

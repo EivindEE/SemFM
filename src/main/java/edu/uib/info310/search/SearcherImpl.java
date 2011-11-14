@@ -14,6 +14,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.query.Query;
@@ -29,9 +31,8 @@ import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
 import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
-import edu.uib.info310.model.imp.ArtistImpl;
-import edu.uib.info310.model.imp.EventImpl;
-import edu.uib.info310.model.imp.RecordImp;
+import edu.uib.info310.model.factory.ModelFactory;
+import edu.uib.info310.model.factory.ModelFactoryImpl;
 import edu.uib.info310.model.mock.MockRecord;
 import edu.uib.info310.search.builder.OntologyBuilder;
 
@@ -41,12 +42,14 @@ public class SearcherImpl implements Searcher {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearcherImpl.class);
 	@Autowired
 	private OntologyBuilder builder;
+	@Autowired
+	private ModelFactory modelFactory;
 	private Model model;
 	private Artist artist;
-	private Record record;
+//	private Record record;
 
 	public Artist searchArtist(String search_string) throws ArtistNotFoundException {
-		this.artist = new ArtistImpl();
+		this.artist = modelFactory.createArtist();
 		this.model = builder.createArtistOntology(search_string);
 		LOGGER.debug("Size of infered model: " + model.size());
 
@@ -62,15 +65,9 @@ public class SearcherImpl implements Searcher {
 
 		return this.artist;
 	}
-//	public Record searchalbums(String search_string) {
-//		this.record = new RecordImp();
-////		this.model = builder.createAlbumOntology(search_string);
-//		LOGGER.debug("Size of infered model: " + model.size());
-//		
-//		return record;
-//	}
+
+
 	public Map<String, Record> searchRecords(String albumName) {
-//		List<Record> records = new LinkedList<Record>();
 		Map<String,Record> uniqueRecord = new HashMap<String, Record>();
 		String safe_search = "";
 		try {
@@ -101,10 +98,10 @@ public class SearcherImpl implements Searcher {
 		
 		while(recordResults.hasNext()){
 			List<Artist> artists = new LinkedList<Artist>();
-			RecordImp recordResult = new RecordImp();
+			Record recordResult = modelFactory.createRecord();
 			QuerySolution querySol = recordResults.next();
 			recordResult.setName(querySol.get("albumName").toString());
-			ArtistImpl artist = new ArtistImpl();
+			Artist artist = modelFactory.createArtist();
 			artist.setName(querySol.get("artistName").toString());
 			artists.add(artist);
 			recordResult.setArtist(artists);
@@ -156,7 +153,7 @@ public class SearcherImpl implements Searcher {
 		LOGGER.debug("Found records? " + albums.hasNext());
 		while(albums.hasNext()){
 
-			RecordImp recordResult = new RecordImp();
+			Record recordResult = modelFactory.createRecord();
 			QuerySolution queryAlbum = albums.next();
 			recordResult.setId(queryAlbum.get("albumId").toString());
 			recordResult.setName(queryAlbum.get("title").toString());
@@ -193,7 +190,7 @@ public class SearcherImpl implements Searcher {
 		ResultSet similarResults = execution.execSelect();
 
 		while(similarResults.hasNext()){
-			ArtistImpl similarArtist = new ArtistImpl();
+			Artist similarArtist = modelFactory.createArtist();
 			QuerySolution queryArtist = similarResults.next();
 			similarArtist.setName(queryArtist.get("name").toString());
 			similarArtist.setId(queryArtist.get("id").toString());
@@ -212,7 +209,7 @@ public class SearcherImpl implements Searcher {
 		QueryExecution execution = QueryExecutionFactory.create(getArtistEventsStr, model);
 		ResultSet eventResults = execution.execSelect();
 		while(eventResults.hasNext()){
-			EventImpl event = new EventImpl();
+			Event event = modelFactory.createEvent();
 			QuerySolution queryEvent = eventResults.next();
 			event.setId(queryEvent.get("venueId").toString());
 			event.setVenue(queryEvent.get("venueName").toString());
@@ -422,8 +419,10 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		return null;
 	}
 
-	public static void main(String[] args) throws ArtistNotFoundException {
-		Searcher searcher = new SearcherImpl();
+	public static void main(String[] args) throws ArtistNotFoundException {		
+		ApplicationContext context = new  ClassPathXmlApplicationContext("main-context.xml");
+		System.out.println(context);
+		Searcher searcher = (Searcher) context.getBean("searcherImpl");
 //		searcher.searchArtist("Guns N Roses");
 		Map<String, Record> records = searcher.searchRecords("Thriller");
 		for(Record record:records.values()){

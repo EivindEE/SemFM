@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+
 import edu.uib.info310.sparql.QueryEndPoint;
 import edu.uib.info310.sparql.QueryEndPointImp;
 

@@ -9,6 +9,7 @@ import java.io.InputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.query.QueryExecution;
@@ -17,11 +18,8 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.reasoner.Reasoner;
-import com.hp.hpl.jena.reasoner.ReasonerRegistry;
 
 import edu.uib.info310.search.ArtistNotFoundException;
-import edu.uib.info310.search.DiscogSearch;
 import edu.uib.info310.search.ITunesSearcher;
 import edu.uib.info310.search.LastFMSearch;
 import edu.uib.info310.transformation.XslTransformer;
@@ -30,17 +28,20 @@ import edu.uib.info310.util.GetArtistInfo;
 @Component
 public class OntologyBuilder {
 
+	@Autowired
+	private LastFMSearch search;
 
-	private LastFMSearch search = new LastFMSearch();
-
-
-	private XslTransformer transformer = new XslTransformer();
+	@Autowired
+	private XslTransformer transformer;
+	
+	@Autowired
+	private ITunesSearcher itunes;
 
 	private static final String SIMILAR_XSL = "src/main/resources/XSL/SimilarArtistLastFM.xsl";
 	private static final String ARTIST_EVENTS_XSL = "src/main/resources/XSL/Events.xsl";
 	private static final Logger LOGGER = LoggerFactory.getLogger(OntologyBuilder.class);
 
-	private ITunesSearcher itunes = new ITunesSearcher();
+	
 	public Model createArtistOntology(String search_string) throws ArtistNotFoundException {
 		Model model = ModelFactory.createDefaultModel();
 		String correctName = search.correctArtist(search_string);
