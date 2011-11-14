@@ -219,23 +219,27 @@ public class DiscogSearch {
 		}
 	}
 	
-	public static void main(String[] args) throws MasterNotFoundException, IOException, TransformerException {
+	public Model transformAlbum(String releaseId) throws TransformerException{
 		
+		LOGGER.debug(releaseId);
 		File xsl = new File("src/main/resources/XSL/AlbumXSLT.xsl");
 		
 		DiscogSearch album = new DiscogSearch();
 		
 		XslTransformer transform = new XslTransformer();
 		
-		
-		
-		
-		transform.setXml(album.getAlbumURI("338967"));
+		try {
+			transform.setXml(album.getAlbumURI(releaseId));
+		} catch (MasterNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		transform.setXsl(xsl);
 		
 		Model model = ModelFactory.createDefaultModel();
 		InputStream in = new ByteArrayInputStream(transform.transform().toByteArray());
 		model.read(in,null);
+		LOGGER.debug("Model size after getting album info: " + model.size());
 		try {
 			FileOutputStream out = new FileOutputStream(new File("log/albumout.ttl"));
 			model.write(out,"TURTLE");
@@ -243,6 +247,17 @@ public class DiscogSearch {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return model;
+		
+	}
+	
+	public static void main(String[] args) throws MasterNotFoundException, IOException, TransformerException {
+		
+		
+		DiscogSearch album = new DiscogSearch();
+		
+	
+		album.transformAlbum(("338967"));
 		
 		
 	}

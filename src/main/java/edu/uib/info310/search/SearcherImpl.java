@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.xml.transform.TransformerException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 import edu.uib.info310.model.factory.ModelFactory;
 import edu.uib.info310.model.factory.ModelFactoryImpl;
+import edu.uib.info310.model.imp.RecordImp;
 import edu.uib.info310.model.mock.MockRecord;
 import edu.uib.info310.search.builder.OntologyBuilder;
 
@@ -411,6 +414,13 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 	}
 
 	public Record searchRecord(String search_string) {
+		try {
+	    setRecordInfo(search_string);
+		} catch (MasterNotFoundException e) {
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			e.printStackTrace();
+		}
 		return new MockRecord();
 	}
 	
@@ -418,16 +428,54 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public void setRecordInfo(String search_string) throws MasterNotFoundException, TransformerException{
+		DiscogSearch album = new DiscogSearch();
+		this.model = album.transformAlbum(search_string);
+		String release = "<http://api.discogs.com/release/" + search_string + ">";
+		LOGGER.debug("This is the search_string "+ release);
+		String albumStr =  "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+				"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
+				"PREFIX mo: <http://purl.org/ontology/mo/> " +
+				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+				"PREFIX dc: <http://purl.org/dc/terms/> " + 
+				"SELECT DISTINCT * WHERE { " + release + "rdfs:label ?label ;" +
+				"rdfs:comment ?comment;" +
+				"mo:track ?trackid;" +
+				"mo:genre ?genre;" +
+//				"dc:issued ?year;" +
+				"}";
+		
+		QueryExecution execution = QueryExecutionFactory.create(albumStr, model);
+		ResultSet albumResults = execution.execSelect();
 
-	public static void main(String[] args) throws ArtistNotFoundException {		
-		ApplicationContext context = new  ClassPathXmlApplicationContext("main-context.xml");
-		System.out.println(context);
-		Searcher searcher = (Searcher) context.getBean("searcherImpl");
-//		searcher.searchArtist("Guns N Roses");
-		Map<String, Record> records = searcher.searchRecords("Thriller");
-		for(Record record:records.values()){
-			System.out.println(record.getName()+", " + record.getDiscogId()+ ", " + record.getArtist().get(0).getName());
+		while(albumResults.hasNext()){
+			RecordImp albumRecord = new RecordImp();
+			QuerySolution queryAlbum = albumResults.next();
+			LOGGER.debug(queryAlbum.get("label").toString());
+		LOGGER.debug(queryAlbum.get("comment").toString());
+		LOGGER.debug(queryAlbum.get("genre").toString());
+		LOGGER.debug(queryAlbum.get("trackid").toString());
+		
 		}
+	}
+		
+
+	public static void main(String[] args) throws MasterNotFoundException {		
+//		ApplicationContext context = new  ClassPathXmlApplicationContext("main-context.xml");
+//		System.out.println(context);
+//		Searcher searcher = (Searcher) context.getBean("searcherImpl");
+////		searcher.searchArtist("Guns N Roses");
+//		Map<String, Record> records = searcher.searchRecords("Thriller");
+//		for(Record record:records.values()){
+//			System.out.println(record.getName()+", " + record.getDiscogId()+ ", " + record.getArtist().get(0).getName());
+//		}
+		Searcher searcher = new SearcherImpl();
+		String uri = "http://discogs.com/release/338967";
+		
+		searcher.searchRecord(uri.replace("http://discogs.com/release/",""));
+		
+		
 	}
 	
 	private Date makeDate(String dateString){
