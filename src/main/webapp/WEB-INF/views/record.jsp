@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page session="false" %>
 <!DOCTYPE html>
@@ -10,17 +11,19 @@
 	<link rel="icon" type="image/png" href="resources/images/favicon.png" />
 	<link rel="stylesheet" type="text/css" href="resources/css/screen.css" />
 </head>
-<body class="album">
+<body class="album" itemscope itemtype="http://www.schema.org/MusicAlbum">
 <jsp:include page="includes/header.jsp" />
 
 <div class="headline_wrapper">
 	<div class="headline">
-		<img src="${record.image}" alt="" class="search_result_image" />
+		<img src="${record.image}" alt="" class="search_result_image" itemprop="image" />
 		<div class="h1-wrapper">
-			<h1>${record.name}</h1>
+			<h1 itemprop="name">${record.name}</h1>
+			<meta content="${fn:length(record.tracks)}" itemprop="numTracks" />
+			<meta content="${record.genres}" itemprop="genre" />
 			<div class="h1-description">
 				<c:if test="${! empty record.itunesPreview}">
-					<audio controls="controls">
+					<audio controls="controls" itemprop="audio">
 					  <source src="${record.itunesPreview}" type="audio/aac" />
 					</audio>
 				</c:if>
@@ -30,9 +33,9 @@
 					</c:forEach>
 				</ul><br />
 				by
-				 <ul>
+				 <ul itemprop="byArtist" itemscope itemtype="http://www.schema.org/MusicGroup">
 					<c:forEach var="artist" items="${record.artist}">
-						<li>${artist.name}</li>
+						<li itemprop="name">${artist.name}</li>
 					</c:forEach>
 				</ul>
 				
@@ -45,7 +48,7 @@
 	</ul>
 </div>
 <div class="full main_wrapper">
-	<div class="album_description left half">
+	<div class="album_description left half" itemprop="about">
 		<h2>Description</h2>
 		${record.description};
 	</div>
@@ -80,17 +83,17 @@
 				<th>Artist</th>
 			</tr>
 			<c:forEach var="track" items="${record.tracks}">
-				<tr>
+				<tr itemprop="tracks" itemscope itemtype="http://www.schema.org/MusicRecording">
 					<td>${track.trackNr}</td>
-					<td>${track.name}</td>
-					<td>${track.length}</td>
+					<td itemprop="name">${track.name}</td>
+					<td itemprop="duration">${track.length}</td>
 					<td>
 						<c:if test="${! empty track.artist}">
-							<a href="artist?q=${track.artist}">${track.artist}</a>
+							<a href="artist?q=${track.artist}" itemprop="byArtist">${track.artist}</a>
 						</c:if>
 						<c:if test="${empty track.artist}">
 							<c:forEach var="artist" items="${record.artist}">
-								<a href="artist?q=${artist.name}">${artist.name}</a> 
+								<a href="artist?q=${artist.name}" itemprop="byArtist">${artist.name}</a> 
 							</c:forEach>
 						</c:if>
 					</td>
