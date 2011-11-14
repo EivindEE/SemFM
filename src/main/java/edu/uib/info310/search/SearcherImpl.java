@@ -294,28 +294,28 @@ public class SearcherImpl implements Searcher {
 				}
 			}
 			if(query.get("memberOf") != null){
-				String memberOf = "<a href=\"" + query.get("name1").toString().replace("@en", "") + "\">" + query.get("name1").toString().replace("@en", "") + "</a>";
+				String memberOf = "<a href=\"artist?q=" + query.get("name1").toString().replace("@en", "") + "\">" + query.get("name1").toString().replace("@en", "") + "</a>";
 
 				if(!bands.contains(memberOf)) {
 					bands.add(memberOf);
 				}
 			}
 			if(query.get("pastMemberOf") != null){
-				String pastMemberOf = "<a href=\"" + query.get("name2").toString().replace("@en", "") + "\">" + query.get("name2").toString().replace("@en", "") + "</a>";
+				String pastMemberOf = "<a href=\"artist?q=" + query.get("name2").toString().replace("@en", "") + "\">" + query.get("name2").toString().replace("@en", "") + "</a>";
 
 				if(!formerBands.contains(pastMemberOf)) {
 					formerBands.add(pastMemberOf);
 				}
 			}
 			if(query.get("currentMembers") != null){
-				String currentMember = "<a href=\"" + query.get("name3").toString().replace("@en", "") + "\">" + query.get("name3").toString().replace("@en", "") + "</a>";
+				String currentMember = "<a href=\"artist?q=" + query.get("name3").toString().replace("@en", "") + "\">" + query.get("name3").toString().replace("@en", "") + "</a>";
 
 				if(!currentMembers.contains(currentMember)) {
 					currentMembers.add(currentMember);
 				}
 			}
 			if(query.get("pastMembers") != null){
-				String pastMember = "<a href=\"" + query.get("name4").toString().replace("@en", "") + "\">" + query.get("name4").toString().replace("@en", "") + "</a>";
+				String pastMember = "<a href=\"artist?q=" + query.get("name4").toString().replace("@en", "") + "\">" + query.get("name4").toString().replace("@en", "") + "</a>";
 
 				if(!pastMembers.contains(pastMember)) {
 					pastMembers.add(pastMember);
@@ -448,16 +448,18 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		
 		QueryExecution execution = QueryExecutionFactory.create(albumStr, model);
 		ResultSet albumResults = execution.execSelect();
+		
+		
 
 		while(albumResults.hasNext()){
 			RecordImp albumRecord = new RecordImp();
 			QuerySolution queryAlbum = albumResults.next();
 			LOGGER.debug(queryAlbum.get("label").toString());
-		LOGGER.debug(queryAlbum.get("comment").toString());
-		LOGGER.debug(queryAlbum.get("genre").toString());
-		LOGGER.debug(queryAlbum.get("trackid").toString());
-		
+			LOGGER.debug(queryAlbum.get("comment").toString());
+			LOGGER.debug(queryAlbum.get("genre").toString());
+			LOGGER.debug(queryAlbum.get("trackid").toString());
 		}
+		
 	}
 		
 

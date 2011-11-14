@@ -10,6 +10,18 @@
 	<link rel="icon" type="image/png" href="resources/images/favicon.png" />
 	<link rel="stylesheet" type="text/css" href="resources/css/screen.css" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			console.log("Document ready");
+		});
+		$('#header').find('#search_form').submit(function() {
+			console.log("search submit");
+			alert("HEEELOOO");
+		  //$('body').add('<div style="width:100%;height:100%;position: absolute;z-index:100;background:rgba(0,0,0,0.9);">Loading...</div>');
+		});
+	</script>
+	
 	<c:if test="${! empty artist.discography}">
 	<script type="text/javascript" src="resources/javascript/thune.scroller.js"></script>
 	<script type="text/javascript">
@@ -23,37 +35,33 @@
 			});
 		});
 	</script>
-	<script type="text/javascript">
-	</script>
 	</c:if>
 
 	<c:if test="${! empty artist.locatedEvents}">
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 		<script type="text/javascript">
-		  function initialize() {
-		    var latlng = new google.maps.LatLng(35, 10);
-		    var myOptions = {
-		      zoom: 2,
-		      center: latlng,
-		      mapTypeId: google.maps.MapTypeId.ROADMAP
-		    };
-		    var map = new google.maps.Map(document.getElementById("concert_map"),
-		        myOptions);
-		    <c:forEach var="eventMarker" items="${artist.locatedEvents}">
-		  	  var latlng = new google.maps.LatLng(${eventMarker.lat},${eventMarker.lng});
-			  var marker = new google.maps.Marker({
-			      position: latlng, 
-			      map: map, 
-			      title:"<strong>${artist.name}</strong><br />${eventMarker.venue} @ ${eventMarker.venue}"
-			  }); 
-		  </c:forEach>
-		  }
-		  
-		
+			$(document).ready(function() {
+			    var latlng = new google.maps.LatLng(35, 10);
+			    var myOptions = {
+			      zoom: 2,
+			      center: latlng,
+			      mapTypeId: google.maps.MapTypeId.ROADMAP
+			    };
+			    var map = new google.maps.Map(document.getElementById("concert_map"),
+			        myOptions);
+			    <c:forEach var="eventMarker" items="${artist.locatedEvents}">
+			  	  var latlng = new google.maps.LatLng(${eventMarker.lat},${eventMarker.lng});
+				  var marker = new google.maps.Marker({
+				      position: latlng, 
+				      map: map, 
+				      title:"<strong>${artist.name}</strong><br />${eventMarker.venue} @ ${eventMarker.venue}"
+				  }); 	
+		  		</c:forEach>
+			});
 		</script>
 	</c:if>
 </head>
-<body onload="initialize()" class="artist" itemscope itemtype="http://schema.org/MusicGroup">
+<body class="artist" itemscope itemtype="http://schema.org/MusicGroup">
 
 <jsp:include page="includes/header.jsp" />
 

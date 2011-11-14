@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <div id="header" class="cf">
+
 	<a href="http://localhost:8080/SemFM" id="logo"><img src="http://localhost:8080/SemFM/spring/resources/images/SemFM-small.png" alt="" /></a>
 	<form id="search_form" action="search" method="get">
 		<input type="text" name="q" id="q" value="${q}" />
-		<button>Submit Search</button>
+		<button class="search_button">Submit Search</button>
 	</form>
 	<ul class="header_meta_links">
-		<li><a href="#sources">our sources</a></li>
+		<li><a href="#sources" class="close">our sources</a></li>
 		<li><a href="#help">help</a></li>
 	</ul>
 </div>
