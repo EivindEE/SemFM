@@ -17,6 +17,7 @@ import javax.xml.transform.TransformerException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -31,6 +32,7 @@ import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import edu.uib.info310.transformation.XslTransformer;
 
+@Component
 public class DiscogSearch {
 //	private static final String searchAlbum = "http://api.discogs.com/search?q=";
 //	private static final String searchEnd = "&f=xml";

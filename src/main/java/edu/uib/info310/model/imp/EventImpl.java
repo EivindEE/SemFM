@@ -2,8 +2,11 @@ package edu.uib.info310.model.imp;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import edu.uib.info310.model.Event;
 
+@Component
 public class EventImpl implements Event {
 
 	

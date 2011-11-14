@@ -18,6 +18,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -33,7 +34,7 @@ import edu.uib.info310.vocabulary.MO;
 
 
 
-
+@Component
 public class ITunesSearcher {
 	private static String DEFAULT_URL = "http://itunes.apple.com/search?entity=album&limit=200&country=NO&term=";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ITunesSearcher.class);

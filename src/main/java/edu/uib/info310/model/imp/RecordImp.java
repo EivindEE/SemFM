@@ -3,10 +3,13 @@ package edu.uib.info310.model.imp;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 
+@Component
 public class RecordImp implements Record{
 	private String id;
 	private String name;
