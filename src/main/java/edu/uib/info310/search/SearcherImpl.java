@@ -14,6 +14,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.query.Query;
@@ -40,7 +42,8 @@ public class SearcherImpl implements Searcher {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearcherImpl.class);
 	@Autowired
 	private OntologyBuilder builder;
-	private ModelFactory modelFactory = new ModelFactoryImpl();
+	@Autowired
+	private ModelFactory modelFactory;
 	private Model model;
 	private Artist artist;
 //	private Record record;
@@ -417,8 +420,9 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 	}
 
 	public static void main(String[] args) throws ArtistNotFoundException {		
-		Searcher searcher = new SearcherImpl();
-;
+		ApplicationContext context = new  ClassPathXmlApplicationContext("main-context.xml");
+		System.out.println(context);
+		Searcher searcher = (Searcher) context.getBean("searcherImpl");
 //		searcher.searchArtist("Guns N Roses");
 		Map<String, Record> records = searcher.searchRecords("Thriller");
 		for(Record record:records.values()){
