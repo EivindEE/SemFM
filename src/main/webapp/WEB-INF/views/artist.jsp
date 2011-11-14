@@ -102,7 +102,7 @@
 				<ul class="album_list">
 					<c:forEach var="album" items="${artist.discography}">
 						<li class="album">
-							<h3><a href="album?q=${album.discogId}">${album.name}</a></h3>
+							<h3><a href="album?q=${album.name}&artist=${artist.name}">${album.name}</a></h3>
 							<img src="${album.image}" alt="" />
 							<span class="album_year">${album.year}</span><br />
 							<span class="album_publisher">${album.label}</span>

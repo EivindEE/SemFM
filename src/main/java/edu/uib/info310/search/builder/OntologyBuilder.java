@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.slf4j.Logger;
@@ -43,7 +44,8 @@ public class OntologyBuilder {
 	public Model createArtistOntology(String search_string) throws ArtistNotFoundException {
 		Model model = ModelFactory.createDefaultModel();
 		String correctName = search.correctArtist(search_string);
-		try{
+		
+		try {
 			transformer.setXml(search.getSimilarArtist(correctName));
 			transformer.setXsl(new File(SIMILAR_XSL));
 
@@ -56,20 +58,29 @@ public class OntologyBuilder {
 			in = new ByteArrayInputStream(transformer.transform().toByteArray());
 			model.read(in, null);
 			LOGGER.debug("Model size after getting artist events: " + model.size());
+		} catch(Exception e) {
+			LOGGER.error("Threw exception" + e);
+		}
+		String id = "";
+		String artistName = "";
+		String getIdQuery = "PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX mo:<http://purl.org/ontology/mo/> SELECT ?id ?name WHERE {?id mo:similar-to ?something; foaf:name ?name . }";
+		QueryExecution exec = QueryExecutionFactory.create(getIdQuery, model);
+		ResultSet ids = exec.execSelect();
+		if(ids.hasNext()){
+			QuerySolution sol =ids.next(); 
+			id = sol.get("id").toString();
+			artistName = sol.get("name").toString();
+			LOGGER.debug("Sending id:" + id + ", and name: " + artistName + "  to iTunes, BBC and DBPedia");
+		}else{
+			LOGGER.debug("Did not find id for artist with name " + correctName);
+		}
 
-			String id = "";
-			String artistName = "";
-			String getIdQuery = "PREFIX foaf:<http://xmlns.com/foaf/0.1/> PREFIX mo:<http://purl.org/ontology/mo/> SELECT ?id ?name WHERE {?id mo:similar-to ?something; foaf:name ?name . }";
-			QueryExecution exec = QueryExecutionFactory.create(getIdQuery, model);
-			ResultSet ids = exec.execSelect();
-			if(ids.hasNext()){
-				QuerySolution sol =ids.next(); 
-				id = sol.get("id").toString();
-				artistName = sol.get("name").toString();
-				LOGGER.debug("Sending id:" + id + ", and name: " + artistName + "  to iTunes, BBC and DBPedia");
-			}else{
-				LOGGER.debug("Did not find id for artist with name " + correctName);
-			}
+		if(artistName.isEmpty() || artistName==null || model.size() < 3) {
+			LOGGER.debug("Artist not found");
+			throw new ArtistNotFoundException("Last.FM found name, but no data.");
+		}
+		
+		try{
 			model.add(itunes.getRecords(artistName, id));
 			LOGGER.debug("Model size after adding record info from iTunes: " + model.size());
 
@@ -78,21 +89,21 @@ public class OntologyBuilder {
 
 			model.add(GetArtistInfo.DBPedia(artistName, id));
 			LOGGER.debug("Model size after adding artis info from DBPedia: " + model.size());
-			} 
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			try {
-				FileOutputStream out = new FileOutputStream(new File("log/ontout.ttl"));
-				model.write(out,"TURTLE");
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-
-			return  model;
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 
+		try {
+			FileOutputStream out = new FileOutputStream(new File("log/ontout.ttl"));
+			model.write(out,"TURTLE");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+		return  model;
 	}
+
+}
