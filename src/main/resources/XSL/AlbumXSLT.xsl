@@ -12,7 +12,8 @@
 			xmlns:foaf="http://xmlns.com/foaf/0.1/" 
 			xmlns:mo="http://purl.org/ontology/mo/"
 			xmlns:v="http://www.w3.org/2006/vcard/ns#" 
-			xmlns:po="http://purl.org/ontology/po/" >
+			xmlns:po="http://purl.org/ontology/po/"
+			xmlns:time="http://www.w3.org/2006/time#" >
 
 
 
@@ -77,9 +78,9 @@
 						<rdfs:label>
 							<xsl:value-of select="title" />
 						</rdfs:label>
-						<xsd:duration>
+						<time:duration>
 							<xsl:value-of select="duration"/>
-						</xsd:duration>
+						</time:duration>
 						<mo:Track rdf:resource="http://api.discogs.com/release/{//release/@id}"/>
 			</rdf:Description>
 			</xsl:for-each>

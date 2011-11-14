@@ -47,7 +47,6 @@ public class DiscogSearch {
 			"PREFIX dc: <http://purl.org/dc/elements/1.1/>" +
 			"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
 			"PREFIX mo: <http://purl.org/ontology/mo/>" +
-//			"PREFIX dateIssued: <http://purl.org/dc/terms/issued>" +
 			"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
 			"PREFIX dc: <http://purl.org/dc/terms/>" +
 			"PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>";
@@ -172,7 +171,6 @@ public class DiscogSearch {
 			LOGGER.debug("Discogs request URL: " + discogRequest.toExternalForm());
 
 			URLConnection discogConnection = discogRequest.openConnection();
-			//LOGGER.debug(discogConnection.getContentType());
 			discogConnection.setRequestProperty("Accept-Encoding", "gzip,deflate");
 			in = discogConnection.getInputStream();
 		} catch(IOException ioexc){ 
@@ -192,13 +190,11 @@ public class DiscogSearch {
 			builder = domFactory.newDocumentBuilder();
 		} catch (Exception e) {/*ignore*/}
 		try {
-			LOGGER.debug("" + releaseId + "");
 			doc = builder.parse(getAlbumInputStream(release,releaseId));
 		} catch (Exception a) {
 			a.printStackTrace();
 			throw new MasterNotFoundException("Doc couldn't be built");
 		}
-		LOGGER.debug("DOM object with " + releaseId + " master ID");
 		return doc;
 	}
 	
@@ -215,7 +211,7 @@ public class DiscogSearch {
 			Element elementm = (Element) mainNode;
 			NodeList main = elementm.getChildNodes();
 			
-			//LOGGER.debug("Get node value of correct artist: " + (name.item(0)).getNodeValue());
+			LOGGER.debug("Get node value of correct artist: " + (name.item(0)).getNodeValue());
 			return getAlbumInputStream(master, (main.item(0)).getNodeValue());
 		}
 		catch (NullPointerException e) {
