@@ -23,4 +23,24 @@ public interface Event extends Comparable<Event> {
 	public String getCountry();
 	
 	public String getImage();
+	
+	public void setId(String id);
+	
+	public void setDate(Date date);
+	
+	public void setLocation(String location);
+	
+	public void setVenue(String venue);
+	
+	public void setWebsite(String website);
+	
+	public void setLng(String lng);
+	
+	public void setLat(String lat);
+	
+	public void setStreetAddress(String streetAddress);
+	
+	public void setCountry(String country);
+	
+	public void setImage(String image);
 }

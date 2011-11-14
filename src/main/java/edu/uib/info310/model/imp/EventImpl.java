@@ -97,8 +97,8 @@ public class EventImpl implements Event {
 	public String getWebsite() {
 		return this.website;
 	}
-	public String setWebsite(String string){
-		return this.website;
+	public void setWebsite(String website){
+		this.website = website;
 	}
 
 }
