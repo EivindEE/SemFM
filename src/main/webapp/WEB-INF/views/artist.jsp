@@ -53,17 +53,17 @@
 		</script>
 	</c:if>
 </head>
-<body onload="initialize()" class="artist">
+<body onload="initialize()" class="artist" itemscope itemtype="http://schema.org/MusicGroup">
 
 <jsp:include page="includes/header.jsp" />
 
 <div class="headline_wrapper<c:if test="${! empty artist.locatedEvents}"> tour</c:if>">
 	<div class="headline">
 		<c:if test="${! empty artist.image}">
-		<img src="${artist.image}" alt="" class="search_result_image" />
+		<img src="${artist.image}" alt="" class="search_result_image" itemprop="image" />
 		</c:if>
 		<div class="h1-wrapper">
-			<h1>${artist.name}</h1>
+			<h1 itemprop="name">${artist.name}</h1>
 			<span class="h1-description">${artist.shortDescription}</span>
 		</div>
 	</div>
@@ -71,7 +71,7 @@
 
 <div class="full main_wrapper">
 	<c:if test="${! empty artist.bio}">
-	<div class="biography left half">
+	<div class="biography left half" itemprop="description">
 		<h2>Bio</h2>
 		${artist.bio}
 	</div>
@@ -81,7 +81,13 @@
 		<h2>Meta Facts</h2>
 		<ul>
 			<c:forEach var="metaTidbit" items="${artist.meta}">
-				<li>${metaTidbit.key}: <ul><c:forEach var="item" items="${metaTidbit.value}"><li>${item}</li></c:forEach></ul></li>
+				<li>${metaTidbit.key}: 
+					<ul>
+						<c:forEach var="item" items="${metaTidbit.value}">
+							<li>${item}</li>
+						</c:forEach>
+					</ul>
+				</li>
 			</c:forEach>
 		</ul>	
 	</div>
@@ -95,11 +101,11 @@
 			<div class="album_list_carousel">
 				<ul class="album_list">
 					<c:forEach var="album" items="${artist.discography}">
-						<li class="album">
-							<h3><a href="album?q=${album.discogId}">${album.name}</a></h3>
+						<li class="album" itemprop="albums" itemscope itemtype="http://schema.org/MusicAlbum">
+							<h3><a href="album?q=${album.name}&artist=${artist.name}" itemprop="name">${album.name}</a></h3>
 							<img src="${album.image}" alt="" />
-							<span class="album_year">${album.year}</span><br />
-							<span class="album_publisher">${album.label}</span>
+							<span class="album_year" itemprop="datePublished">${album.year}</span><br />
+							<span class="album_publisher" itemprop="publisher">${album.label}</span>
 						</li>
 					</c:forEach>
 				</ul>
@@ -120,10 +126,10 @@
 				<th>Venue</th>
 			</tr>
 			<c:forEach var="event" items="${artist.events}">
-				<tr>
-					<td>${event.date}</td>
-					<td>${event.location}</td>
-					<td>${event.venue}</td>
+				<tr itemprop="events" itemscope itemtype="http://schema.org/Event">
+					<td itemprop="startDate">${event.date}</td>
+					<td itemprop="location">${event.location}</td>
+					<td itemprop="name">${event.venue}</td>
 				</tr>
 			</c:forEach>
 		</table>

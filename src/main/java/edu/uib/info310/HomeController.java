@@ -22,7 +22,7 @@ import edu.uib.info310.search.Searcher;
 @Controller
 public class HomeController {
 
-	private static final Logger logger = LoggerFactory
+	private static final Logger LOGGER = LoggerFactory
 			.getLogger(HomeController.class);
 
 	@Autowired
@@ -49,14 +49,14 @@ public class HomeController {
 	@RequestMapping(value = "/search")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ModelAndView search(@RequestParam String q){
-		logger.debug("Artist got search string: " + q);
+		LOGGER.debug("Artist got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("q", q);
 		try {
 			mav.addObject("artist", searcher.searchArtist(q));
 			mav.setViewName("artist");
 		} catch (ArtistNotFoundException e) {
-			
+			LOGGER.debug("Setting view to searchResults");
 			mav.addObject("records", searcher.searchRecords(q));
 			mav.setViewName("searchResults");
 		}
@@ -68,7 +68,7 @@ public class HomeController {
 	@RequestMapping(value = "/artist")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ModelAndView artist(@RequestParam String q){
-		logger.debug("Artist got search string: " + q);
+		LOGGER.debug("Artist got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("q", q);
 		try {
@@ -86,7 +86,7 @@ public class HomeController {
 	@RequestMapping(value = "/album")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ModelAndView album(@RequestParam String q){
-		logger.debug("Album got search string: " + q);
+		LOGGER.debug("Album got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("q", q);
 		mav.addObject("record", searcher.searchRecord(q));
