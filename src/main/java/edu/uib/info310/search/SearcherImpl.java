@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.query.Query;
@@ -38,10 +39,11 @@ import edu.uib.info310.search.builder.OntologyBuilder;
 public class SearcherImpl implements Searcher {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearcherImpl.class);
-	private OntologyBuilder builder = new OntologyBuilder();
+	@Autowired
+	private OntologyBuilder builder;
 	private Model model;
-	private ArtistImpl artist;
-	private RecordImp record;
+	private Artist artist;
+	private Record record;
 
 	public Artist searchArtist(String search_string) throws ArtistNotFoundException {
 		this.artist = new ArtistImpl();
@@ -60,15 +62,15 @@ public class SearcherImpl implements Searcher {
 
 		return this.artist;
 	}
-	public Record searchalbums(String search_string) {
-		this.record = new RecordImp();
-//		this.model = builder.createAlbumOntology(search_string);
-		LOGGER.debug("Size of infered model: " + model.size());
-		
-		return record;
-	}
+//	public Record searchalbums(String search_string) {
+//		this.record = new RecordImp();
+////		this.model = builder.createAlbumOntology(search_string);
+//		LOGGER.debug("Size of infered model: " + model.size());
+//		
+//		return record;
+//	}
 	public Map<String, Record> searchRecords(String albumName) {
-		List<Record> records = new LinkedList<Record>();
+//		List<Record> records = new LinkedList<Record>();
 		Map<String,Record> uniqueRecord = new HashMap<String, Record>();
 		String safe_search = "";
 		try {
@@ -429,7 +431,7 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		}
 	}
 	
-	public Date makeDate(String dateString){
+	private Date makeDate(String dateString){
 		Date date = new Date();
 		SimpleDateFormat stf = new SimpleDateFormat("yyyy-mm-dd",Locale.US);
 		try {

@@ -101,4 +101,36 @@ public class MockRecord implements Record {
 		return "sexydiscogid";
 	}
 
+	public void setId(String id) {}
+
+	public void setName(String name) { /*ignore*/}
+
+	public void setImage(String image) { /*ignore*/}
+
+	public void setYear(String year) { /*ignore*/}
+
+	public void setLabel(String label) { /*ignore*/}
+
+	public void setDescription(String description) { /*ignore*/}
+
+	public void setItunesLink(String itunesLink) { /*ignore*/}
+
+	public void setArtist(List<Artist> artists) { /*ignore*/}
+
+	public void setTracks(List<Track> tracks) { /*ignore*/}
+
+	public void setRelatedRecords(List<Record> relatedRecords) { /*ignore*/}
+
+	public void setReviews(List<String> reviews) { /*ignore*/}
+
+	public void setGenres(List<String> genres) { /*ignore*/}
+
+	public void setSpotifyUri(String spotifyUri) { /*ignore*/}
+
+	public void setMeta(Map<String, Object> meta) { /*ignore*/}
+
+	public void setDiscogId(String discogId) { /*ignore*/}
+
+	public void setItunesPreview(String itunesPreview) { /*ignore*/}
+
 }
