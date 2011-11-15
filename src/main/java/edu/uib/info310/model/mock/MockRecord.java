@@ -65,10 +65,10 @@ public class MockRecord implements Record {
 		return reviews; 
 	}
 
-	public List<String> getGenres() {
-		LinkedList<String> genres = new LinkedList<String>();
-		genres.add("Pop");
-		genres.add("Classical");
+	public HashMap<String,String> getGenres() {
+		HashMap<String,String> genres = new HashMap<String,String>();
+		genres.put("Pop", "pop");
+		genres.put("Classical", "classical");
 		return genres;
 	}
 
@@ -123,7 +123,7 @@ public class MockRecord implements Record {
 
 	public void setReviews(List<String> reviews) { /*ignore*/}
 
-	public void setGenres(List<String> genres) { /*ignore*/}
+	public void setGenres(HashMap<String,String> genres) { /*ignore*/}
 
 	public void setSpotifyUri(String spotifyUri) { /*ignore*/}
 
