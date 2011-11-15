@@ -121,14 +121,14 @@
 				<th>Date</th>
 				<th>Location</th>
 				<th>Venue</th>
-				<th>Last.FM event description</th>
+				<th>Event Link</th>
 			</tr>
 			<c:forEach var="event" items="${artist.events}">
 				<tr itemprop="events" itemscope itemtype="http://schema.org/Event">
 					<td itemprop="startDate">${event.date}</td>
 					<td itemprop="location">${event.location}</td>
 					<td itemprop="name">${event.venue}</td>
-					<td itemprop="url"><a href="${event.website}">${event.website}</a></td>
+					<td itemprop="url"><a href="${event.website}">Last.FM</a></td>
 				</tr>
 			</c:forEach>
 		</table>

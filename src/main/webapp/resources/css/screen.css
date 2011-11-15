@@ -443,7 +443,8 @@ a {
 	}
 	.zebra_table th {
 		font-size: 16px;
-		color: #DD0000;
+		color: #fff;
+		background: #DD0000;
 		text-align:left;
 	}
 	
