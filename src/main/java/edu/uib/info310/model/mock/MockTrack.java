@@ -21,4 +21,12 @@ public class MockTrack implements Track {
 		return "";
 	}
 
+	public void setTrackNr(Integer trackNr) {}
+
+	public void setName(String name) {}
+
+	public void setLength(String length) {}
+
+	public void setArtist(String artist) {}
+
 }

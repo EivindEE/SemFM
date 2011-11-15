@@ -9,4 +9,12 @@ public interface Track {
 	public String getLength();
 	
 	public String getArtist();
+	
+	public void setTrackNr(Integer trackNr);
+	
+	public void setName(String name);
+	
+	public void setLength(String length);
+	
+	public void setArtist(String artist);
 }
