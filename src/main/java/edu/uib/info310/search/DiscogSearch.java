@@ -245,19 +245,60 @@ public class DiscogSearch {
 		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
 		try{
 
-		ResultSet releaseIdResult = queryExecution.execSelect();
-		String releaseId ="";
+			ResultSet releaseIdResult = queryExecution.execSelect();
+			String releaseId ="";
 
-		
-		QuerySolution queryRelease = releaseIdResult.next();
-		//		LOGGER.debug("" + queryRelease.get("type").toString());
-		String releaseUri = queryRelease.get("album").toString();
-		releaseId = releaseUri.replace("http://data.kasabi.com/dataset/discogs/release/", "");
-		
-		return releaseId;
+
+			QuerySolution queryRelease = releaseIdResult.next();
+			//		LOGGER.debug("" + queryRelease.get("type").toString());
+			String releaseUri = queryRelease.get("album").toString();
+			releaseId = releaseUri.replace("http://data.kasabi.com/dataset/discogs/release/", "");
+
+			return releaseId;
 		}
 		catch (Exception e) {
-			throw new MasterNotFoundException("Did not find release for record \"" + record_name + "\" by : " + artist_name );
+			LOGGER.debug("Didn't find artist with name " + artist_name);
+			final StringBuilder result = new StringBuilder(artist_name.length());
+			String[] words = artist_name.split("\\s");
+			for(int i=0,l=words.length;i<l;++i) {
+				if(i>0) result.append(" ");      
+				result.append(Character.toUpperCase(words[i].charAt(0)))
+				.append(words[i].substring(1));
+
+			}
+			artist_name = result.toString();
+			selectString =
+					"SELECT ?album WHERE{" +
+							"?album foaf:maker ?artist;" +
+							"dc:title ?title;" +
+							"rdf:type ?type ." +
+							"?artist foaf:name \""+ artist_name + "\"." +
+
+							" FILTER (?type != mo:Track)." +
+							" FILTER regex(?title, \""+ record_name + "\", \"i\")" +
+							"}";
+
+			query = QueryFactory.create(PREFIX + selectString);
+			queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
+			queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
+			try{
+
+				ResultSet releaseIdResult = queryExecution.execSelect();
+				String releaseId ="";
+
+
+				QuerySolution queryRelease = releaseIdResult.next();
+				//		LOGGER.debug("" + queryRelease.get("type").toString());
+				String releaseUri = queryRelease.get("album").toString();
+				releaseId = releaseUri.replace("http://data.kasabi.com/dataset/discogs/release/", "");
+
+				return releaseId;
+			}
+			catch (Exception ee) {
+				LOGGER.debug("Didn't find artist with name " + artist_name);
+				throw new MasterNotFoundException("Did not find release for record \"" + record_name + "\" by : " + artist_name );
+			}
+
 		}
 	}
 
