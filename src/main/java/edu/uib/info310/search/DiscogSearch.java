@@ -26,6 +26,8 @@ import org.w3c.dom.NodeList;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
@@ -217,6 +219,41 @@ public class DiscogSearch {
 			return getAlbumInputStream(release,releaseId);
 
 		}
+	}
+	
+	public static String getRecordReleaseId(String record_name, String artist_name){
+//		String safe_search = "";
+//		try {
+//			safe_search = URLEncoder.encode(search_string, "UTF-8");
+//		} catch (UnsupportedEncodingException e) {/*ignore*/}
+
+		String selectString =
+				"SELECT ?album ?type WHERE{?album dc:title \""+ record_name + "\";" +
+						"foaf:maker ?artist;" +
+						"rdf:type mo:Record ." +
+						"?artist foaf:name \""+ artist_name + "\"." +
+						
+						"}";
+
+		LOGGER.debug(selectString);
+		Query query = QueryFactory.create(PREFIX + selectString);
+		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
+		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
+		
+		
+		ResultSet releaseIdResult = queryExecution.execSelect();
+		String releaseId ="";
+		
+		
+		QuerySolution queryRelease = releaseIdResult.next();
+		LOGGER.debug("" + queryRelease.get("album").toString());
+		String releaseUri = queryRelease.get("album").toString();
+		releaseId = releaseUri.replace("http://data.kasabi.com/dataset/discogs/release/", "");
+		return releaseId;
+	}
+	
+	public static void main(String[] args) {
+	  System.out.println(getRecordReleaseId("If It's Lovin' That You Want","Rihanna"));
 	}
 
 
