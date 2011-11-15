@@ -93,79 +93,7 @@ public class DiscogSearch {
 		return queryExecution.execDescribe();
 	}
 
-	public Model getAlbum(String search_string){
-		String safe_search = "";
-		try {
-			safe_search = URLEncoder.encode(search_string, "UTF-8");
-		} catch (UnsupportedEncodingException e) {/*ignore*/}
-
-		String searchString =
-				"DESCRIBE ?album WHERE{?album dc:title \""+ search_string + "\" ; rdf:type mo:Record; mo:publisher ?publisher. ?maker foaf:name 'Michael Jackson'. ?album foaf:maker ?maker}";
-		String constructStr = "CONSTRUCT {?artist foaf:made ?record;" +
-				"foaf:name ?artistName;" +
-				"rdf:type mo:MusicArtist ." +
-				"?record rdfs:comment ?comment;" +
-				"dc:issued ?issued;" +
-				"rdf:type mo:Record;" +
-				"mo:discogs ?discogs;" +
-				"foaf:name ?recordName;" +
-				"mo:publisher ?publisher;" +
-				"mo:track ?track";
-
-
-		String whereStr = "} WHERE {?record dc:title \""+ search_string + "\" ;" +
-				"rdf:type mo:Record;" +
-				"foaf:maker ?artist;" +
-				"dc:issued ?issued;" +
-				"mo:discogs ?discogs;" +
-				"dc:title ?recordName;" +
-				"mo:publisher ?publisher;" +
-				"mo:track ?track." +
-				"?artist foaf:name ?artistName}";
-
-
-		Query query = QueryFactory.create(PREFIX + constructStr + whereStr);
-		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
-
-		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
-
-
-
-		return queryExecution.execConstruct();
-	}
-
-
-	public Model getAlbums(String search_string){
-		String safe_search = "";
-		try {
-			safe_search = URLEncoder.encode(search_string, "UTF-8");
-		} catch (UnsupportedEncodingException e) {/*ignore*/}
-
-		String constructStr = "CONSTRUCT {?artist foaf:made ?record;" +
-				"foaf:name ?artistName;" +
-				"rdf:type mo:MusicArtist ." +
-				"?record rdf:type mo:Record;" +
-				"mo:discogs ?discogs;" +
-				"dc:title ?record.";
-
-
-		String whereStr = "} WHERE {?record dc:title \""+ safe_search + "\" ;" +
-				"rdf:type mo:Record;" +
-				"foaf:maker ?artist;" +
-				"mo:discogs ?discogs;" +
-				"dc:title ?recordName." +
-				"?artist foaf:name ?artistName}";
-
-
-		Query query = QueryFactory.create(PREFIX + constructStr + whereStr);
-		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
-
-		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
-
-
-
-		return queryExecution.execConstruct();
-	}
+	
 
 	private InputStream getAlbumInputStream(String uri, String releaseId) throws MasterNotFoundException{
 		InputStream in = null;
@@ -224,10 +152,7 @@ public class DiscogSearch {
 	}
 
 	public String getRecordReleaseId(String record_name, String artist_name) throws MasterNotFoundException{
-		//		String safe_search = "";
-		//		try {
-		//			safe_search = URLEncoder.encode(search_string, "UTF-8");
-		//		} catch (UnsupportedEncodingException e) {/*ignore*/}
+		
 
 		String selectString =
 				"SELECT ?album WHERE{" +

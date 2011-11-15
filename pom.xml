@@ -162,7 +162,7 @@
 	</repositories>
 
 	<build>
-		<finalName>GoblinChatroom</finalName>
+		<finalName>SemFM</finalName>
 		<plugins>
 
 			<!-- Facilitates downloading source and javadoc in Eclipse -->
