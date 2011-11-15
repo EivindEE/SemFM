@@ -13,7 +13,7 @@ public interface Searcher {
 	
 	public Event searchEvent(String search_string);
 	
-	public  Record searchRecord(String search_string);
+	public  Record searchRecord(String record_name,String artist_name);
 	
 	public Track searchTrack(String search_string);
 

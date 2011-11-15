@@ -23,7 +23,7 @@ public class MockSearcher implements Searcher {
 		return new MockEvent();
 	}
 
-	public Record searchRecord(String search_string) {
+	public Record searchRecord(String record_name, String artist_name) {
 		return new MockRecord();
 	}
 
