@@ -42,10 +42,6 @@
 			</div>
 		</div>
 	</div>
-	<ul class="headline_links">
-		<li><a href="${record.itunesLink}" class="itunes">iTunes</a></li>
-		<li><a href="${record.spotifyUri}" class="spotify">Spotify</a></li>
-	</ul>
 </div>
 <div class="full main_wrapper">
 	<div class="album_description left half" itemprop="about">

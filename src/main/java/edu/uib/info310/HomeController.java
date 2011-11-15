@@ -110,12 +110,14 @@ public class HomeController {
 		LOGGER.debug("Album got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("q", q);
+
 		try {
 			mav.addObject("record", searcher.searchRecord(q,artist));
 			mav.setViewName("record");
 		} catch (MasterNotFoundException e) {
 			mav.setViewName("notFound");
 		}
+
 		return mav;
 	}
 }

@@ -488,7 +488,7 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		QueryExecution execution = QueryExecutionFactory.create(albumStr, model);
 		ResultSet albumResults = execution.execSelect();
 		
-		List<String> genre = new LinkedList<String>();
+		HashMap<String,String> genre = new HashMap<String,String>();
 		List<Track> tracks = new LinkedList<Track>();
 		
 		while(albumResults.hasNext()){
@@ -507,7 +507,7 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 			track.setArtist(queryAlbum.get("artist").toString());
 			
 			tracks.add(track);
-			genre.add(queryAlbum.get("genre").toString());
+			genre.put(queryAlbum.get("genre").toString(),queryAlbum.get("genre").toString());
 			record.setYear(queryAlbum.get("year").toString());
 			record.setDescription(queryAlbum.get("comment").toString());
 		}
