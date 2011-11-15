@@ -468,7 +468,7 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 			
 			Track track = modelFactory.createTrack();
 			track.setName(queryAlbum.get("trackLabel").toString());
-			track.setTrackNr(Integer.parseInt(queryAlbum.get("trackNumber").toString()));
+			track.setTrackNr(queryAlbum.get("trackNumber").toString());
 			track.setArtist(queryAlbum.get("artist").toString());
 			
 			tracks.add(track);
