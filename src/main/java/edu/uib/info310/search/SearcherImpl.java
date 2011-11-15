@@ -49,7 +49,7 @@ public class SearcherImpl implements Searcher {
 	private ModelFactory modelFactory;
 	private Model model;
 	private Artist artist;
-//	private Record record;
+	private Record record;
 
 	public Artist searchArtist(String search_string) throws ArtistNotFoundException {
 		this.artist = modelFactory.createArtist();
@@ -413,15 +413,18 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		return null;
 	}
 
-	public Record searchRecord(String search_string) {
-		try {
-	    setRecordInfo(search_string);
+	public Record searchRecord(String record_name, String artist_name) {
+		this.record = modelFactory.createRecord();
+		LOGGER.debug("!!!!!!!!!!!" + artist_name + "!!!!!!!!!!!!!!1");
+		String release = DiscogSearch.getRecordReleaseId(record_name, artist_name);
+		try {	
+	    setRecordInfo(release);
 		} catch (MasterNotFoundException e) {
 			e.printStackTrace();
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		}
-		return new MockRecord();
+		return record;
 	}
 	
 	public Track searchTrack(String search_string) {
@@ -451,8 +454,6 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		QueryExecution execution = QueryExecutionFactory.create(albumStr, model);
 		ResultSet albumResults = execution.execSelect();
 		
-		
-		Record albumRecord = modelFactory.createRecord();
 		List<String> genre = new LinkedList<String>();
 		List<Track> tracks = new LinkedList<Track>();
 		
@@ -463,8 +464,8 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 //			LOGGER.debug(queryAlbum.get("genre").toString());
 //			LOGGER.debug(queryAlbum.get("year").toString());
 			
-			albumRecord.setId(release);
-			albumRecord.setName(queryAlbum.get("label").toString());
+			record.setId(release);
+			record.setName(queryAlbum.get("label").toString());
 			
 			Track track = modelFactory.createTrack();
 			track.setName(queryAlbum.get("trackLabel").toString());
@@ -473,12 +474,12 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 			
 			tracks.add(track);
 			genre.add(queryAlbum.get("genre").toString());
-			
-			albumRecord.setYear(queryAlbum.get("year").toString());
-			albumRecord.setDescription(queryAlbum.get("comment").toString());
+			record.setYear(queryAlbum.get("year").toString());
+			record.setDescription(queryAlbum.get("comment").toString());
 		}
-		albumRecord.setGenres(genre);
-		albumRecord.setTracks(tracks);
+		record.setGenres(genre);
+		record.setTracks(tracks);
+			
 	}
 		
 
@@ -492,9 +493,9 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 //			System.out.println(record.getName()+", " + record.getDiscogId()+ ", " + record.getArtist().get(0).getName());
 //		}
 //		Searcher searcher = new SearcherImpl();
-		String uri = "http://discogs.com/release/338967";
 		
-		searcher.searchRecord(uri.replace("http://discogs.com/release/",""));
+		
+		searcher.searchRecord("Rated R","Rihanna");
 		
 		
 	}

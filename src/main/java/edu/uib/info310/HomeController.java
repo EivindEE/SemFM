@@ -85,11 +85,11 @@ public class HomeController {
 	
 	@RequestMapping(value = "/album")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ModelAndView album(@RequestParam String q){
+	public ModelAndView album(@RequestParam String q,String artist){
 		LOGGER.debug("Album got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("q", q);
-		mav.addObject("record", searcher.searchRecord(q));
+		mav.addObject("record", searcher.searchRecord(q,artist));
 		mav.setViewName("record");
 		return mav;
 	}
