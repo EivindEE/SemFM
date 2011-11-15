@@ -89,7 +89,7 @@ public class HomeController {
 		LOGGER.debug("Album got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("q", q);
-		mav.addObject("record", searcher.searchRecord(q,artist));
+		mav.addObject("record", searcher.searchRecord(q, artist));
 		mav.setViewName("record");
 		return mav;
 	}

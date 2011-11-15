@@ -42,10 +42,6 @@
 			</div>
 		</div>
 	</div>
-	<ul class="headline_links">
-		<li><a href="${record.itunesLink}" class="itunes">iTunes</a></li>
-		<li><a href="${record.spotifyUri}" class="spotify">Spotify</a></li>
-	</ul>
 </div>
 <div class="full main_wrapper">
 	<div class="album_description left half" itemprop="about">
@@ -79,12 +75,14 @@
 			<tr>
 				<th>#</th>
 				<th>Song Title</th>
+				<th>Play time</th>
 				<th>Artist</th>
 			</tr>
 			<c:forEach var="track" items="${record.tracks}">
 				<tr itemprop="tracks" itemscope itemtype="http://www.schema.org/MusicRecording">
 					<td>${track.trackNr}</td>
 					<td itemprop="name">${track.name}</td>
+					<td itemprop="duration">${track.length}</td>
 					<td>
 						<c:if test="${! empty track.artist}">
 							<a href="artist?q=${track.artist}" itemprop="byArtist">${track.artist}</a>

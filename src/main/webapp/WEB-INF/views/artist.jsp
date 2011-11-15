@@ -11,17 +11,6 @@
 	<link rel="stylesheet" type="text/css" href="resources/css/screen.css" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 	
-	<script type="text/javascript">
-		$(document).ready(function() {
-			console.log("Document ready");
-		});
-		$('#header').find('#search_form').submit(function() {
-			console.log("search submit");
-			alert("HEEELOOO");
-		  //$('body').add('<div style="width:100%;height:100%;position: absolute;z-index:100;background:rgba(0,0,0,0.9);">Loading...</div>');
-		});
-	</script>
-	
 	<c:if test="${! empty artist.discography}">
 	<script type="text/javascript" src="resources/javascript/thune.scroller.js"></script>
 	<script type="text/javascript">
