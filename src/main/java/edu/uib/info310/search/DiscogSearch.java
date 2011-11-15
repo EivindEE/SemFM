@@ -228,9 +228,11 @@ public class DiscogSearch {
 //		} catch (UnsupportedEncodingException e) {/*ignore*/}
 
 		String selectString =
-				"SELECT ?album WHERE{?album dc:title \""+ record_name + "\";" +
-						"foaf:maker ?artist." +
+				"SELECT ?album ?type WHERE{?album dc:title \""+ record_name + "\";" +
+						"foaf:maker ?artist;" +
+						"rdf:type mo:Record ." +
 						"?artist foaf:name \""+ artist_name + "\"." +
+						
 						"}";
 
 		LOGGER.debug(selectString);
@@ -240,17 +242,18 @@ public class DiscogSearch {
 		
 		
 		ResultSet releaseIdResult = queryExecution.execSelect();
+		String releaseId ="";
 		
-	
+		
 		QuerySolution queryRelease = releaseIdResult.next();
 		LOGGER.debug("" + queryRelease.get("album").toString());
 		String releaseUri = queryRelease.get("album").toString();
-		String releaseId = releaseUri.replace("http://data.kasabi.com/dataset/discogs/release/", "");
+		releaseId = releaseUri.replace("http://data.kasabi.com/dataset/discogs/release/", "");
 		return releaseId;
 	}
 	
 	public static void main(String[] args) {
-	  System.out.println(getRecordReleaseId("Rated R","Rihanna"));
+	  System.out.println(getRecordReleaseId("If It's Lovin' That You Want","Rihanna"));
 	}
 
 
