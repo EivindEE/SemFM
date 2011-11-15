@@ -102,7 +102,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 
 
 			String whereStr ="} WHERE { {?artist foaf:name \"" + artistName + "\"@en.} UNION {?artist rdfs:label \"" + artistName + "\"@it} . " +
-					"{?artist rdf:type dbont:Artist.} UNION {?artist rdf:type dbont:Band.} UNION {?s dbont:musicalArtist ?artist. ?s a dbont:Single }." +
+					"{?artist rdf:type dbont:Artist.} UNION {?artist rdf:type dbont:Band.}  UNION {?s dbont:musicComposer ?artist. ?s a dbont:Work }." + //UNION {?s dbont:musicalArtist ?artist. ?s a dbont:Single } 
 					"OPTIONAL{?artist dbpedia:shortDescription ?comment} . " +
 					"OPTIONAL{?artist dbont:abstract ?bio . FILTER(lang(?bio) = 'en')} . " +
 					"OPTIONAL{?artist dbont:birthname ?birthname} ." +
@@ -120,7 +120,18 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
 			Model model = qep.describeStatement();
 			LOGGER.debug("DBPedia search found " + model.size() + " statements" );
-			return model;
+			boolean isUpperCase = Character.isUpperCase(artistName.charAt(0));
+			String newArtistName = null;
+			if(model.isEmpty() && isUpperCase == false){
+
+				newArtistName = artistName.substring(0,1).toUpperCase() + artistName.substring(1);
+				model = DBPedia(newArtistName, artistUri);
+				LOGGER.debug("DBPedia new artistName " + newArtistName );
+
+				return model;}
+			else{
+				return model;}
+
 		}				
 	}
 

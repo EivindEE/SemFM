@@ -1,6 +1,8 @@
 package edu.uib.info310;
 
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.uib.info310.model.Artist;
+import edu.uib.info310.model.Record;
 import edu.uib.info310.search.ArtistNotFoundException;
 import edu.uib.info310.search.MasterNotFoundException;
 import edu.uib.info310.search.Searcher;
@@ -53,19 +57,35 @@ public class HomeController {
 		LOGGER.debug("Artist got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("q", q);
+		Artist artist = null;
 		try {
-			mav.addObject("artist", searcher.searchArtist(q));
-			mav.setViewName("artist");
+			artist = searcher.searchArtist(q);
+			mav.addObject("artist", artist);
 		} catch (ArtistNotFoundException e) {
-			LOGGER.debug("Setting view to searchResults");
-			mav.addObject("records", searcher.searchRecords(q));
+			LOGGER.debug("Didn't find an artist with the name " + q);
+
+		}
+		LOGGER.debug("Looking for records called: " + q);
+		Map<String, Record> records = searcher.searchRecords(q);
+		LOGGER.debug("Found " + records.size() + " records" );
+		if(records.isEmpty() && artist != null){
+			mav.setViewName("artist");
+		}else if(records.isEmpty()){
+			mav.setViewName("notFound");
+		}else if(records.size() == 1){
+			Record record = records.values().iterator().next();
+			mav = album(record.getName(), record.getArtist().get(0).getName());
+		}
+		else{
+			mav.addObject("records", records);
 			mav.setViewName("searchResults");
 		}
-
+		
+		LOGGER.debug("Returning view: " + mav.getViewName());
 		return mav;
 	}
-	
-	
+
+
 	@RequestMapping(value = "/artist")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ModelAndView artist(@RequestParam String q){
@@ -81,9 +101,9 @@ public class HomeController {
 
 		return mav;
 	}
-	
-	
-	
+
+
+
 	@RequestMapping(value = "/album")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ModelAndView album(@RequestParam String q,String artist){
