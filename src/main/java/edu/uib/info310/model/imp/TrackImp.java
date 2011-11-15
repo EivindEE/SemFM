@@ -6,14 +6,14 @@ import edu.uib.info310.model.Track;
 
 @Component
 public class TrackImp implements Track {
-	private Integer trackNr;
+	private String trackNr;
 	private String name;
 	private String length;
 	private String artist;
 
 	
 	
-	public Integer getTrackNr() {
+	public String getTrackNr() {
 		return this.trackNr;
 	}
 
@@ -29,7 +29,7 @@ public class TrackImp implements Track {
 		return this.artist;
 	}
 
-	public void setTrackNr(Integer trackNr) {
+	public void setTrackNr(String trackNr) {
 		this.trackNr = trackNr;
 	}
 

@@ -5,8 +5,9 @@ import edu.uib.info310.model.Track;
 
 public class MockTrack implements Track {
 	private static Integer tracknr = new Integer(0);
-	public Integer getTrackNr(){
-		return tracknr++;
+	public String getTrackNr(){
+		tracknr++;
+		return  tracknr.toString();
 	}
 	
 	public String getName() {
@@ -21,7 +22,7 @@ public class MockTrack implements Track {
 		return "";
 	}
 
-	public void setTrackNr(Integer trackNr) {}
+	public void setTrackNr(String trackNr) {}
 
 	public void setName(String name) {}
 

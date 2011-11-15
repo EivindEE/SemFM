@@ -2,7 +2,7 @@ package edu.uib.info310.model;
 
 public interface Track {
 	
-	public Integer getTrackNr();
+	public String getTrackNr();
 	
 	public String getName();
 	
@@ -10,7 +10,7 @@ public interface Track {
 	
 	public String getArtist();
 	
-	public void setTrackNr(Integer trackNr);
+	public void setTrackNr(String trackNr);
 	
 	public void setName(String name);
 	
