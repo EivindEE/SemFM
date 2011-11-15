@@ -447,7 +447,7 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		return null;
 	}
 
-	public Record searchRecord(String record_name, String artist_name) {
+	public Record searchRecord(String record_name, String artist_name) throws MasterNotFoundException {
 		this.record = modelFactory.createRecord();
 		LOGGER.debug("!!!!!!!!!!!" + artist_name + "!!!!!!!!!!!!!!1");
 		String release = discog.getRecordReleaseId(record_name, artist_name);

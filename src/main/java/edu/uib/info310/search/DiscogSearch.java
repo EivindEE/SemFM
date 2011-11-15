@@ -223,7 +223,7 @@ public class DiscogSearch {
 		}
 	}
 
-	public String getRecordReleaseId(String record_name, String artist_name){
+	public String getRecordReleaseId(String record_name, String artist_name) throws MasterNotFoundException{
 		//		String safe_search = "";
 		//		try {
 		//			safe_search = URLEncoder.encode(search_string, "UTF-8");
@@ -240,7 +240,6 @@ public class DiscogSearch {
 						" FILTER regex(?title, \""+ record_name + "\", \"i\")" +
 						"}";
 
-		LOGGER.debug(selectString);
 		Query query = QueryFactory.create(PREFIX + selectString);
 		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
 		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
@@ -249,15 +248,20 @@ public class DiscogSearch {
 		ResultSet releaseIdResult = queryExecution.execSelect();
 		String releaseId ="";
 
-
+		try{
 		QuerySolution queryRelease = releaseIdResult.next();
 		//		LOGGER.debug("" + queryRelease.get("type").toString());
 		String releaseUri = queryRelease.get("album").toString();
 		releaseId = releaseUri.replace("http://data.kasabi.com/dataset/discogs/release/", "");
+		
 		return releaseId;
+		}
+		catch (Exception e) {
+			throw new MasterNotFoundException("Did not find release for record \"" + record_name + "\" by : " + artist_name );
+		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws MasterNotFoundException {
 		ApplicationContext context = new ClassPathXmlApplicationContext("main-context.xml");
 		DiscogSearch search = (DiscogSearch) context.getBean("discogSearch");
 		System.out.println(search.getRecordReleaseId("If It's Lovin' That You Want","Rihanna"));
