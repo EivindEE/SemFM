@@ -13,7 +13,10 @@
 </head>
 <body class="search-results">
 <jsp:include page="includes/header.jsp" />
-	<div class="full main_wrapper">
-		<div class="left search_results">Couldn't find "${q}".</div>
+	<div class="full main_wrapper text_center">
+		<h2 class="search_results text_center">Couldn't find "${q}".</h2>
+		<img src="resources/images/csabacat.png" alt="Sowwy" />
+		<p>Our residential semantic search cat couldn't find the thing you are looking for.</p>
+		<p>Sowwy ='(</p>
 	</div>
 <jsp:include page="includes/footer.jsp" />
