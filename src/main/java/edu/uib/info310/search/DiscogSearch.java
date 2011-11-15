@@ -243,12 +243,12 @@ public class DiscogSearch {
 		Query query = QueryFactory.create(PREFIX + selectString);
 		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
 		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
-
+		try{
 
 		ResultSet releaseIdResult = queryExecution.execSelect();
 		String releaseId ="";
 
-		try{
+		
 		QuerySolution queryRelease = releaseIdResult.next();
 		//		LOGGER.debug("" + queryRelease.get("type").toString());
 		String releaseUri = queryRelease.get("album").toString();
@@ -266,8 +266,5 @@ public class DiscogSearch {
 		DiscogSearch search = (DiscogSearch) context.getBean("discogSearch");
 		System.out.println(search.getRecordReleaseId("If It's Lovin' That You Want","Rihanna"));
 	}
-
-
-
 }
 
