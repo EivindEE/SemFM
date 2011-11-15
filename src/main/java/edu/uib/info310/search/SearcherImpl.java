@@ -1,5 +1,8 @@
 package edu.uib.info310.search;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -469,6 +472,15 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 	public void setRecordInfo(String search_string) throws MasterNotFoundException, TransformerException{
 		
 		this.model = builder.createRecordOntology(search_string);
+		
+//		try {
+//			FileOutputStream out = new FileOutputStream(new File("log/discogsout.ttl"));
+//			model.write(out, "TURTLE");
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
 		String release = "<http://api.discogs.com/release/" + search_string + ">";
 		LOGGER.debug("This is the search_string "+ release);
 		String albumStr =  "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
@@ -476,19 +488,22 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 				"PREFIX mo: <http://purl.org/ontology/mo/> " +
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dc: <http://purl.org/dc/terms/> " + 
-				"SELECT DISTINCT * WHERE { " + release + "rdfs:label ?label ;" +
+				"SELECT DISTINCT * WHERE { " + release + " rdfs:label ?label;" +
 				"rdfs:comment ?comment;" +
 				"foaf:hasAgent ?artist;" +
-				"mo:genre ?genre;" +
-				"dc:issued ?year." +
+				"mo:genre ?genre." +
+				//"dc:issued ?year;" +
+				//"mo:label ?label." +
 				"?trackid rdfs:label ?trackLabel;" +
 				"mo:track_number ?trackNumber." +
+				//"OPTIONAL { " + release + " mo:catalogue_number ?catalogueNumber. }" +
 				"}";
 		
 		QueryExecution execution = QueryExecutionFactory.create(albumStr, model);
 		ResultSet albumResults = execution.execSelect();
 		
 		HashMap<String,String> genre = new HashMap<String,String>();
+		HashMap<String,Object> meta = new HashMap<String,Object>();
 		List<Track> tracks = new LinkedList<Track>();
 		
 		while(albumResults.hasNext()){
@@ -508,11 +523,16 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 			
 			tracks.add(track);
 			genre.put(queryAlbum.get("genre").toString(),queryAlbum.get("genre").toString());
+			//meta.put("Released", queryAlbum.get("year").toString());
+			//meta.put("ID", release.toString());
+			//meta.put("Catalogue Number", queryAlbum.get("catalogueNumber").toString());
+			//meta.put("Label", queryAlbum.get("label").toString());
 			record.setYear(queryAlbum.get("year").toString());
 			record.setDescription(queryAlbum.get("comment").toString());
 		}
 		record.setGenres(genre);
 		record.setTracks(tracks);
+		record.setMeta(meta);
 			
 	}
 		

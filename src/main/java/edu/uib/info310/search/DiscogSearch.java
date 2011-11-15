@@ -98,6 +98,8 @@ public class DiscogSearch {
 		try {
 			safe_search = URLEncoder.encode(search_string, "UTF-8");
 		} catch (UnsupportedEncodingException e) {/*ignore*/}
+		
+		
 
 		String searchString =
 				"DESCRIBE ?album WHERE{?album dc:title \""+ search_string + "\" ; rdf:type mo:Record; mo:publisher ?publisher. ?maker foaf:name 'Michael Jackson'. ?album foaf:maker ?maker}";
@@ -128,8 +130,6 @@ public class DiscogSearch {
 		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
 
 		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
-
-
 
 		return queryExecution.execConstruct();
 	}

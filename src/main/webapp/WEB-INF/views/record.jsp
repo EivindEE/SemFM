@@ -29,7 +29,7 @@
 				</c:if>
 				<ul>
 					<c:forEach var="genre" items="${record.genres}">
-						<li>${genre}</li>
+						<li>${genre.value}</li>
 					</c:forEach>
 				</ul><br />
 				by
@@ -46,7 +46,7 @@
 <div class="full main_wrapper">
 	<div class="album_description left half" itemprop="about">
 		<h2>Description</h2>
-		${record.description};
+		${record.description}
 	</div>
 	<div class="album_meta meta_list right half">
 		<h2>Meta Facts</h2>
@@ -55,6 +55,13 @@
 					<ul>
 						<c:forEach var="artist" items="${record.artist}">
 							<li><a href="artist?q=${artist.name}">${artist.name}</a></li>
+						</c:forEach>
+					</ul>
+				</li>
+				<li>Genre: 
+					<ul>
+						<c:forEach var="genre" items="${record.genres}">
+							<li>${genre.value}</li>
 						</c:forEach>
 					</ul>
 				</li>
