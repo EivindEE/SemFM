@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import edu.uib.info310.search.ArtistNotFoundException;
+import edu.uib.info310.search.MasterNotFoundException;
 import edu.uib.info310.search.Searcher;
 
 /**
@@ -89,8 +90,14 @@ public class HomeController {
 		LOGGER.debug("Album got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("q", q);
-		mav.addObject("record", searcher.searchRecord(q, artist));
-		mav.setViewName("record");
+
+		try {
+			mav.addObject("record", searcher.searchRecord(q,artist));
+			mav.setViewName("record");
+		} catch (MasterNotFoundException e) {
+			mav.setViewName("notFound");
+		}
+
 		return mav;
 	}
 }
