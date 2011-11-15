@@ -15,7 +15,7 @@
 <body class="search-results">
 <jsp:include page="includes/header.jsp" />
 	<div class="full main_wrapper">
-		<h2 class="full text_center standard_margin">Found ${fn:length(records)} result<c:if test="${fn:length(records) > 1 }">s</c:if> for "${q}"</h2>
+		<h2 class="full text_center standard_margin">Found ${fn:length(records)} result<c:if test="${fn:length(records) != 1 }">s</c:if> for "${q}"</h2>
 		<c:if test="${! empty records}">
 		<ul class="zebra_list search_result_list full">
 			<c:forEach var="record" items="${records}">
