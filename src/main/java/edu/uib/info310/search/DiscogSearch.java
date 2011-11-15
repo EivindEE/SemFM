@@ -34,40 +34,40 @@ import edu.uib.info310.transformation.XslTransformer;
 
 @Component
 public class DiscogSearch {
-//	private static final String searchAlbum = "http://api.discogs.com/search?q=";
-//	private static final String searchEnd = "&f=xml";
-//	private static final String kasabi = "http://api.kasabi.com/dataset/discogs/apis/sparql?apikey=fe29b8c58180640f6db16b9cd3bce37c872c2036&output=xml&query=";
+	//	private static final String searchAlbum = "http://api.discogs.com/search?q=";
+	//	private static final String searchEnd = "&f=xml";
+	//	private static final String kasabi = "http://api.kasabi.com/dataset/discogs/apis/sparql?apikey=fe29b8c58180640f6db16b9cd3bce37c872c2036&output=xml&query=";
 	private static final String release = "http://api.discogs.com/release/";
 	private static final String master =  "http://api.discogs.com/master/";
 	private static final Logger LOGGER = LoggerFactory.getLogger(DiscogSearch.class);
 	private static final String format = "?f=xml";
 	private static String PREFIX = 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
-			"PREFIX dc: <http://purl.org/dc/elements/1.1/>" +
-			"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
-			"PREFIX mo: <http://purl.org/ontology/mo/>" +
-			"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
-			"PREFIX dc: <http://purl.org/dc/terms/>" +
-			"PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>";
-	
-	
+					"PREFIX dc: <http://purl.org/dc/elements/1.1/>" +
+					"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+					"PREFIX mo: <http://purl.org/ontology/mo/>" +
+					"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
+					"PREFIX dc: <http://purl.org/dc/terms/>" +
+					"PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>";
+
+
 	public Model getDiscography(String search_string){
 		String safe_search = "";
 		try {
 			safe_search = URLEncoder.encode(search_string, "UTF-8");
 		} catch (UnsupportedEncodingException e) {/*ignore*/}
-		
+
 		String searchString =" PREFIX INPUT: <http://www.discogs.com/artist/" + safe_search + ">" +
-	 			"DESCRIBE * where{ ?artist1 mo:discogs INPUT:." +
-	 			"?artist1 foaf:made ?allReleases. ?allReleases rdf:type mo:Record.}";
-		
+				"DESCRIBE * where{ ?artist1 mo:discogs INPUT:." +
+				"?artist1 foaf:made ?allReleases. ?allReleases rdf:type mo:Record.}";
+
 		Query query = QueryFactory.create(PREFIX + searchString);
 		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
-		
-		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
-		
 
-		
+		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
+
+
+
 		return queryExecution.execDescribe();
 	}
 	public Model getTracks(String search_string){
@@ -75,94 +75,94 @@ public class DiscogSearch {
 		try {
 			safe_search = URLEncoder.encode(search_string, "UTF-8");
 		} catch (UnsupportedEncodingException e) {/*ignore*/}
-		
+
 		String searchString =" PREFIX INPUT: <http://data.kasabi.com/dataset/discogs/artist/" + safe_search.toLowerCase().replace("+", "-") + ">" +
 
 	 			"DESCRIBE * where{ ?release foaf:maker INPUT:." +
 	 			"?release rdf:type mo:Track.}";
-		
+
 		Query query = QueryFactory.create(PREFIX + searchString);
 		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
-		
+
 		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
-		
+
 		return queryExecution.execDescribe();
 	}
-	
+
 	public Model getAlbum(String search_string){
 		String safe_search = "";
 		try {
 			safe_search = URLEncoder.encode(search_string, "UTF-8");
 		} catch (UnsupportedEncodingException e) {/*ignore*/}
-		
+
 		String searchString =
-	 			"DESCRIBE ?album WHERE{?album dc:title \""+ search_string + "\" ; rdf:type mo:Record; mo:publisher ?publisher. ?maker foaf:name 'Michael Jackson'. ?album foaf:maker ?maker}";
+				"DESCRIBE ?album WHERE{?album dc:title \""+ search_string + "\" ; rdf:type mo:Record; mo:publisher ?publisher. ?maker foaf:name 'Michael Jackson'. ?album foaf:maker ?maker}";
 		String constructStr = "CONSTRUCT {?artist foaf:made ?record;" +
-												 "foaf:name ?artistName;" +
-												 "rdf:type mo:MusicArtist ." +
-										 "?record rdfs:comment ?comment;" +
-										 		 "dc:issued ?issued;" +
-										 		 "rdf:type mo:Record;" +
-										 		 "mo:discogs ?discogs;" +
-										 		 "foaf:name ?recordName;" +
-										 		 "mo:publisher ?publisher;" +
-										 		 "mo:track ?track";
-		
-		
+				"foaf:name ?artistName;" +
+				"rdf:type mo:MusicArtist ." +
+				"?record rdfs:comment ?comment;" +
+				"dc:issued ?issued;" +
+				"rdf:type mo:Record;" +
+				"mo:discogs ?discogs;" +
+				"foaf:name ?recordName;" +
+				"mo:publisher ?publisher;" +
+				"mo:track ?track";
+
+
 		String whereStr = "} WHERE {?record dc:title \""+ search_string + "\" ;" +
-										   "rdf:type mo:Record;" +
-										   "foaf:maker ?artist;" +
-										   "dc:issued ?issued;" +
-										   "mo:discogs ?discogs;" +
-										   "dc:title ?recordName;" +
-										   "mo:publisher ?publisher;" +
-										   "mo:track ?track." +
-									"?artist foaf:name ?artistName}";
-		
-		
+				"rdf:type mo:Record;" +
+				"foaf:maker ?artist;" +
+				"dc:issued ?issued;" +
+				"mo:discogs ?discogs;" +
+				"dc:title ?recordName;" +
+				"mo:publisher ?publisher;" +
+				"mo:track ?track." +
+				"?artist foaf:name ?artistName}";
+
+
 		Query query = QueryFactory.create(PREFIX + constructStr + whereStr);
 		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
-		
-		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
-		
 
-		
+		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
+
+
+
 		return queryExecution.execConstruct();
 	}
-	
-	
+
+
 	public Model getAlbums(String search_string){
 		String safe_search = "";
 		try {
 			safe_search = URLEncoder.encode(search_string, "UTF-8");
 		} catch (UnsupportedEncodingException e) {/*ignore*/}
-		
+
 		String constructStr = "CONSTRUCT {?artist foaf:made ?record;" +
-												 "foaf:name ?artistName;" +
-												 "rdf:type mo:MusicArtist ." +
-										 "?record rdf:type mo:Record;" +
-										 		 "mo:discogs ?discogs;" +
-										 		 "dc:title ?record.";
-		
-		
+				"foaf:name ?artistName;" +
+				"rdf:type mo:MusicArtist ." +
+				"?record rdf:type mo:Record;" +
+				"mo:discogs ?discogs;" +
+				"dc:title ?record.";
+
+
 		String whereStr = "} WHERE {?record dc:title \""+ safe_search + "\" ;" +
-										   "rdf:type mo:Record;" +
-										   "foaf:maker ?artist;" +
-										   "mo:discogs ?discogs;" +
-										   "dc:title ?recordName." +
-									"?artist foaf:name ?artistName}";
-		
-		
+				"rdf:type mo:Record;" +
+				"foaf:maker ?artist;" +
+				"mo:discogs ?discogs;" +
+				"dc:title ?recordName." +
+				"?artist foaf:name ?artistName}";
+
+
 		Query query = QueryFactory.create(PREFIX + constructStr + whereStr);
 		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
-		
-		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
-		
 
-		
+		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
+
+
+
 		return queryExecution.execConstruct();
 	}
-	
+
 	private InputStream getAlbumInputStream(String uri, String releaseId) throws MasterNotFoundException{
 		InputStream in = null;
 		try{ 
@@ -176,7 +176,7 @@ public class DiscogSearch {
 			ioexc.printStackTrace();
 			throw new MasterNotFoundException("No master found");
 		}
-		
+
 		return in;
 	}
 
@@ -196,7 +196,7 @@ public class DiscogSearch {
 		}
 		return doc;
 	}
-	
+
 	public InputStream getAlbumURI(String releaseId) throws MasterNotFoundException {
 		try{
 			Document release = docBuilder(releaseId);
@@ -209,57 +209,17 @@ public class DiscogSearch {
 			Node mainNode = mainList.item(0);
 			Element elementm = (Element) mainNode;
 			NodeList main = elementm.getChildNodes();
-			
+
 			LOGGER.debug("Get node value of correct artist: " + (name.item(0)).getNodeValue());
 			return getAlbumInputStream(master, (main.item(0)).getNodeValue());
 		}
 		catch (NullPointerException e) {
 			return getAlbumInputStream(release,releaseId);
-		
+
 		}
 	}
-	
-	public Model transformAlbum(String releaseId) throws TransformerException{
-		
-		LOGGER.debug(releaseId);
-		File xsl = new File("src/main/resources/XSL/AlbumXSLT.xsl");
-		
-		DiscogSearch album = new DiscogSearch();
-		
-		XslTransformer transform = new XslTransformer();
-		
-		try {
-			transform.setXml(album.getAlbumURI(releaseId));
-		} catch (MasterNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		transform.setXsl(xsl);
-		
-		Model model = ModelFactory.createDefaultModel();
-		InputStream in = new ByteArrayInputStream(transform.transform().toByteArray());
-		model.read(in,null);
-		LOGGER.debug("Model size after getting album info: " + model.size());
-		try {
-			FileOutputStream out = new FileOutputStream(new File("log/albumout.ttl"));
-			model.write(out,"TURTLE");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return model;
-		
-	}
-	
-	public static void main(String[] args) throws MasterNotFoundException, IOException, TransformerException {
-		
-		
-		DiscogSearch album = new DiscogSearch();
-		
-	
-		album.transformAlbum(("338967"));
-		
-		
-	}
-	
+
+
+
 }
+
