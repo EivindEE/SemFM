@@ -250,26 +250,26 @@ public class SearcherImpl implements Searcher {
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dbont: <http://dbpedia.org/ontology/> " +
 				"SELECT DISTINCT * WHERE {" +
-				"OPTIONAL { "+ id +" mo:fanpage ?fanpage.} " +
+				"OPTIONAL { "+ id +" mo:fanpage ?sFanpage. BIND(str(?sFanpage) AS ?fanpage)} " +
 				"OPTIONAL { "+ id +" mo:imdb ?imdb. } " +
 				"OPTIONAL { "+ id +" mo:myspace ?myspace. } " +
 				"OPTIONAL { "+ id +" mo:homepage ?homepage. } " +
-				"OPTIONAL { "+ id +" rdfs:comment ?shortDesc.}  " +
+				"OPTIONAL { "+ id +" rdfs:comment ?sShortDesc. BIND(str(?sShortDesc) AS ?shortDesc)}  " +
 				"OPTIONAL { "+ id +" mo:image ?image}" +
-				"OPTIONAL { "+ id +" mo:biography ?bio. } " +
+				"OPTIONAL { "+ id +" mo:biography ?sBio. BIND(str(?sBio) AS ?bio) } " +
 				"OPTIONAL { "+ id +" dbont:birthname ?birthname} " +
 				"OPTIONAL { "+ id +" dbont:hometown ?hometown. } " +
-				"OPTIONAL { "+ id +" mo:origin ?origin. } " +
+				"OPTIONAL { "+ id +" mo:origin ?sOrigin. BIND(str(?sOrigin) AS ?origin)} " +
 				"OPTIONAL { "+ id +" mo:activity_start ?start. } " +
 				"OPTIONAL { "+ id +" mo:activity_end ?end. } " +
 				"OPTIONAL { "+ id +" dbont:birthDate ?birthdate. } " +
 				"OPTIONAL { "+ id +" dbont:deathDate ?deathdate. } " +
 				"OPTIONAL { "+ id +" mo:wikipedia ?wikipedia. } " +
 				"OPTIONAL { "+ id +" foaf:page ?bbcpage. }" +
-				"OPTIONAL { "+ id +" dbont:bandMember ?memberOf. ?memberOf rdfs:label ?name1 }" +
-				"OPTIONAL { "+ id +" dbont:formerBandMember ?pastMemberOf. ?pastMemberOf rdfs:label ?name2 }" +
-				"OPTIONAL { "+ id +" dbpedia:currentMembers ?currentMembers. ?currentMembers rdfs:label ?name3 }" +
-				"OPTIONAL { "+ id +" dbpedia:pastMembers ?pastMembers. ?pastMembers rdfs:label ?name4 }}" ;
+				"OPTIONAL { "+ id +" dbont:bandMember ?memberOf. ?memberOf rdfs:label ?sName1. BIND(str(?sName1) AS ?name1)}" +
+				"OPTIONAL { "+ id +" dbont:formerBandMember ?pastMemberOf. ?pastMemberOf rdfs:label ?sName2. BIND(str(?sName2) AS ?name2) }" +
+				"OPTIONAL { "+ id +" dbpedia:currentMembers ?currentMembers. ?currentMembers rdfs:label ?sName3. BIND(str(?sName3) AS ?name3) }" +
+				"OPTIONAL { "+ id +" dbpedia:pastMembers ?pastMembers. ?pastMembers rdfs:label ?sName4. BIND(str(?sName4) AS ?name4) }}" ;
 
 		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
 		ResultSet results = ex.execSelect();
@@ -287,35 +287,35 @@ public class SearcherImpl implements Searcher {
 				artist.setImage(query.get("image").toString());
 			}
 			if(query.get("fanpage") != null){
-				String fanpage = "<a href=\"" + query.get("fanpage").toString().replace("@en", "") + "\">" + query.get("fanpage").toString().replace("@en", "") + "</a>";
+				String fanpage = "<a href=\"" + query.get("fanpage").toString() + "\">" + query.get("fanpage").toString() + "</a>";
 
 				if(!fanpages.contains(fanpage)) {
 					fanpages.add(fanpage);
 				}
 			}
 			if(query.get("memberOf") != null){
-				String memberOf = "<a href=\"artist?q=" + query.get("name1").toString().replace("@en", "") + "\">" + query.get("name1").toString().replace("@en", "") + "</a>";
+				String memberOf = "<a href=\"artist?q=" + query.get("name1").toString() + "\">" + query.get("name1").toString() + "</a>";
 
 				if(!bands.contains(memberOf)) {
 					bands.add(memberOf);
 				}
 			}
 			if(query.get("pastMemberOf") != null){
-				String pastMemberOf = "<a href=\"artist?q=" + query.get("name2").toString().replace("@en", "") + "\">" + query.get("name2").toString().replace("@en", "") + "</a>";
+				String pastMemberOf = "<a href=\"artist?q=" + query.get("name2").toString() + "\">" + query.get("name2").toString() + "</a>";
 
 				if(!formerBands.contains(pastMemberOf)) {
 					formerBands.add(pastMemberOf);
 				}
 			}
 			if(query.get("currentMembers") != null){
-				String currentMember = "<a href=\"artist?q=" + query.get("name3").toString().replace("@en", "") + "\">" + query.get("name3").toString().replace("@en", "") + "</a>";
+				String currentMember = "<a href=\"artist?q=" + query.get("name3").toString() + "\">" + query.get("name3").toString() + "</a>";
 
 				if(!currentMembers.contains(currentMember)) {
 					currentMembers.add(currentMember);
 				}
 			}
 			if(query.get("pastMembers") != null){
-				String pastMember = "<a href=\"artist?q=" + query.get("name4").toString().replace("@en", "") + "\">" + query.get("name4").toString().replace("@en", "") + "</a>";
+				String pastMember = "<a href=\"artist?q=" + query.get("name4").toString() + "\">" + query.get("name4").toString() + "</a>";
 
 				if(!pastMembers.contains(pastMember)) {
 					pastMembers.add(pastMember);
