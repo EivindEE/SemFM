@@ -1,5 +1,6 @@
 package edu.uib.info310.model;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public interface Record {
 
 	public List<String> getReviews();
 
-	public List<String> getGenres();
+	public HashMap<String,String> getGenres();
 
 	public String getSpotifyUri();
 
@@ -60,7 +61,7 @@ public interface Record {
 
 	public void setReviews(List<String> reviews);
 
-	public void setGenres(List<String> genres);
+	public void setGenres(HashMap<String,String> genres);
 
 	public void setSpotifyUri(String spotifyUri);
 

@@ -1,5 +1,6 @@
 package edu.uib.info310.model.imp;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class RecordImp implements Record{
 	private List<Record> relatedRecords;
 	private String itunesLink;
 	private List<String> reviews;
-	private List<String> genres;
+	private HashMap<String, String> genres;
 	private String spotifyUri;
 	private Map<String, Object> meta;
 	private String itunesPreview;
@@ -105,7 +106,7 @@ public class RecordImp implements Record{
 		return this.reviews;
 	}
 
-	public List<String> getGenres() {
+	public HashMap<String,String> getGenres() {
 		return this.genres;
 	}
 
@@ -129,7 +130,7 @@ public class RecordImp implements Record{
 		this.reviews = reviews;
 	}
 
-	public void setGenres(List<String> genres) {
+	public void setGenres(HashMap<String,String> genres) {
 		this.genres = genres;
 	}
 
