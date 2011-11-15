@@ -473,14 +473,6 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		
 		this.model = builder.createRecordOntology(search_string);
 		
-		try {
-			FileOutputStream out = new FileOutputStream(new File("log/discogsout.ttl"));
-			model.write(out, "TURTLE");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		String release = "<http://api.discogs.com/release/" + search_string + ">";
 		LOGGER.debug("This is the search_string "+ release);
 		String albumStr =  "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +

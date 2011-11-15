@@ -1,5 +1,6 @@
 package edu.uib.info310.model.mock;
 
+import edu.uib.info310.model.Event;
 import edu.uib.info310.model.Track;
 
 
@@ -29,5 +30,9 @@ public class MockTrack implements Track {
 	public void setLength(String length) {}
 
 	public void setArtist(String artist) {}
+	
+	public int compareTo(Track o) {/*ignore*/
+		return 0;
+	}
 
 }

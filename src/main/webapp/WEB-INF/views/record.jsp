@@ -106,6 +106,7 @@
 			</c:forEach>
 		</table>
 	</div>
+	<c:if test="${!empty record.relatedRecords}">
 	<div class="alternative_releases full">
 		<h2>Alternative Releases</h2>
 		<ul class="related_list">
@@ -114,6 +115,7 @@
 		</c:forEach>
 		</ul>
 	</div>
+	</c:if>
 </div>
 
 
