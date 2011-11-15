@@ -79,14 +79,12 @@
 			<tr>
 				<th>#</th>
 				<th>Song Title</th>
-				<th>Play time</th>
 				<th>Artist</th>
 			</tr>
 			<c:forEach var="track" items="${record.tracks}">
 				<tr itemprop="tracks" itemscope itemtype="http://www.schema.org/MusicRecording">
 					<td>${track.trackNr}</td>
 					<td itemprop="name">${track.name}</td>
-					<td itemprop="duration">${track.length}</td>
 					<td>
 						<c:if test="${! empty track.artist}">
 							<a href="artist?q=${track.artist}" itemprop="byArtist">${track.artist}</a>
