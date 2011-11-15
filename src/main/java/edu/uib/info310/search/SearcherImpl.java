@@ -430,8 +430,8 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 	}
 	
 	public void setRecordInfo(String search_string) throws MasterNotFoundException, TransformerException{
-		DiscogSearch album = new DiscogSearch();
-		this.model = album.transformAlbum(search_string);
+		
+		this.model = builder.createRecordOntology(search_string);
 		String release = "<http://api.discogs.com/release/" + search_string + ">";
 		LOGGER.debug("This is the search_string "+ release);
 		String albumStr =  "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
@@ -441,38 +441,57 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 				"PREFIX dc: <http://purl.org/dc/terms/> " + 
 				"SELECT DISTINCT * WHERE { " + release + "rdfs:label ?label ;" +
 				"rdfs:comment ?comment;" +
-				"mo:track ?trackid;" +
+				"foaf:hasAgent ?artist;" +
 				"mo:genre ?genre;" +
-//				"dc:issued ?year;" +
+				"dc:issued ?year." +
+				"?trackid rdfs:label ?trackLabel;" +
+				"mo:track_number ?trackNumber." +
 				"}";
 		
 		QueryExecution execution = QueryExecutionFactory.create(albumStr, model);
 		ResultSet albumResults = execution.execSelect();
 		
 		
-
-		while(albumResults.hasNext()){
-			RecordImp albumRecord = new RecordImp();
-			QuerySolution queryAlbum = albumResults.next();
-			LOGGER.debug(queryAlbum.get("label").toString());
-			LOGGER.debug(queryAlbum.get("comment").toString());
-			LOGGER.debug(queryAlbum.get("genre").toString());
-			LOGGER.debug(queryAlbum.get("trackid").toString());
-		}
+		Record albumRecord = modelFactory.createRecord();
+		List<String> genre = new LinkedList<String>();
+		List<Track> tracks = new LinkedList<Track>();
 		
+		while(albumResults.hasNext()){
+			QuerySolution queryAlbum = albumResults.next();
+//			LOGGER.debug(queryAlbum.get("label").toString());
+//			LOGGER.debug(queryAlbum.get("comment").toString());
+//			LOGGER.debug(queryAlbum.get("genre").toString());
+//			LOGGER.debug(queryAlbum.get("year").toString());
+			
+			albumRecord.setId(release);
+			albumRecord.setName(queryAlbum.get("label").toString());
+			
+			Track track = modelFactory.createTrack();
+			track.setName(queryAlbum.get("trackLabel").toString());
+			track.setTrackNr(Integer.parseInt(queryAlbum.get("trackNumber").toString()));
+			track.setArtist(queryAlbum.get("artist").toString());
+			
+			tracks.add(track);
+			genre.add(queryAlbum.get("genre").toString());
+			
+			albumRecord.setYear(queryAlbum.get("year").toString());
+			albumRecord.setDescription(queryAlbum.get("comment").toString());
+		}
+		albumRecord.setGenres(genre);
+		albumRecord.setTracks(tracks);
 	}
 		
 
 	public static void main(String[] args) throws MasterNotFoundException {		
-//		ApplicationContext context = new  ClassPathXmlApplicationContext("main-context.xml");
+		ApplicationContext context = new  ClassPathXmlApplicationContext("main-context.xml");
 //		System.out.println(context);
-//		Searcher searcher = (Searcher) context.getBean("searcherImpl");
+		Searcher searcher = (Searcher) context.getBean("searcherImpl");
 ////		searcher.searchArtist("Guns N Roses");
 //		Map<String, Record> records = searcher.searchRecords("Thriller");
 //		for(Record record:records.values()){
 //			System.out.println(record.getName()+", " + record.getDiscogId()+ ", " + record.getArtist().get(0).getName());
 //		}
-		Searcher searcher = new SearcherImpl();
+//		Searcher searcher = new SearcherImpl();
 		String uri = "http://discogs.com/release/338967";
 		
 		searcher.searchRecord(uri.replace("http://discogs.com/release/",""));

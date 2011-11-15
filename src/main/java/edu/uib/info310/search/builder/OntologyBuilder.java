@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.xml.transform.TransformerException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,10 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 import edu.uib.info310.search.ArtistNotFoundException;
+import edu.uib.info310.search.DiscogSearch;
 import edu.uib.info310.search.ITunesSearcher;
 import edu.uib.info310.search.LastFMSearch;
+import edu.uib.info310.search.MasterNotFoundException;
 import edu.uib.info310.transformation.XslTransformer;
 import edu.uib.info310.util.GetArtistInfo;
 
@@ -36,6 +40,9 @@ public class OntologyBuilder {
 	
 	@Autowired
 	private ITunesSearcher itunes;
+	
+	@Autowired
+	private DiscogSearch discog;
 
 	private static final String SIMILAR_XSL = "src/main/resources/XSL/SimilarArtistLastFM.xsl";
 	private static final String ARTIST_EVENTS_XSL = "src/main/resources/XSL/Events.xsl";
@@ -105,6 +112,41 @@ public class OntologyBuilder {
 
 
 		return  model;
+	}
+	
+	public Model createRecordOntology(String search_string){
+			
+			LOGGER.debug(search_string);
+			File xsl = new File("src/main/resources/XSL/AlbumXSLT.xsl");
+				
+			XslTransformer transform = new XslTransformer();
+			
+			try {
+				transform.setXml(discog.getAlbumURI(search_string));
+			} catch (MasterNotFoundException e1) {
+				LOGGER.error(e1.toString());
+			}
+			transform.setXsl(xsl);
+			
+			Model model = ModelFactory.createDefaultModel();
+			InputStream in = null;
+			try {
+				in = new ByteArrayInputStream(transform.transform().toByteArray());
+			} catch (TransformerException e1) {
+				LOGGER.error(e1.toString());
+			}
+			model.read(in,null);
+			LOGGER.debug("Model size after getting album info: " + model.size());
+			try {
+				FileOutputStream out = new FileOutputStream(new File("log/albumout.ttl"));
+				model.write(out,"TURTLE");
+			} catch (FileNotFoundException e) {
+				LOGGER.error(e.toString());
+			}
+			
+			return model;
+		
+		
 	}
 
 }
