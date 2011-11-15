@@ -296,28 +296,60 @@ public class SearcherImpl implements Searcher {
 				}
 			}
 			if(query.get("memberOf") != null){
-				String memberOf = "<a href=\"artist?q=" + query.get("name1").toString() + "\">" + query.get("name1").toString() + "</a>";
+				String test2 = query.get("name1").toString();
+				String test = null;
+				try {
+					test = URLEncoder.encode(test2, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				String memberOf = "<a href=\"artist?q=" + test + "\">" + test2 + "</a>";
 
 				if(!bands.contains(memberOf)) {
 					bands.add(memberOf);
 				}
 			}
 			if(query.get("pastMemberOf") != null){
-				String pastMemberOf = "<a href=\"artist?q=" + query.get("name2").toString() + "\">" + query.get("name2").toString() + "</a>";
+				String test2 = query.get("name2").toString();
+				String test = null;
+				try {
+					test = URLEncoder.encode(test2, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				String pastMemberOf = "<a href=\"artist?q=" + test + "\">" + test2 + "</a>";
 
 				if(!formerBands.contains(pastMemberOf)) {
 					formerBands.add(pastMemberOf);
 				}
 			}
 			if(query.get("currentMembers") != null){
-				String currentMember = "<a href=\"artist?q=" + query.get("name3").toString() + "\">" + query.get("name3").toString() + "</a>";
+				String test2 = query.get("name3").toString();
+				String test = null;
+				try {
+					test = URLEncoder.encode(test2, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				String currentMember = "<a href=\"artist?q=" + test + "\">" + test2 + "</a>";
 
 				if(!currentMembers.contains(currentMember)) {
 					currentMembers.add(currentMember);
 				}
 			}
 			if(query.get("pastMembers") != null){
-				String pastMember = "<a href=\"artist?q=" + query.get("name4").toString() + "\">" + query.get("name4").toString() + "</a>";
+				String test2 = query.get("name4").toString();
+				String test = null;
+				try {
+					test = URLEncoder.encode(test2, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				String pastMember = "<a href=\"artist?q=" + test + "\">" + test2 + "</a>";
 
 				if(!pastMembers.contains(pastMember)) {
 					pastMembers.add(pastMember);
