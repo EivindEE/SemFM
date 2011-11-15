@@ -47,6 +47,8 @@ public class SearcherImpl implements Searcher {
 	private OntologyBuilder builder;
 	@Autowired
 	private ModelFactory modelFactory;
+	@Autowired
+	private DiscogSearch discog;
 	private Model model;
 	private Artist artist;
 	private Record record;
@@ -416,7 +418,7 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 	public Record searchRecord(String record_name, String artist_name) {
 		this.record = modelFactory.createRecord();
 		LOGGER.debug("!!!!!!!!!!!" + artist_name + "!!!!!!!!!!!!!!1");
-		String release = DiscogSearch.getRecordReleaseId(record_name, artist_name);
+		String release = discog.getRecordReleaseId(record_name, artist_name);
 		try {	
 	    setRecordInfo(release);
 		} catch (MasterNotFoundException e) {

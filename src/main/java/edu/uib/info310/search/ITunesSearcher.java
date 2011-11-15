@@ -37,6 +37,8 @@ import edu.uib.info310.vocabulary.MO;
 @Component
 public class ITunesSearcher {
 	private static String DEFAULT_URL = "http://itunes.apple.com/search?entity=album&limit=200&country=NO&term=";
+	private static String SINGLE = " - Single";
+	private static String EP = " - EP";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ITunesSearcher.class);
 
 	public Model getRecords(String artist, String artistUri){
@@ -61,9 +63,14 @@ public class ITunesSearcher {
 					property = FOAF.depiction;
 					rdfObject = model.createResource(jObject.get("artworkUrl100").toString());
 					model.add(subject, property, rdfObject);
-
+					String collectionName = jObject.get("collectionName").toString();
+					if(collectionName.endsWith(SINGLE))
+						collectionName = collectionName.substring(0, collectionName.length() - SINGLE.length());
+					else if(collectionName.endsWith(EP))
+						collectionName = collectionName.substring(0, collectionName.length() - EP.length());
+					
 					property = DCTerms.title;
-					rdfObject = model.createResource(jObject.get("collectionName").toString());
+					rdfObject = model.createResource(collectionName);
 					model.add(subject, property, rdfObject);
 					
 					property = RDF.type;

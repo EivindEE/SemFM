@@ -17,6 +17,8 @@ import javax.xml.transform.TransformerException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -221,19 +223,19 @@ public class DiscogSearch {
 		}
 	}
 	
-	public static String getRecordReleaseId(String record_name, String artist_name){
+	public String getRecordReleaseId(String record_name, String artist_name){
 //		String safe_search = "";
 //		try {
 //			safe_search = URLEncoder.encode(search_string, "UTF-8");
 //		} catch (UnsupportedEncodingException e) {/*ignore*/}
 
 		String selectString =
-				"SELECT ?album ?type WHERE{?album dc:title \""+ record_name + "\";" +
+				"SELECT ?album WHERE{?album dc:title \""+ record_name + "\";" +
 						"foaf:maker ?artist;" +
-						"rdf:type mo:Record ." +
+						"rdf:type ?type ." +
 						"?artist foaf:name \""+ artist_name + "\"." +
 						
-						"}";
+						" FILTER (?type != mo:Track).}";
 
 		LOGGER.debug(selectString);
 		Query query = QueryFactory.create(PREFIX + selectString);
@@ -246,14 +248,16 @@ public class DiscogSearch {
 		
 		
 		QuerySolution queryRelease = releaseIdResult.next();
-		LOGGER.debug("" + queryRelease.get("album").toString());
+//		LOGGER.debug("" + queryRelease.get("type").toString());
 		String releaseUri = queryRelease.get("album").toString();
 		releaseId = releaseUri.replace("http://data.kasabi.com/dataset/discogs/release/", "");
 		return releaseId;
 	}
 	
 	public static void main(String[] args) {
-	  System.out.println(getRecordReleaseId("If It's Lovin' That You Want","Rihanna"));
+		ApplicationContext context = new ClassPathXmlApplicationContext("main-context.xml");
+		DiscogSearch search = (DiscogSearch) context.getBean("discogSearch");
+	  System.out.println(search.getRecordReleaseId("If It's Lovin' That You Want","Rihanna"));
 	}
 
 
