@@ -473,13 +473,13 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		
 		this.model = builder.createRecordOntology(search_string);
 		
-//		try {
-//			FileOutputStream out = new FileOutputStream(new File("log/discogsout.ttl"));
-//			model.write(out, "TURTLE");
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			FileOutputStream out = new FileOutputStream(new File("log/discogsout.ttl"));
+			model.write(out, "TURTLE");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		String release = "<http://api.discogs.com/release/" + search_string + ">";
 		LOGGER.debug("This is the search_string "+ release);
@@ -487,16 +487,18 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 				"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
 				"PREFIX mo: <http://purl.org/ontology/mo/> " +
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-				"PREFIX dc: <http://purl.org/dc/terms/> " + 
+				"PREFIX dc: <http://purl.org/dc/terms/> " +
+				"PREFIX time: <http://www.w3.org/2006/time#> " + 
 				"SELECT DISTINCT * WHERE { " + release + " rdfs:label ?label;" +
 				"rdfs:comment ?comment;" +
 				"foaf:hasAgent ?artist;" +
-				"mo:genre ?genre." +
-				//"dc:issued ?year;" +
-				//"mo:label ?label." +
+				"mo:genre ?genre;" +
+				"mo:catalogue_number ?catalogueNumber;" +
+				"mo:label ?publisher;" +
+				"dc:issued ?year." +
 				"?trackid rdfs:label ?trackLabel;" +
-				"mo:track_number ?trackNumber." +
-				//"OPTIONAL { " + release + " mo:catalogue_number ?catalogueNumber. }" +
+				"mo:track_number ?trackNumber;" +
+				"time:duration ?trackDuration." +
 				"}";
 		
 		QueryExecution execution = QueryExecutionFactory.create(albumStr, model);
@@ -504,7 +506,8 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 		
 		HashMap<String,String> genre = new HashMap<String,String>();
 		HashMap<String,Object> meta = new HashMap<String,Object>();
-		List<Track> tracks = new LinkedList<Track>();
+		HashMap<String, Track> tracks = new HashMap<String, Track>();
+		HashMap<String, Artist> artists = new HashMap<String, Artist>();
 		
 		while(albumResults.hasNext()){
 			QuerySolution queryAlbum = albumResults.next();
@@ -519,19 +522,32 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 			Track track = modelFactory.createTrack();
 			track.setName(queryAlbum.get("trackLabel").toString());
 			track.setTrackNr(queryAlbum.get("trackNumber").toString());
-			track.setArtist(queryAlbum.get("artist").toString());
 			
-			tracks.add(track);
+			if(queryAlbum.get("trackDuration") != null) {
+				track.setLength(queryAlbum.get("trackDuration").toString());
+			}
+			
+			LOGGER.debug(queryAlbum.get("artist").toString());
+			tracks.put(queryAlbum.get("trackNumber").toString(), track);
+			
+			Artist artist = modelFactory.createArtist();
+			artist.setName(queryAlbum.get("artist").toString());
+			artists.put(queryAlbum.get("artist").toString(), artist);
+			
 			genre.put(queryAlbum.get("genre").toString(),queryAlbum.get("genre").toString());
-			//meta.put("Released", queryAlbum.get("year").toString());
-			//meta.put("ID", release.toString());
-			//meta.put("Catalogue Number", queryAlbum.get("catalogueNumber").toString());
-			//meta.put("Label", queryAlbum.get("label").toString());
+			meta.put("Released", queryAlbum.get("year").toString());
+			if(queryAlbum.get("catalogueNumber").toString() != "none") {
+				meta.put("Catalogue Number", queryAlbum.get("catalogueNumber").toString());
+			}
+			meta.put("Label", queryAlbum.get("publisher").toString());
 			record.setYear(queryAlbum.get("year").toString());
 			record.setDescription(queryAlbum.get("comment").toString());
 		}
+		
+		
 		record.setGenres(genre);
-		record.setTracks(tracks);
+		record.setTracks(new LinkedList<Track>(tracks.values()));
+		record.setArtist(new LinkedList<Artist>(artists.values()));
 		record.setMeta(meta);
 			
 	}

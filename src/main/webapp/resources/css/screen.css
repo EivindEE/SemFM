@@ -432,11 +432,12 @@ a {
 		background: #eee;
 	}
 .zebra_table {
-	width:960px;
+	width:100%;
 	margin:0 auto;
 	border-radius: 5px;
 	box-shadow: 3px 3px 6px #ddd;
 }
+
 	/* table header */
 	.zebra_table tr:first-child {
 		border: 0 !important;

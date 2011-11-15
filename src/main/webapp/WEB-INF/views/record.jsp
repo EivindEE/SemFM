@@ -44,10 +44,12 @@
 	</div>
 </div>
 <div class="full main_wrapper">
+	<c:if test="${! empty record.description}">
 	<div class="album_description left half" itemprop="about">
 		<h2>Description</h2>
 		${record.description}
 	</div>
+	</c:if>
 	<div class="album_meta meta_list right half">
 		<h2>Meta Facts</h2>
 		<ul>
@@ -76,7 +78,7 @@
 				</c:forEach>
 		</ul>	
 	</div>
-	<div class="tracks full">
+	<div class="tracks<c:if  test="${! empty record.description}"> full</c:if><c:if  test="${empty record.description}"> left half</c:if>">
 		<h2>Tracks</h2>
 		<table class="zebra_table">
 			<tr>
