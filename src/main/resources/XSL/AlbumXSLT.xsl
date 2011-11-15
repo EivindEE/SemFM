@@ -69,7 +69,7 @@
 			</rdf:Description>
 
 			<xsl:for-each select="release/tracklist/track">
-			<rdf:Description rdf:about="http://api.discogs.com/release/{//release/@id}{position}">
+			<rdf:Description rdf:about="http://api.discogs.com/release/{//release/@id}/track/{position}">
 				<rdf:type rdf:resource="http://purl.org/ontology/mo/track"/>
 						<mo:track_number>
 							<xsl:value-of select="position" />
