@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -75,8 +76,9 @@ public class SearcherImpl implements Searcher {
 	}
 
 
-	public Map<String, Record> searchRecords(String albumName) {
-		Map<String,Record> uniqueRecord = new HashMap<String, Record>();
+	public List<Record> searchRecords(String albumName) {
+		List<Record> records= new LinkedList<Record>();
+		
 		String safe_search = "";
 		try {
 			safe_search = URLEncoder.encode(albumName, "UTF-8");
@@ -91,13 +93,15 @@ public class SearcherImpl implements Searcher {
 				"PREFIX dc: <http://purl.org/dc/terms/>" +
 				"PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>";
 		
-		String albums =  "SELECT ?artistName ?albumName ?discogs" +
+		String albums =  "SELECT ?artistName ?albumName ?year "+
 				" WHERE {	?record dc:title \""+ safe_search + "\" ;" +
-									"rdf:type mo:Record;" +
-									"foaf:maker ?artist;" +
-									"mo:discogs ?discogs;" +
+									"rdf:type mo:Record ;" +
+									"foaf:maker ?artist ;" +
+									"mo:discogs ?discogs ;" +
+									"dc:issued ?year ;" +
 									"dc:title ?albumName." +
-									"?artist foaf:name ?artistName}";
+									"?artist foaf:name ?artistName}" +
+									"ORDER BY ?year";
 
 		Query query = QueryFactory.create(prefix + albums);
 		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
@@ -106,17 +110,24 @@ public class SearcherImpl implements Searcher {
 		
 		while(recordResults.hasNext()){
 			List<Artist> artists = new LinkedList<Artist>();
-			Record recordResult = modelFactory.createRecord();
+			Record record = modelFactory.createRecord();
 			QuerySolution querySol = recordResults.next();
-			recordResult.setName(querySol.get("albumName").toString());
+			record.setName(querySol.get("albumName").toString());
 			Artist artist = modelFactory.createArtist();
 			artist.setName(querySol.get("artistName").toString());
 			artists.add(artist);
-			recordResult.setArtist(artists);
-			recordResult.setDiscogId(querySol.get("discogs").toString());
-			uniqueRecord.put(recordResult.getArtist().get(0).getName(), recordResult);
+			record.setArtist(artists);
+			
+//			Date date = this.makeDate(querySol.get("year").toString());	
+
+			record.setYear(querySol.get("year").toString().substring(0,4));
+//			recordResult.setDiscogId(querySol.get("discogs").toString());
+			if(!records.contains(record)){
+				records.add(record);
+			}
 		}
-		return uniqueRecord; 
+
+		return records; 
 	}
 
 	private void setArtistIdAndName() {
