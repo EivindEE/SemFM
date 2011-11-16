@@ -1,5 +1,6 @@
 package edu.uib.info310.search;
 
+import java.util.List;
 import java.util.Map;
 
 import edu.uib.info310.model.Artist;
@@ -17,6 +18,6 @@ public interface Searcher {
 	
 	public Track searchTrack(String search_string);
 
-	public Map<String, Record> searchRecords(String q);
+	public List<Record> searchRecords(String q);
 
 }

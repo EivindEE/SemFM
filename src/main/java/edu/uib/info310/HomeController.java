@@ -1,6 +1,7 @@
 package edu.uib.info310;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -66,14 +67,14 @@ public class HomeController {
 
 		}
 		LOGGER.debug("Looking for records called: " + q);
-		Map<String, Record> records = searcher.searchRecords(q);
+		List<Record> records = searcher.searchRecords(q);
 		LOGGER.debug("Found " + records.size() + " records" );
 		if(records.isEmpty() && artist != null){
 			mav.setViewName("artist");
 		}else if(records.isEmpty()){
 			mav.setViewName("notFound");
-		}else if(records.size() == 1){
-			Record record = records.values().iterator().next();
+		}else if(records.size() == 1 && artist == null){
+			Record record = records.get(0);
 			mav = album(record.getName(), record.getArtist().get(0).getName());
 		}
 		else{
