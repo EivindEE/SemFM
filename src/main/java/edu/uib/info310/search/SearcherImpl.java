@@ -244,8 +244,13 @@ public class SearcherImpl implements Searcher {
 	}
 
 	private void setArtistInfo() {
-
-		String id = " <" + artist.getId() + "> ";
+		String testId = artist.getName();
+		LOGGER.debug("Artisturi " + artist.getName());
+		String id = testId;
+		try {
+			id= "<http://www.last.fm/music/" + URLEncoder.encode(testId, "UTF-8") + ">";
+		} catch (UnsupportedEncodingException e) { }
+		LOGGER.debug("Artisturi encoded " + id);
 		String getArtistInfoStr = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
 				"PREFIX mo: <http://purl.org/ontology/mo/> " +
@@ -256,7 +261,8 @@ public class SearcherImpl implements Searcher {
 				"PREFIX dbont: <http://dbpedia.org/ontology/> " +
 				"SELECT DISTINCT * WHERE {" +
 				"OPTIONAL { "+ id +" mo:fanpage ?sFanpage. BIND(str(?sFanpage) AS ?fanpage)} " +
-				"OPTIONAL { "+ id +" mo:imdb ?imdb. } " +
+				"OPTIONAL { "+ id +" mo:imdb ?imdb. }" +
+				"OPTIONAL { "+ id +" foaf:name ?name. }"  +
 				"OPTIONAL { "+ id +" mo:myspace ?myspace. } " +
 				"OPTIONAL { "+ id +" mo:homepage ?homepage. } " +
 				"OPTIONAL { "+ id +" rdfs:comment ?sShortDesc. BIND(str(?sShortDesc) AS ?shortDesc)}  " +
@@ -276,6 +282,8 @@ public class SearcherImpl implements Searcher {
 				"OPTIONAL { "+ id +" dbpedia:currentMembers ?currentMembers. ?currentMembers rdfs:label ?sName3. BIND(str(?sName3) AS ?name3) }" +
 				"OPTIONAL { "+ id +" dbpedia:pastMembers ?pastMembers. ?pastMembers rdfs:label ?sName4. BIND(str(?sName4) AS ?name4) }}" ;
 
+
+		
 		QueryExecution ex = QueryExecutionFactory.create(getArtistInfoStr, model);
 		ResultSet results = ex.execSelect();
 		HashMap<String,Object> metaMap = new HashMap<String,Object>();
@@ -288,6 +296,9 @@ public class SearcherImpl implements Searcher {
 			
 			// TODO: optimize (e.g storing in variables instead of performing query.get several times?)
 			QuerySolution query = results.next();
+			if(query.get("name") != null){
+				LOGGER.debug("Artistname " + query.get("name").toString());
+			}
 			if(query.get("image") != null){
 				artist.setImage(query.get("image").toString());
 			}
