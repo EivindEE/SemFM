@@ -25,14 +25,15 @@
 	<h2>Our Sources</h2>
 	<a href="#" class="close">Close</a>
 	<ol>
-		<li>Last.FM (API/XML): Related artists and events</li>
-		<li>Apple iTunes (API/JSON): Discography</li>
-		<li>BBC Music (SPARQL): Artist Info</li>
-		<li>DBPedia (SPARQL): Artist Info</li>
+		<li><a href="hhtp://last.fm">Last.FM</a> (API/XML): Related artists and events</li>
+		<li><a href="http://itunes.apple.com">Apple iTunes</a> (API/JSON): Discography</li>
+		<li><a href="http://bbc.co.uk/music">BBC Music</a> (SPARQL): Artist Info</li>
+		<li><a href="http://dbpedia.org">DBPedia</a> (SPARQL): Artist Info</li>
+		<li><a href="http://discogs.com">Discogs</a> (SPARQL): Album info</li>
 	</ol>
 </div>
 <div id="help" class="full main_wrapper">
 	<h2>Help</h2>
 	<a href="#" class="close">Close</a>
-	<p>We allow searches for artists.</p>
+	<p>We allow searches for artists or albums.</p>
 </div>
