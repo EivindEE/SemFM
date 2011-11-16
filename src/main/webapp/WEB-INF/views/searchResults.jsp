@@ -15,19 +15,29 @@
 <body class="search-results">
 <jsp:include page="includes/header.jsp" />
 	<div class="full main_wrapper">
-		<h2 class="full text_center standard_margin">Found ${fn:length(records)} result<c:if test="${fn:length(records) != 1 }">s</c:if> for "${q}"</h2>
+		<h2 class="full text_center standard_margin">Found <c:if test="${artist != null}"> 1 artist and </c:if> ${fn:length(records)} record result<c:if test="${fn:length(records) != 1 }">s</c:if> for "${q}"</h2>
+		<c:if test="${artist != null}">
+			<h3>Artists:</h3>
+			<ul class="zebra_list search_result_list full">
+				<li><a href="artist?q=${artist.name}">${artist.name}</a>
+			</ul>
+		
+		</c:if>
 		<c:if test="${! empty records}">
+		<h3>Records:</h3>
 		<ul class="zebra_list search_result_list full">
+			
 			<c:forEach var="record" items="${records}">
 				<li>
-					<a href="album?q=${record.value.discogId}">
-						<strong>${record.value.name}</strong> (${record.value.year})
+				
+					<a href="album?q=${record.name}&amp;artist=${record.artist[0].name}">
+						<strong>${record.name}</strong>(${record.year})
 					</a>
 					 by 
-						<c:forEach var="artist" items="${record.value.artist}">
+					 
+						<c:forEach var="artist" items="${record.artist}">
 							<a href="artist?q=${artist.name}">${artist.name}</a> 
 						</c:forEach>
-					</a>
 				</li>
 			</c:forEach>
 		</ul>
