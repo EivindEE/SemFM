@@ -29,7 +29,7 @@
 				</c:if>
 				<ul>
 					<c:forEach var="genre" items="${record.genres}">
-						<li>${genre}</li>
+						<li>${genre.value}</li>
 					</c:forEach>
 				</ul><br />
 				by
@@ -44,10 +44,12 @@
 	</div>
 </div>
 <div class="full main_wrapper">
+	<c:if test="${! empty record.description}">
 	<div class="album_description left half" itemprop="about">
 		<h2>Description</h2>
-		${record.description};
+		${record.description}
 	</div>
+	</c:if>
 	<div class="album_meta meta_list right half">
 		<h2>Meta Facts</h2>
 		<ul>
@@ -55,6 +57,13 @@
 					<ul>
 						<c:forEach var="artist" items="${record.artist}">
 							<li><a href="artist?q=${artist.name}">${artist.name}</a></li>
+						</c:forEach>
+					</ul>
+				</li>
+				<li>Genre: 
+					<ul>
+						<c:forEach var="genre" items="${record.genres}">
+							<li>${genre.value}</li>
 						</c:forEach>
 					</ul>
 				</li>
@@ -69,7 +78,7 @@
 				</c:forEach>
 		</ul>	
 	</div>
-	<div class="tracks full">
+	<div class="tracks<c:if  test="${! empty record.description}"> full</c:if><c:if  test="${empty record.description}"> left half</c:if>">
 		<h2>Tracks</h2>
 		<table class="zebra_table">
 			<tr>
@@ -97,6 +106,7 @@
 			</c:forEach>
 		</table>
 	</div>
+	<c:if test="${!empty record.relatedRecords}">
 	<div class="alternative_releases full">
 		<h2>Alternative Releases</h2>
 		<ul class="related_list">
@@ -105,6 +115,7 @@
 		</c:forEach>
 		</ul>
 	</div>
+	</c:if>
 </div>
 
 

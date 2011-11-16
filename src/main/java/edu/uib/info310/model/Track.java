@@ -1,6 +1,6 @@
 package edu.uib.info310.model;
 
-public interface Track {
+public interface Track extends Comparable<Track> {
 	
 	public String getTrackNr();
 	
