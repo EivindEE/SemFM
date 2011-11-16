@@ -463,8 +463,8 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 
 	public Record searchRecord(String record_name, String artist_name) throws MasterNotFoundException {
 		this.record = modelFactory.createRecord();
-		LOGGER.debug("!!!!!!!!!!!" + artist_name + "!!!!!!!!!!!!!!1");
 		String release = discog.getRecordReleaseId(record_name, artist_name);
+		this.model = builder.createRecordOntology(release, record_name, artist_name);
 		try {	
 	    setRecordInfo(release);
 		} catch (MasterNotFoundException e) {
@@ -482,7 +482,7 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 	
 	public void setRecordInfo(String search_string) throws MasterNotFoundException, TransformerException{
 		
-		this.model = builder.createRecordOntology(search_string);
+		
 		
 		String release = "<http://api.discogs.com/release/" + search_string + ">";
 		LOGGER.debug("This is the search_string "+ release);
@@ -492,18 +492,19 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dc: <http://purl.org/dc/terms/> " +
 				"PREFIX time: <http://www.w3.org/2006/time#> " + 
-				"SELECT DISTINCT * WHERE { " + release + " rdfs:label ?label;" +
+				"SELECT DISTINCT * WHERE { " + release + " foaf:name ?name;" +
 				"rdfs:comment ?comment;" +
 				"foaf:hasAgent ?artist;" +
 				"mo:genre ?genre;" +
 				"mo:catalogue_number ?catalogueNumber;" +
-				"mo:label ?publisher;" +
+				"mo:label ?publisher ;" +
+				"mo:image ?image ;" +
 				"dc:issued ?year." +
-				"?trackid rdfs:label ?trackLabel;" +
+				"?trackid foaf:name ?trackName;" +
 				"mo:track_number ?trackNumber;" +
+				"mo:preview ?preview; " +
 				"time:duration ?trackDuration." +
 				"}";
-		
 		QueryExecution execution = QueryExecutionFactory.create(albumStr, model);
 		ResultSet albumResults = execution.execSelect();
 		
@@ -520,17 +521,17 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 //			LOGGER.debug(queryAlbum.get("year").toString());
 			
 			record.setId(release);
-			record.setName(queryAlbum.get("label").toString());
+			record.setName(queryAlbum.get("name").toString());
+			record.setImage(queryAlbum.get("image").toString());
 			
 			Track track = modelFactory.createTrack();
-			track.setName(queryAlbum.get("trackLabel").toString());
+			track.setName(queryAlbum.get("trackName").toString());
 			track.setTrackNr(queryAlbum.get("trackNumber").toString());
+			track.setPreview(queryAlbum.get("preview").toString());
 			
 			if(queryAlbum.get("trackDuration") != null) {
 				track.setLength(queryAlbum.get("trackDuration").toString());
 			}
-			
-			LOGGER.debug(queryAlbum.get("artist").toString());
 			tracks.put(queryAlbum.get("trackNumber").toString(), track);
 			
 			Artist artist = modelFactory.createArtist();

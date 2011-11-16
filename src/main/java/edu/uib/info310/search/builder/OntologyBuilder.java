@@ -89,7 +89,7 @@ public class OntologyBuilder {
 		}
 		
 		try{
-			model.add(itunes.getRecords(artistName, id));
+			model.add(itunes.getRecordsByArtistName(artistName, id));
 			LOGGER.debug("Model size after adding record info from iTunes: " + model.size());
 
 			model.add(GetArtistInfo.BBCMusic(artistName, id));
@@ -114,15 +114,15 @@ public class OntologyBuilder {
 		return  model;
 	}
 	
-	public Model createRecordOntology(String search_string){
+	public Model createRecordOntology(String releaseId, String record_name, String artist_name){
 			
-			LOGGER.debug(search_string);
+			LOGGER.debug("Got releaseID: " + releaseId);
 			File xsl = new File("src/main/resources/XSL/AlbumXSLT.xsl");
 				
 			XslTransformer transform = new XslTransformer();
 			
 			try {
-				transform.setXml(discog.getAlbumURI(search_string));
+				transform.setXml(discog.getAlbumURI(releaseId));
 			} catch (MasterNotFoundException e1) {
 				LOGGER.error(e1.toString());
 			}
@@ -137,6 +137,12 @@ public class OntologyBuilder {
 			}
 			model.read(in,null);
 			LOGGER.debug("Model size after getting album info: " + model.size());
+			
+			
+			String albumUri = "http://api.discogs.com/release/" + releaseId;
+			Model itunesModel = itunes.getRecordWithNameAndArtist(albumUri, record_name, artist_name);
+			model.add(itunesModel);
+			LOGGER.debug("Model size after getting iTunes info: " + model.size());
 			try {
 				FileOutputStream out = new FileOutputStream(new File("log/albumout.ttl"));
 				model.write(out,"TURTLE");
