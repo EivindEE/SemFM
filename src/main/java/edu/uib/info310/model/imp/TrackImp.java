@@ -11,6 +11,7 @@ public class TrackImp implements Track {
 	private String name;
 	private String length;
 	private String artist;
+	private String preview;
 
 	
 	
@@ -48,6 +49,14 @@ public class TrackImp implements Track {
 
 	public int compareTo(Track o) {
 		return this.trackNr.compareTo(o.getTrackNr());
+	}
+
+	public String getPreview() {
+		return this.preview;
+	}
+
+	public void setPreview(String preview) {
+		this.preview = preview;
 	}
 
 }

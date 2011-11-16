@@ -35,4 +35,10 @@ public class MockTrack implements Track {
 		return 0;
 	}
 
+	public String getPreview() {
+		return "http://a1.mzstatic.com/us/r2000/013/Music/d2/26/fa/mzm.spkoqslk.aac.p.m4a";
+	}
+
+	public void setPreview(String preview) {}
+
 }

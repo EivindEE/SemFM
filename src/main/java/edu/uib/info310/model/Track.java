@@ -10,6 +10,8 @@ public interface Track extends Comparable<Track> {
 	
 	public String getArtist();
 	
+	public String getPreview();
+	
 	public void setTrackNr(String trackNr);
 	
 	public void setName(String name);
@@ -17,4 +19,6 @@ public interface Track extends Comparable<Track> {
 	public void setLength(String length);
 	
 	public void setArtist(String artist);
+
+	public void setPreview(String preview);
 }
