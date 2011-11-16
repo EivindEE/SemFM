@@ -1,5 +1,6 @@
 package edu.uib.info310.model.imp;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,7 @@ public class RecordImp implements Record{
 	}
 
 	public List<Track> getTracks() {
+		Collections.sort(this.tracks);
 		return this.tracks;
 	}
 	public void setId(String id) {
