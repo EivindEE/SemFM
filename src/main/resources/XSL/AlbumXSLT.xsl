@@ -30,9 +30,9 @@
 					</foaf:hasAgent>
 				</xsl:for-each>
 
-				<rdfs:label>
+				<foaf:name>
 					<xsl:value-of select="release/title" />
-				</rdfs:label>
+				</foaf:name>
 				<mo:label>
 					<xsl:value-of select="release/labels/label/@name" />
 				</mo:label>
@@ -70,18 +70,17 @@
 
 			<xsl:for-each select="release/tracklist/track">
 			<rdf:Description rdf:about="http://api.discogs.com/release/{//release/@id}/track/{position}">
-				<rdf:type rdf:resource="http://purl.org/ontology/mo/track"/>
+				<rdf:type rdf:resource="http://purl.org/ontology/mo/Track"/>
 						<mo:track_number>
 							<xsl:value-of select="position" />
 						</mo:track_number>
 
-						<rdfs:label>
+						<foaf:name>
 							<xsl:value-of select="title" />
-						</rdfs:label>
+						</foaf:name>
 						<time:duration>
 							<xsl:value-of select="duration"/>
 						</time:duration>
-						<mo:Track rdf:resource="http://api.discogs.com/release/{//release/@id}"/>
 			</rdf:Description>
 			</xsl:for-each>
 			
