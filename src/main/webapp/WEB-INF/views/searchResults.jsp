@@ -20,14 +20,15 @@
 		<ul class="zebra_list search_result_list full">
 			<c:forEach var="record" items="${records}">
 				<li>
-					<a href="album?q=${record.value.discogId}">
-						<strong>${record.value.name}</strong> (${record.value.year})
+				
+					<a href="album?q=${record.name}&amp;artist=${record.artist[0].name}">
+						<strong>${record.name}</strong>(${record.year})
 					</a>
 					 by 
-						<c:forEach var="artist" items="${record.value.artist}">
+					 
+						<c:forEach var="artist" items="${record.artist}">
 							<a href="artist?q=${artist.name}">${artist.name}</a> 
 						</c:forEach>
-					</a>
 				</li>
 			</c:forEach>
 		</ul>
