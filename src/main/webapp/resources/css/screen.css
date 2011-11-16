@@ -142,13 +142,19 @@ a {
 }
 #sources, #help {
 	display:none;
+	position: relative;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	border: 1px solid #ccc;
 	padding: 10px;
 	border-radius: 10px;
 }
-#sources:active, #help:active {
+#sources .close, #help .close {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+#sources:target, #help:target {
 	display: block;
 }
 
