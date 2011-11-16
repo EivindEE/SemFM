@@ -15,9 +15,18 @@
 <body class="search-results">
 <jsp:include page="includes/header.jsp" />
 	<div class="full main_wrapper">
-		<h2 class="full text_center standard_margin">Found ${fn:length(records)} result<c:if test="${fn:length(records) != 1 }">s</c:if> for "${q}"</h2>
+		<h2 class="full text_center standard_margin">Found <c:if test="${artist != null}"> 1 artist and </c:if> ${fn:length(records)} record result<c:if test="${fn:length(records) != 1 }">s</c:if> for "${q}"</h2>
+		<c:if test="${artist != null}">
+			<h3>Artists:</h3>
+			<ul class="zebra_list search_result_list full">
+				<li><a href="artist?q=${artist.name}">${artist.name}</a>
+			</ul>
+		
+		</c:if>
 		<c:if test="${! empty records}">
+		<h3>Records:</h3>
 		<ul class="zebra_list search_result_list full">
+			
 			<c:forEach var="record" items="${records}">
 				<li>
 				
