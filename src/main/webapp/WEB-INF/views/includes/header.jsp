@@ -36,4 +36,9 @@
 	<h2>Help</h2>
 	<a href="#" class="close">Close</a>
 	<p>We allow searches for artists or albums.</p>
+	<h3>Examples:</h3>
+	<ul>
+		<li><a href="album?q=Curtain%20Call&artist=Eminem">Curtain Call by Eminem (album)</a></li>
+		<li><a href="artist?q=Rihanna">Rihanna (artist)</a></li>
+	</ul>
 </div>
