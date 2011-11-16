@@ -16,7 +16,7 @@
 
 <div class="headline_wrapper">
 	<div class="headline">
-		<img src="${record.image}" alt="" class="search_result_image" itemprop="image" />
+		<img src="${record.image}" alt="" class="search_result_image" itemprop="image" style="width: 200px; height: 200px;" />
 		<div class="h1-wrapper">
 			<h1 itemprop="name">${record.name}</h1>
 			<meta content="${fn:length(record.tracks)}" itemprop="numTracks" />
@@ -24,7 +24,7 @@
 			<div class="h1-description">
 				<c:if test="${! empty record.itunesPreview}">
 					<audio controls="controls" itemprop="audio">
-					  <source src="${record.itunesPreview}" type="audio/aac" />
+					  <source src="http://a5.mzstatic.com/us/r2000/004/Music/4d/9b/3a/mzm.yidxkftn.aac.p.m4a" type="audio/aac" />
 					</audio>
 				</c:if>
 				<ul>
@@ -86,6 +86,7 @@
 				<th>Song Title</th>
 				<th>Play time</th>
 				<th>Artist</th>
+				<th>Preview</th>
 			</tr>
 			<c:forEach var="track" items="${record.tracks}">
 				<tr itemprop="tracks" itemscope itemtype="http://www.schema.org/MusicRecording">
@@ -101,6 +102,13 @@
 								<a href="artist?q=${artist.name}" itemprop="byArtist">${artist.name}</a> 
 							</c:forEach>
 						</c:if>
+					</td>
+					<td>
+					<c:if test="${! empty track.preview}">
+					<audio controls="controls" itemprop="audio">
+					  <source src="${track.preview}" type="audio/aac"  > </source>
+					</audio>
+				</c:if>
 					</td>
 				</tr>
 			</c:forEach>

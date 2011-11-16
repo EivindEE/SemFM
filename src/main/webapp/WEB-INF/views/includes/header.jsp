@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<script type="text/javascript">
-		$(document).ready(function() {
-			console.log("Document ready");
-		});
-		$('#search_form').submit(function() {
-			console.log("search submit");
-			alert("HEEELOOO");
-		});
-	</script>
+<!-- <script type="text/javascript"> -->
+// 		$(document).ready(function() {
+// 			console.log("Document ready");
+// 		});
+// 		$('#search_form').submit(function() {
+// 			console.log("search submit");
+// 			alert("HEEELOOO");
+// 		});
+<!-- 	</script> -->
 <div id="header" class="cf">
 	
 	<a href="http://localhost:8080/SemFM" id="logo"><img src="http://localhost:8080/SemFM/spring/resources/images/SemFM-small.png" alt="" /></a>
