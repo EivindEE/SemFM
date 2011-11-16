@@ -117,7 +117,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"{ {?pastMembers dbpedia:pastMembers ?artist. ?pastMembers rdfs:label ?name4. FILTER(lang(?name4) = 'en')} UNION {?artist dbont:formerBandMember ?pastMember. ?pastMember rdfs:label ?name2. FILTER(lang(?name2) = 'en')}}}" +
 					"}";
 			qep.setQuery(prefix + constructStr + whereStr);
-			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
+			qep.setEndPoint(QueryEndPoint.DB_PEDIA_LIVE);
 			Model model = qep.describeStatement();
 			LOGGER.debug("DBPedia search found " + model.size() + " statements" );
 			boolean isUpperCase = Character.isUpperCase(artistName.charAt(0));
