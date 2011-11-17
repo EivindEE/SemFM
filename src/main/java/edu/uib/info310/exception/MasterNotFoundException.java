@@ -1,4 +1,4 @@
-package edu.uib.info310.search;
+package edu.uib.info310.exception;
 
 public class MasterNotFoundException extends Exception {
 	

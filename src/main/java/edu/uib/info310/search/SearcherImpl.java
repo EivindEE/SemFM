@@ -33,6 +33,8 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
+import edu.uib.info310.exception.ArtistNotFoundException;
+import edu.uib.info310.exception.MasterNotFoundException;
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
 import edu.uib.info310.model.Record;
@@ -42,6 +44,7 @@ import edu.uib.info310.model.factory.ModelFactoryImpl;
 import edu.uib.info310.model.imp.RecordImp;
 import edu.uib.info310.model.mock.MockRecord;
 import edu.uib.info310.search.builder.OntologyBuilder;
+import edu.uib.info310.search.builder.ontology.DiscogOntology;
 
 @Component
 public class SearcherImpl implements Searcher {
@@ -52,7 +55,7 @@ public class SearcherImpl implements Searcher {
 	@Autowired
 	private ModelFactory modelFactory;
 	@Autowired
-	private DiscogSearch discog;
+	private DiscogOntology discog;
 	private Model model;
 	private Artist artist;
 	private Record record;

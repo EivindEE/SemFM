@@ -1,4 +1,4 @@
-package edu.uib.info310.search;
+package edu.uib.info310.search.builder.ontology;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -34,16 +34,17 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
+import edu.uib.info310.exception.MasterNotFoundException;
 import edu.uib.info310.transformation.XslTransformer;
 
 @Component
-public class DiscogSearch {
+public class DiscogOntologyImpl implements DiscogOntology {
 	//	private static final String searchAlbum = "http://api.discogs.com/search?q=";
 	//	private static final String searchEnd = "&f=xml";
 	//	private static final String kasabi = "http://api.kasabi.com/dataset/discogs/apis/sparql?apikey=fe29b8c58180640f6db16b9cd3bce37c872c2036&output=xml&query=";
 	private static final String release = "http://api.discogs.com/release/";
 	private static final String master =  "http://api.discogs.com/master/";
-	private static final Logger LOGGER = LoggerFactory.getLogger(DiscogSearch.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DiscogOntologyImpl.class);
 	private static final String format = "?f=xml";
 	private static String PREFIX = 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
@@ -55,6 +56,9 @@ public class DiscogSearch {
 					"PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>";
 
 
+	/* (non-Javadoc)
+	 * @see edu.uib.info310.search.builder.ontology.DiscogOntology#getDiscography(java.lang.String)
+	 */
 	public Model getDiscography(String search_string){
 		String safe_search = "";
 		try {
@@ -74,6 +78,9 @@ public class DiscogSearch {
 
 		return queryExecution.execDescribe();
 	}
+	/* (non-Javadoc)
+	 * @see edu.uib.info310.search.builder.ontology.DiscogOntology#getTracks(java.lang.String)
+	 */
 	public Model getTracks(String search_string){
 		String safe_search = "";
 		try {
@@ -94,6 +101,9 @@ public class DiscogSearch {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see edu.uib.info310.search.builder.ontology.DiscogOntology#getAlbum(java.lang.String)
+	 */
 	public Model getAlbum(String search_string){
 		String safe_search = "";
 		try {
@@ -136,6 +146,9 @@ public class DiscogSearch {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see edu.uib.info310.search.builder.ontology.DiscogOntology#getAlbums(java.lang.String)
+	 */
 	public Model getAlbums(String search_string){
 		String safe_search = "";
 		try {
@@ -202,6 +215,9 @@ public class DiscogSearch {
 		return doc;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.uib.info310.search.builder.ontology.DiscogOntology#getAlbumURI(java.lang.String)
+	 */
 	public InputStream getAlbumURI(String releaseId) throws MasterNotFoundException {
 		try{
 			Document release = docBuilder(releaseId);
@@ -224,6 +240,9 @@ public class DiscogSearch {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.uib.info310.search.builder.ontology.DiscogOntology#getRecordReleaseId(java.lang.String, java.lang.String)
+	 */
 	public String getRecordReleaseId(String record_name, String artist_name) throws MasterNotFoundException{
 		
 
@@ -302,7 +321,7 @@ public class DiscogSearch {
 
 	public static void main(String[] args) throws MasterNotFoundException {
 		ApplicationContext context = new ClassPathXmlApplicationContext("main-context.xml");
-		DiscogSearch search = (DiscogSearch) context.getBean("discogSearch");
+		DiscogOntology search = (DiscogOntology) context.getBean("discogSearch");
 		System.out.println(search.getRecordReleaseId("If It's Lovin' That You Want","Rihanna"));
 	}
 }

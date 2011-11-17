@@ -3,6 +3,8 @@ package edu.uib.info310.search;
 import java.util.List;
 import java.util.Map;
 
+import edu.uib.info310.exception.ArtistNotFoundException;
+import edu.uib.info310.exception.MasterNotFoundException;
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
 import edu.uib.info310.model.Record;

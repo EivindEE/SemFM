@@ -1,4 +1,4 @@
-package edu.uib.info310.search;
+package edu.uib.info310.search.builder.ontology;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,13 +37,16 @@ import edu.uib.info310.vocabulary.MO;
 
 
 @Component
-public class ITunesSearcher {
+public class ITunesOntologyImpl implements ITunesOntology {
 	private static String ALBUM = "http://itunes.apple.com/search?entity=album&limit=200&country=NO&term=";
 	private static String TRACK = "http://itunes.apple.com/search?entity=musicTrack&limit=1000&country=NO&term=";
 	private static String SINGLE = " - Single";
 	private static String EP = " - EP";
-	private static final Logger LOGGER = LoggerFactory.getLogger(ITunesSearcher.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ITunesOntologyImpl.class);
 
+	/* (non-Javadoc)
+	 * @see edu.uib.info310.search.builder.ontology.ITunesOntology#getRecordsByArtistName(java.lang.String, java.lang.String)
+	 */
 	public Model getRecordsByArtistName(String artist, String artistUri){
 		Model model = ModelFactory.createDefaultModel();
 		Resource subject;
@@ -124,6 +127,9 @@ public class ITunesSearcher {
 		return model;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.uib.info310.search.builder.ontology.ITunesOntology#getRecordWithNameAndArtist(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public Model getRecordWithNameAndArtist(String albumUri, String album, String artist){
 		Model model = ModelFactory.createDefaultModel();
 		Resource subject;

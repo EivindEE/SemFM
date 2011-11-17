@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.uib.info310.exception.ArtistNotFoundException;
+import edu.uib.info310.exception.MasterNotFoundException;
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Record;
-import edu.uib.info310.search.ArtistNotFoundException;
-import edu.uib.info310.search.MasterNotFoundException;
 import edu.uib.info310.search.Searcher;
 
 /**
