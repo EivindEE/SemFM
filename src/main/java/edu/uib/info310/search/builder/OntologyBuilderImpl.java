@@ -27,11 +27,12 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 import edu.uib.info310.exception.ArtistNotFoundException;
 import edu.uib.info310.exception.MasterNotFoundException;
+import edu.uib.info310.search.builder.ontology.BBCOntology;
+import edu.uib.info310.search.builder.ontology.DBPediaOntology;
 import edu.uib.info310.search.builder.ontology.DiscogOntology;
 import edu.uib.info310.search.builder.ontology.ITunesOntology;
 import edu.uib.info310.search.builder.ontology.LastFMOntology;
 import edu.uib.info310.transformation.XslTransformer;
-import edu.uib.info310.util.GetArtistInfo;
 
 @Component
 public class OntologyBuilderImpl implements OntologyBuilder {
@@ -47,6 +48,12 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 
 	@Autowired
 	private DiscogOntology discog;
+
+	@Autowired
+	private BBCOntology bbc;
+
+	@Autowired
+	private DBPediaOntology dbp;
 
 	private static final String SIMILAR_XSL = "src/main/resources/XSL/SimilarArtistLastFM.xsl";
 	private static final String ARTIST_EVENTS_XSL = "src/main/resources/XSL/Events.xsl";
@@ -97,26 +104,29 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 			throw new ArtistNotFoundException("Last.FM found name, but no data.");
 		}
 
+
+		model.add(itunes.getRecordsByArtistName(artistName, id));
+		LOGGER.debug("Model size after adding record info from iTunes: " + model.size());
 		try{
-			model.add(itunes.getRecordsByArtistName(artistName, id));
-			LOGGER.debug("Model size after adding record info from iTunes: " + model.size());
-
-			model.add(GetArtistInfo.BBCMusic(artistName, id));
+			model.add(bbc.getArtistModel(artistName, id));
 			LOGGER.debug("Model size after adding artist info from BBC: " + model.size());
-
-			model.add(GetArtistInfo.DBPedia(artistName, id));
+		}
+		catch (Exception e) {
+			LOGGER.error("Error retreiving model from BBC, maybe the server is down: " + e.toString());
+		}
+		try{
+			model.add(dbp.getArtistModel(artistName, id));
 			LOGGER.debug("Model size after adding artist info from DBPedia: " + model.size());
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Error retreiving model from DBPedia, maybe the server is down: " + e.toString());
 		}
 
 		try {
 			FileOutputStream out = new FileOutputStream(new File("log/ontout.ttl"));
 			model.write(out,"TURTLE");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Error writing to file");
 		}
 
 
@@ -167,7 +177,7 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 
 	public static void main(String[] args) throws ArtistNotFoundException {
 		ApplicationContext context = new ClassPathXmlApplicationContext("main-context.xml");
-		OntologyBuilder builder = (OntologyBuilder) context.getBean("ontologyBuilder");
+		OntologyBuilder builder = (OntologyBuilder) context.getBean("ontologyBuilderImpl");
 		builder.createArtistOntology("Bjšrk");
 	}
 
