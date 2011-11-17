@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
@@ -36,6 +38,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 			throw new NullPointerException("artistName cannot be empty string in GetArtistInfo.DbPediaArtistInfo");
 		}
 		else {
+
 			QueryEndPoint qep = new QueryEndPointImp();
 			String artist = "<" + artistUri + ">";
 			String constructStr = "CONSTRUCT { " + artist +
@@ -49,20 +52,32 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"} " ;
 			String whereStr =" WHERE {?artist foaf:name \"" + artistName + "\" " + "." +
 					"OPTIONAL{?artist mo:fanpage ?fanpage}" +
+					"OPTIONAL{?artist mo:fanpage ?fanpage}" +
 					"OPTIONAL{?artist mo:imdb ?imdb}" +
 					"OPTIONAL{?artist mo:myspace ?myspace}" +
 					"OPTIONAL{?artist foaf:homepage ?homepage}" +
 					"OPTIONAL{?artist rdfs:comment ?comment. FILTER (lang(?comment) = '')}" +
 					"OPTIONAL{?artist mo:image ?image}}";
 
-			LOGGER.debug("Sending Query: " + prefix + constructStr + whereStr );
+			String reducedWhere = " WHERE { OPTIONAL{?artist mo:fanpage ?fanpage}" +
+					"OPTIONAL{?artist mo:fanpage ?fanpage}" +
+					"OPTIONAL{?artist mo:imdb ?imdb}" +
+					"OPTIONAL{?artist mo:myspace ?myspace}" +
+					"OPTIONAL{?artist foaf:homepage ?homepage}" +
+					"OPTIONAL{?artist rdfs:comment ?comment. FILTER (lang(?comment) = '')}" +
+					"OPTIONAL{?artist mo:image ?image}}";
+
+			LOGGER.debug("Sending Query( without prefix): "  + constructStr + whereStr );
 			qep.setQuery(prefix + constructStr + whereStr);
 			qep.setEndPoint(QueryEndPoint.BBC_MUSIC);
 			Model model = qep.describeStatement();
-			LOGGER.debug("BBC with URI search found " + model.size() + " statements" );
+			QueryExecution exec = QueryExecutionFactory.create(prefix + constructStr + reducedWhere, model);
+			Model translatedModel = exec.execConstruct();
+
+			LOGGER.debug("BBC with URI search found " + translatedModel.size() + " statements" );
 			FileOutputStream out = new FileOutputStream(new File("log/bbcout.ttl"));
-			model.write(out, "TURTLE");
-			return model;
+			translatedModel.write(out, "TURTLE");
+			return translatedModel;
 		}
 	}
 
@@ -81,6 +96,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 			String artist = "<" + artistUri + ">";
 			String constructStr = "CONSTRUCT { "+artist +" " +
 					"rdfs:comment ?comment ; " +
+					"rdf:type mo:MusicArtist ;" +
 					"mo:biography ?bio ; " +
 					"dbont:birthname ?birthname ; " +
 					"dbont:hometown ?hometown ; " +
@@ -123,14 +139,49 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 			boolean isUpperCase = Character.isUpperCase(artistName.charAt(0));
 			String newArtistName = null;
 			if(model.isEmpty() && isUpperCase == false){
-
 				newArtistName = artistName.substring(0,1).toUpperCase() + artistName.substring(1);
 				model = DBPedia(newArtistName, artistUri);
-				LOGGER.debug("DBPedia new artistName " + newArtistName );
+			}
+			
+			String translateConstructStr = "CONSTRUCT { "+artist +" " +
+					"rdfs:comment ?comment ; " +
+					"rdf:type mo:MusicArtist ;" +
+					"mo:biography ?bio ; " +
+					"dbont:birthname ?birthname ; " +
+					"dbont:hometown ?hometown ; " +
+					"mo:origin ?origin ; " +
+					"mo:activity_start ?start; " +
+					"mo:activity_end ?end ;" +	
+					"dbont:birthDate ?birth ;" +
+					"dbont:deathDate ?death ;" +
+					"mo:wikipedia ?wikipedia ;" +
+					"owl:sameAs ?artist;" +
+					"dbont:bandMember ?currentMember;" +
+					"dbont:formerBandMember ?pastMember;" +
+					"dbpedia:currentMembers ?currentMembers ;" +
+					"dbpedia:pastMembers ?pastMembers." +
+					"?currentMember rdfs:label ?name.";
+			
+			String translateWhere ="} WHERE {?artist rdf:type mo:MusicArtist . " +
+					"OPTIONAL{?artist rdfs:comment ?comment} . " +
+					"OPTIONAL{?artist mo:biography ?bio } ." + 
+					"OPTIONAL{?artist dbont:birthname ?birthname} ." +
+					"OPTIONAL{?artist dbont:hometown ?hometown} ." +
+					"OPTIONAL{?artist mo:origin ?origin} ." +
+					"OPTIONAL{?artist mo:activity_start ?end} ." +
+					"OPTIONAL{?artist mo:activity_end ?start} ." +
+					"OPTIONAL{?artist dbont:birthDate ?birth} ." +
+					"OPTIONAL{?artist dbont:deathDate ?death} ." +
+					"OPTIONAL{?artist mo:wikipedia ?wikipedia}. "+
+					"OPTIONAL {?artist rdfs:label ?name}}";
+			QueryExecution exec = QueryExecutionFactory.create(prefix + translateConstructStr + translateWhere, model);
+			Model translatedModel = exec.execConstruct();
 
-				return model;}
-			else{
-				return model;}
+			FileOutputStream out = new FileOutputStream(new File("log/dbpout.ttl"));
+			translatedModel.write(out, "TURTLE");
+
+			
+			return translatedModel;
 
 		}				
 	}
