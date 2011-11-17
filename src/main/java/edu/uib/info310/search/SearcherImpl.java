@@ -154,9 +154,7 @@ public class SearcherImpl implements Searcher {
 				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"SELECT DISTINCT " +
 				" ?artistId ?albumId ?release ?title ?image ?year ?labelId ?labelName ?track ?artist  "+
-				" WHERE { " +
-				//				"?artistId foaf:name  \"" + artist.getName() + "\". "+
-				//"<" + this.artist.getId() + "> foaf:made ?albumId."+ 
+				" WHERE { " + 
 				"?artistId foaf:made ?albumId. " +
 				"?albumId dc:title ?title." +
 				"OPTIONAL {?albumId mo:publisher ?labelId. } "+
@@ -255,13 +253,8 @@ public class SearcherImpl implements Searcher {
 	}
 
 	private void setArtistInfo() {
-		String testId = artist.getName();
+		String id = "<" +  artist.getId() + ">";
 		LOGGER.debug("Artisturi " + artist.getName());
-		String id = testId;
-		try {
-			id= "<http://www.last.fm/music/" + URLEncoder.encode(testId, "UTF-8") + ">";
-		} catch (UnsupportedEncodingException e) { }
-		LOGGER.debug("Artisturi encoded " + id);
 		String getArtistInfoStr = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
 				"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
 				"PREFIX mo: <http://purl.org/ontology/mo/> " +
