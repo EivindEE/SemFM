@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
+	<xsl:output method="xml" version="1.0"
+encoding="UTF-8" indent="yes"/>
 	<xsl:template match="/resp">
+	
 		<rdf:RDF 
 			xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 			xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 	

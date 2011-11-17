@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+		<xsl:output method="xml" version="1.0"
+encoding="UTF-8" indent="yes"/>
 	<xsl:template match="/lfm">
 		<rdf:RDF xmlns:ao="http://purl.org/ontology/ao/core#"
 			xmlns:bio="http://purl.org/vocab/bio/0.1/" xmlns:cc="http://web.resource.org/cc/"
