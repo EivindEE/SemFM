@@ -41,7 +41,7 @@ public class DBPediaOntologyImpl implements DBPediaOntology {
 		qep.setEndPoint(QueryEndPoint.DB_PEDIA);
 		
 		Model model = qep.constructStatement();
-		LOGGER.debug("DBPedia search found " + model.size() + " statements" );
+		
 		boolean isUpperCase = Character.isUpperCase(artistName.charAt(0));
 
 		if(model.isEmpty() && isUpperCase == false){
@@ -58,7 +58,7 @@ public class DBPediaOntologyImpl implements DBPediaOntology {
 		FileOutputStream out = new FileOutputStream(new File("log/dbpout.ttl"));
 		translatedModel.write(out, "TURTLE");
 
-
+		LOGGER.debug("DBPedia search found " + translatedModel.size() + " statements" );
 		return translatedModel;
 
 	}

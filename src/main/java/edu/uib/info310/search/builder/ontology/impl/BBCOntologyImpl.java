@@ -44,14 +44,13 @@ public class BBCOntologyImpl implements BBCOntology {
 		String constructStr =  this.makeConstruct(artist);
 		String whereStr = this.makeWhere(artistName);
 
-		LOGGER.debug("Sending Query( without prefix): "  + constructStr + whereStr );
 		qep.setQuery(prefix + constructStr + whereStr);
 		qep.setEndPoint(QueryEndPoint.BBC_MUSIC);
 		Model model = qep.constructStatement();
 		QueryExecution exec = QueryExecutionFactory.create(prefix + constructStr + reducedWhere, model);
 		Model translatedModel = exec.execConstruct();
 
-		LOGGER.debug("BBC with URI search found " + translatedModel.size() + " statements" );
+		LOGGER.debug("BBC search found " + translatedModel.size() + " statements" );
 		FileOutputStream out = new FileOutputStream(new File("log/bbcout.ttl"));
 		translatedModel.write(out, "TURTLE");
 		return translatedModel;
