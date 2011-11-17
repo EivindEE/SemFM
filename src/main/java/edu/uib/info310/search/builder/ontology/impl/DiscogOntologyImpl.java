@@ -1,4 +1,4 @@
-package edu.uib.info310.search.builder.ontology;
+package edu.uib.info310.search.builder.ontology.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -35,6 +35,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import edu.uib.info310.exception.MasterNotFoundException;
+import edu.uib.info310.search.builder.ontology.DiscogOntology;
 import edu.uib.info310.transformation.XslTransformer;
 
 @Component

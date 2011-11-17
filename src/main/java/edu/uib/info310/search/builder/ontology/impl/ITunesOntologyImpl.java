@@ -1,4 +1,4 @@
-package edu.uib.info310.search.builder.ontology;
+package edu.uib.info310.search.builder.ontology.impl;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,6 +32,7 @@ import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
+import edu.uib.info310.search.builder.ontology.ITunesOntology;
 import edu.uib.info310.vocabulary.MO;
 
 

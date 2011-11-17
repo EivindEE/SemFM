@@ -1,4 +1,4 @@
-package edu.uib.info310.search.builder.ontology;
+package edu.uib.info310.search.builder.ontology.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,6 +21,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.uib.info310.exception.ArtistNotFoundException;
+import edu.uib.info310.search.builder.ontology.LastFMOntology;
 import edu.uib.info310.transformation.XslTransformer;
 
 @Component
