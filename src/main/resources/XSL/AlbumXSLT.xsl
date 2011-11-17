@@ -62,11 +62,7 @@ encoding="UTF-8" indent="yes"/>
 
 
 				<xsl:for-each select="release/tracklist/track">
-					<mo:track>
-					
-			http://api.discogs.com/release/<xsl:value-of select="//release/@id"/>
-						<xsl:value-of select="position" />
-					</mo:track>
+					<mo:track rdf:resource="http://api.discogs.com/release/{../@id}/track/{position}"/>
 				</xsl:for-each>
 			</rdf:Description>
 
