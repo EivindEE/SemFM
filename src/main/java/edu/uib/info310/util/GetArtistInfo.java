@@ -27,6 +27,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 			"PREFIX dbpedia: <http://dbpedia.org/property/>" +
 			"PREFIX dbont: <http://dbpedia.org/ontology/>" +
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+			"PREFIX rc: <http://umbel.org/umbel/rc/>" +
 			"PREFIX owl: <http://www.w3.org/2002/07/owl#> ";
 
 	/**
@@ -118,7 +119,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 
 
 			String whereStr ="} WHERE { {?artist foaf:name \"" + artistName + "\"@en.} UNION {?artist rdfs:label \"" + artistName + "\"@it} . " +
-					"{?artist rdf:type dbont:Artist.} UNION {?artist rdf:type dbont:Band.}  UNION {?s dbont:musicComposer ?artist. ?s a dbont:Work }." + //UNION {?s dbont:musicalArtist ?artist. ?s a dbont:Single } 
+					"{?artist rdf:type dbont:Artist.} UNION {?artist rdf:type dbont:Band.}  UNION {?artist rdf:type rc:Artist } UNION {?artist rdf:type rc:Band_MusicGroup }." + //UNION {?s dbont:musicalArtist ?artist. ?s a dbont:Single } 
 					"OPTIONAL{?artist dbpedia:shortDescription ?comment} . " +
 					"OPTIONAL{?artist dbont:abstract ?bio . FILTER(lang(?bio) = 'en')} . " +
 					"OPTIONAL{?artist dbont:birthname ?birthname} ." +
@@ -133,7 +134,7 @@ public abstract class GetArtistInfo implements QueryEndPoint {
 					"{ {?pastMembers dbpedia:pastMembers ?artist. ?pastMembers rdfs:label ?name4. FILTER(lang(?name4) = 'en')} UNION {?artist dbont:formerBandMember ?pastMember. ?pastMember rdfs:label ?name2. FILTER(lang(?name2) = 'en')}}}" +
 					"}";
 			qep.setQuery(prefix + constructStr + whereStr);
-			qep.setEndPoint(QueryEndPoint.DB_PEDIA_LIVE);
+			qep.setEndPoint(QueryEndPoint.DB_PEDIA);
 			Model model = qep.describeStatement();
 			LOGGER.debug("DBPedia search found " + model.size() + " statements" );
 			boolean isUpperCase = Character.isUpperCase(artistName.charAt(0));
