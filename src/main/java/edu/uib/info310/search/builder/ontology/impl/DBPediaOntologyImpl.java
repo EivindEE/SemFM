@@ -70,8 +70,8 @@ public class DBPediaOntologyImpl implements DBPediaOntology {
 				"OPTIONAL{?artist dbont:birthname ?birthname} ." +
 				"OPTIONAL{?artist dbont:hometown ?hometown} ." +
 				"OPTIONAL{?artist mo:origin ?origin} ." +
-				"OPTIONAL{?artist mo:activity_start ?end} ." +
-				"OPTIONAL{?artist mo:activity_end ?start} ." +
+				"OPTIONAL{?artist mo:activity_start ?start} ." +
+				"OPTIONAL{?artist mo:activity_end ?end} ." +
 				"OPTIONAL{?artist dbont:birthDate ?birth} ." +
 				"OPTIONAL{?artist dbont:deathDate ?death} ." +
 				"OPTIONAL{?artist mo:wikipedia ?wikipedia}. "+
