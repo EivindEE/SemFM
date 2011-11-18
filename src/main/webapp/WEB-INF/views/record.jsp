@@ -72,7 +72,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="full main_wrapper">
+	<div class="full main_wrapper cf">
 		<c:if test="${! empty record.description}">
 			<div class="album_description left half" itemprop="about">
 				<h2>Description</h2>

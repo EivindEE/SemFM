@@ -499,18 +499,18 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dc: <http://purl.org/dc/terms/> " +
 				"PREFIX time: <http://www.w3.org/2006/time#> " + 
-				"SELECT DISTINCT * WHERE { " + release + " foaf:name ?name;" +
-				"rdfs:comment ?comment;" +
-				"foaf:hasAgent ?artist;" +
-				"mo:genre ?genre;" +
-				"mo:catalogue_number ?catalogueNumber;" +
-				"mo:label ?publisher ;" +
-				"mo:image ?image ;" +
-				"dc:issued ?year." +
-				"?trackid foaf:name ?trackName;" +
-				"mo:track_number ?trackNumber;" +
-				"mo:preview ?preview; " +
-				"time:duration ?trackDuration." +
+				"SELECT DISTINCT * WHERE { " + release + " foaf:name ?name." +
+				"OPTIONAL { " + release + " rdfs:comment ?comment. }" +
+				"OPTIONAL { " + release + " foaf:hasAgent ?artist. }" +
+				"OPTIONAL { " + release + " mo:genre ?genre. }" +
+				"OPTIONAL { " + release + " mo:catalogue_number ?catalogueNumber. }" +
+				"OPTIONAL { " + release + " mo:label ?publisher . }" +
+				"OPTIONAL { " + release + " mo:image ?image . }" +
+				"OPTIONAL { " + release + " dc:issued ?year. }" +
+				"OPTIONAL { ?trackid foaf:name ?trackName. }" +
+				"OPTIONAL { ?trackid mo:track_number ?trackNumber. }" +
+				"OPTIONAL { ?trackid mo:preview ?preview. } " +
+				"OPTIONAL { ?trackid time:duration ?trackDuration. }" +
 				"}";
 		QueryExecution execution = QueryExecutionFactory.create(albumStr, model);
 		ResultSet albumResults = execution.execSelect();
@@ -528,33 +528,58 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 //			LOGGER.debug(queryAlbum.get("year").toString());
 			
 			record.setId(release);
+			
+			if(queryAlbum.get("name") != null)
 			record.setName(queryAlbum.get("name").toString());
+			
+			if(queryAlbum.get("image") != null)
 			record.setImage(queryAlbum.get("image").toString());
 			
 			Track track = modelFactory.createTrack();
-			track.setName(queryAlbum.get("trackName").toString());
+			if(queryAlbum.get("trackName") != null) {
+				track.setName(queryAlbum.get("trackName").toString());
+			}
+			
+			if(queryAlbum.get("trackNumber") != null)
 			track.setTrackNr(queryAlbum.get("trackNumber").toString());
+			
+			if(queryAlbum.get("preview") != null)
 			track.setPreview(queryAlbum.get("preview").toString());
 			
 			if(queryAlbum.get("trackDuration") != null) {
 				track.setLength(queryAlbum.get("trackDuration").toString());
 			}
+			
+			if(queryAlbum.get("trackNumber") != null)
 			tracks.put(queryAlbum.get("trackNumber").toString(), track);
 			
 			Artist artist = modelFactory.createArtist();
+			
+			if(queryAlbum.get("artist") != null)
 			artist.setName(queryAlbum.get("artist").toString());
+			
+			if(queryAlbum.get("artist") != null)
 			artists.put(queryAlbum.get("artist").toString(), artist);
 			
+			if(queryAlbum.get("genre") != null)
 			genre.put(queryAlbum.get("genre").toString(),queryAlbum.get("genre").toString());
+			
+			if(queryAlbum.get("year") != null)
 			meta.put("Released", queryAlbum.get("year").toString());
+			
 			if(queryAlbum.get("catalogueNumber").toString() != "none") {
 				meta.put("Catalogue Number", queryAlbum.get("catalogueNumber").toString());
 			}
+			
+			if(queryAlbum.get("publisher") != null)
 			meta.put("Label", queryAlbum.get("publisher").toString());
+			
+			if(queryAlbum.get("year") != null)
 			record.setYear(queryAlbum.get("year").toString());
+			
+			if(queryAlbum.get("comment") != null)
 			record.setDescription(queryAlbum.get("comment").toString());
 		}
-		
 		
 		record.setGenres(genre);
 		record.setTracks(new LinkedList<Track>(tracks.values()));
