@@ -75,7 +75,10 @@ public class DBPediaOntologyImpl implements DBPediaOntology {
 				"OPTIONAL{?artist dbont:birthDate ?birth} ." +
 				"OPTIONAL{?artist dbont:deathDate ?death} ." +
 				"OPTIONAL{?artist mo:wikipedia ?wikipedia}. "+
-				"OPTIONAL {?artist rdfs:label ?name}}";
+				"OPTIONAL {{{?currentMembers dbpedia:currentMembers ?artist. ?currentMembers rdfs:label ?name3. FILTER(lang(?name3) = 'en') } UNION {?artist dbont:bandMember ?currentMember. ?currentMember rdfs:label ?name1. FILTER(lang(?name1) = 'en')}} UNION"+
+				"{ {?pastMembers dbpedia:pastMembers ?artist. ?pastMembers rdfs:label ?name4. FILTER(lang(?name4) = 'en')} UNION {?artist dbont:formerBandMember ?pastMember. ?pastMember rdfs:label ?name2. FILTER(lang(?name2) = 'en')}}}" +
+				"OPTIONAL {?artist rdfs:label ?name}}" +
+				"";
 	}
 	private String makeWhereString(String artistName) {
 		return "} WHERE { {?artist foaf:name \"" + artistName + "\"@en.} UNION {?artist rdfs:label \"" + artistName + "\"@it} . " +
