@@ -499,14 +499,16 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
 				"PREFIX dc: <http://purl.org/dc/terms/> " +
 				"PREFIX time: <http://www.w3.org/2006/time#> " + 
-				"SELECT DISTINCT * WHERE { " + release + " foaf:name ?name." +
-				"OPTIONAL { " + release + " rdfs:comment ?comment. }" +
-				"OPTIONAL { " + release + " foaf:hasAgent ?artist. }" +
-				"OPTIONAL { " + release + " mo:genre ?genre. }" +
-				"OPTIONAL { " + release + " mo:catalogue_number ?catalogueNumber. }" +
-				"OPTIONAL { " + release + " mo:label ?publisher . }" +
-				"OPTIONAL { " + release + " mo:image ?image . }" +
-				"OPTIONAL { " + release + " dc:issued ?year. }" +
+				"SELECT DISTINCT * WHERE { " +
+				"?discogs mo:discogs ?id." +
+				"OPTIONAL { ?discogs foaf:name ?name.}" +
+				"OPTIONAL { ?discogs rdfs:comment ?comment. }" +
+				"OPTIONAL { ?discogs foaf:hasAgent ?artist. }" +
+				"OPTIONAL { ?discogs mo:genre ?genre. }" +
+				"OPTIONAL { ?discogs mo:catalogue_number ?catalogueNumber. }" +
+				"OPTIONAL { ?discogs mo:label ?publisher . }" +
+				"OPTIONAL { ?discogs mo:image ?image . }" +
+				"OPTIONAL { ?discogs dc:issued ?year. }" +
 				"OPTIONAL { ?trackid foaf:name ?trackName. }" +
 				"OPTIONAL { ?trackid mo:track_number ?trackNumber. }" +
 				"OPTIONAL { ?trackid mo:preview ?preview. } " +

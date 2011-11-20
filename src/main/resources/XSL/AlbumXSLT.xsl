@@ -31,7 +31,9 @@ encoding="UTF-8" indent="yes"/>
 						<xsl:value-of select="name" />
 					</foaf:hasAgent>
 				</xsl:for-each>
-
+				<mo:discogs>
+					<xsl:value-of select="release/@id" />
+				</mo:discogs>
 				<foaf:name>
 					<xsl:value-of select="release/title" />
 				</foaf:name>
