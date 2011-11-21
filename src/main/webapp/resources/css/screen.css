@@ -437,6 +437,17 @@ a {
 	.zebra_list li:nth-child(odd) {
 		background: #eee;
 	}
+.tracks img {
+	vertical-align:middle;
+	float:right;
+	position: absolute;
+	top: 50%;
+	right: 20px;
+	margin-top: -12.5px;
+}
+	.tracks img:active {
+		margin-top: -11.5px;
+	}
 .zebra_table {
 	width:100%;
 	margin:0 auto;
@@ -482,6 +493,7 @@ a {
 	
 	.zebra_table td, .zebra_table th {
 		padding: 10px;
+		position:relative;
 	}
 
 

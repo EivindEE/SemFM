@@ -199,7 +199,7 @@ public class DiscogOntologyImpl implements DiscogOntology {
 		return in;
 	}
 
-	private Document docBuilder(String releaseId) throws MasterNotFoundException {
+	private Document docBuilder(String uri, String releaseId) throws MasterNotFoundException {
 		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
 		domFactory.setNamespaceAware(true);
 		Document doc = null;
@@ -208,7 +208,7 @@ public class DiscogOntologyImpl implements DiscogOntology {
 			builder = domFactory.newDocumentBuilder();
 		} catch (Exception e) {/*ignore*/}
 		try {
-			doc = builder.parse(getAlbumInputStream(release,releaseId));
+			doc = builder.parse(getAlbumInputStream(uri,releaseId));
 		} catch (Exception a) {
 			a.printStackTrace();
 			throw new MasterNotFoundException("Doc couldn't be built");
@@ -220,22 +220,27 @@ public class DiscogOntologyImpl implements DiscogOntology {
 	 * @see edu.uib.info310.search.builder.ontology.DiscogOntology#getAlbumURI(java.lang.String)
 	 */
 	public InputStream getAlbumURI(String releaseId) throws MasterNotFoundException {
+		LOGGER.debug("Trying to find master for  " + releaseId);
 		try{
-			Document release = docBuilder(releaseId);
-			NodeList nameList = release.getElementsByTagName("master_id");
+			Document released = docBuilder(release, releaseId);
+			LOGGER.debug("Doc working");
+			NodeList nameList = released.getElementsByTagName("master_id");
+			LOGGER.debug("Master_id found.	");
 			Node nameNode = nameList.item(0);
 			Element element = (Element) nameNode;
 			NodeList name = element.getChildNodes();
-			Document mainrelease = docBuilder((name.item(0).getNodeValue()));
+			Document mainrelease = docBuilder(master, (name.item(0).getNodeValue()));
 			NodeList mainList = mainrelease.getElementsByTagName("main_release");
+			LOGGER.debug("Main release found.");
 			Node mainNode = mainList.item(0);
 			Element elementm = (Element) mainNode;
 			NodeList main = elementm.getChildNodes();
 
-			LOGGER.debug("Get node value of correct artist: " + (name.item(0)).getNodeValue());
-			return getAlbumInputStream(master, (main.item(0)).getNodeValue());
+			LOGGER.debug("Get node value of correct release: " + (main.item(0)).getNodeValue());
+			return getAlbumInputStream(release, (main.item(0)).getNodeValue());
 		}
 		catch (NullPointerException e) {
+			LOGGER.debug("Something went wrong " + releaseId);
 			return getAlbumInputStream(release,releaseId);
 
 		}

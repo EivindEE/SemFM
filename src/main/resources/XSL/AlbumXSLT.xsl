@@ -31,7 +31,9 @@ encoding="UTF-8" indent="yes"/>
 						<xsl:value-of select="name" />
 					</foaf:hasAgent>
 				</xsl:for-each>
-
+				<mo:discogs>
+					<xsl:value-of select="release/@id" />
+				</mo:discogs>
 				<foaf:name>
 					<xsl:value-of select="release/title" />
 				</foaf:name>
@@ -62,7 +64,7 @@ encoding="UTF-8" indent="yes"/>
 
 
 				<xsl:for-each select="release/tracklist/track">
-					<mo:track rdf:resource="http://api.discogs.com/release/{../@id}/track/{position}"/>
+					<mo:track rdf:resource="http://api.discogs.com/release/{../../@id}/track/{position}"/>
 				</xsl:for-each>
 			</rdf:Description>
 
