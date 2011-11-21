@@ -41,8 +41,10 @@
 
 	<div class="headline_wrapper">
 		<div class="headline">
+		<c:if test="${! empty record.image}">
 			<img src="${record.image}" alt="" class="search_result_image"
 				itemprop="image" style="width: 200px; height: 200px;" />
+				</c:if>
 			<div class="h1-wrapper">
 				<h1 itemprop="name">${record.name}</h1>
 				<meta content="${fn:length(record.tracks)}" itemprop="numTracks" />

@@ -507,7 +507,7 @@ SimpleDateFormat format = new SimpleDateFormat("EEE dd. MMM yyyy",Locale.US);
 				"OPTIONAL { ?discogs mo:genre ?genre. }" +
 				"OPTIONAL { ?discogs mo:catalogue_number ?catalogueNumber. }" +
 				"OPTIONAL { ?discogs mo:label ?publisher . }" +
-				"OPTIONAL { ?discogs mo:image ?image . }" +
+				"OPTIONAL { " + release + " mo:image ?image . }" +
 				"OPTIONAL { ?discogs dc:issued ?year. }" +
 				"OPTIONAL { ?trackid foaf:name ?trackName. }" +
 				"OPTIONAL { ?trackid mo:track_number ?trackNumber. }" +
