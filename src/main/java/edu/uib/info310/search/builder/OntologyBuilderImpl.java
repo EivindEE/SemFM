@@ -160,8 +160,11 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 		model.read(in,null);
 		LOGGER.debug("Model size after getting album info: " + model.size());
 
-
-		String albumUri = "http://api.discogs.com/release/" + releaseId;
+		String newUriQuery = "PREFIX mo: <http://purl.org/ontology/mo/> SELECT ?discogs WHERE {?o mo:discogs ?discogs.}";
+		QueryExecution execution = QueryExecutionFactory.create(newUriQuery, model);
+		ResultSet albumResults = execution.execSelect();
+		QuerySolution uriResult = albumResults.next();
+		String albumUri = "http://api.discogs.com/release/" + uriResult.get("discogs").toString();
 		Model itunesModel = itunes.getRecordWithNameAndArtist(albumUri, record_name, artist_name);
 		model.add(itunesModel);
 		LOGGER.debug("Model size after getting iTunes info: " + model.size());

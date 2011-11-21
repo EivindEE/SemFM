@@ -236,7 +236,7 @@ public class DiscogOntologyImpl implements DiscogOntology {
 			Element elementm = (Element) mainNode;
 			NodeList main = elementm.getChildNodes();
 
-			LOGGER.debug("Get node value of correct artist: " + (name.item(0)).getNodeValue());
+			LOGGER.debug("Get node value of correct release: " + (main.item(0)).getNodeValue());
 			return getAlbumInputStream(release, (main.item(0)).getNodeValue());
 		}
 		catch (NullPointerException e) {

@@ -82,7 +82,7 @@ public class DBPediaOntologyImpl implements DBPediaOntology {
 	}
 	private String makeWhereString(String artistName) {
 		return "} WHERE { {?artist foaf:name \"" + artistName + "\"@en.} UNION {?artist rdfs:label \"" + artistName + "\"@it} . " +
-				"{?artist rdf:type dbont:Artist.} UNION {?artist rdf:type dbont:Band.}  UNION {?artist rdf:type rc:Artist } UNION {?artist rdf:type rc:Band_MusicGroup }." + //UNION {?s dbont:musicalArtist ?artist. ?s a dbont:Single } 
+				"{?artist rdf:type dbont:Artist.} UNION {?artist rdf:type dbont:Band.}  UNION {?artist rdf:type rc:Artist } UNION {?artist rdf:type rc:Band_MusicGroup } UNION {?artist rdf:type ?o. ?o rdfs:subClassOf ?o2. ?o2 rdfs:subClassOf ?o3. ?o3 rdfs:label 'musician'@en }." + //UNION {?s dbont:musicalArtist ?artist. ?s a dbont:Single } 
 				"OPTIONAL{?artist dbpedia:shortDescription ?comment} . " +
 				"OPTIONAL{?artist dbont:abstract ?bio . FILTER(lang(?bio) = 'en')} . " +
 				"OPTIONAL{?artist dbont:birthname ?birthname} ." +
@@ -95,7 +95,7 @@ public class DBPediaOntologyImpl implements DBPediaOntology {
 				"OPTIONAL{?artist foaf:page ?wikipedia}. "+
 				"OPTIONAL {{{?currentMembers dbpedia:currentMembers ?artist. ?currentMembers rdfs:label ?name3. FILTER(lang(?name3) = 'en') } UNION {?artist dbont:bandMember ?currentMember. ?currentMember rdfs:label ?name1. FILTER(lang(?name1) = 'en')}} UNION"+
 				"{ {?pastMembers dbpedia:pastMembers ?artist. ?pastMembers rdfs:label ?name4. FILTER(lang(?name4) = 'en')} UNION {?artist dbont:formerBandMember ?pastMember. ?pastMember rdfs:label ?name2. FILTER(lang(?name2) = 'en')}}}" +
-				"}";
+				"} limit 100000";
 	}
 	private String makeConstructString(String artist) {
 		return "CONSTRUCT { "+artist +" " +
