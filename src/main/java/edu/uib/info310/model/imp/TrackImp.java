@@ -13,8 +13,8 @@ public class TrackImp implements Track {
 	private String artist;
 	private String preview;
 
-	
-	
+
+
 	public String getTrackNr() {
 		return this.trackNr;
 	}
@@ -33,9 +33,10 @@ public class TrackImp implements Track {
 
 	public void setTrackNr(String trackNr) {
 		if(trackNr.length() == 1){
-			trackNr += "0" + trackNr;
+			this.trackNr = "0" + trackNr;
+		}else{
+			this.trackNr = trackNr;
 		}
-		this.trackNr = trackNr;
 	}
 
 	public void setName(String name) {
