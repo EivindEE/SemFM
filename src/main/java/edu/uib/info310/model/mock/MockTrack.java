@@ -1,6 +1,5 @@
 package edu.uib.info310.model.mock;
 
-import edu.uib.info310.model.Event;
 import edu.uib.info310.model.Track;
 
 

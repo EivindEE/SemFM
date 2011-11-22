@@ -56,7 +56,7 @@ public class RecordImp implements Record{
 	}
 	
 	public String getLabel() {
-		return this.itunesLink;
+		return this.label;
 	}
 	
 	public String getItunesLink() {

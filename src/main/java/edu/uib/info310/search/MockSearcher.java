@@ -2,7 +2,6 @@ package edu.uib.info310.search;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
