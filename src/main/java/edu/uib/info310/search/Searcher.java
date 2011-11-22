@@ -14,11 +14,7 @@ public interface Searcher {
 
 	public Artist searchArtist(String search_string) throws ArtistNotFoundException;
 	
-	public Event searchEvent(String search_string);
-	
 	public  Record searchRecord(String record_name,String artist_name) throws MasterNotFoundException;
-	
-	public Track searchTrack(String search_string);
 
 	public List<Record> searchRecords(String q);
 

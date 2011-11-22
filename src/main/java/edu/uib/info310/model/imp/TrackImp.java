@@ -32,6 +32,9 @@ public class TrackImp implements Track {
 	}
 
 	public void setTrackNr(String trackNr) {
+		if(trackNr.length() == 1){
+			trackNr += "0" + trackNr;
+		}
 		this.trackNr = trackNr;
 	}
 

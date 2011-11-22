@@ -139,14 +139,6 @@ public class OntologyBuilderImpl implements OntologyBuilder, ApplicationContextA
 			LOGGER.error("Error retreiving model from DBPedia, maybe the server is down: " + e.toString());
 		}
 
-		try {
-			FileOutputStream out = new FileOutputStream(new File("log/ontout.ttl"));
-			model.write(out,"TURTLE");
-		} catch (FileNotFoundException e) {
-			LOGGER.error("Error writing to file");
-		}
-
-
 		return  model;
 	}
 
@@ -190,20 +182,8 @@ public class OntologyBuilderImpl implements OntologyBuilder, ApplicationContextA
 		Model itunesModel = itunes.getRecordWithNameAndArtist(albumUri, record_name, artist_name);
 		model.add(itunesModel);
 		LOGGER.debug("Model size after getting iTunes info: " + model.size());
-		try {
-			FileOutputStream out = new FileOutputStream(new File("log/albumout.ttl"));
-			model.write(out,"TURTLE");
-		} catch (FileNotFoundException e) {
-			LOGGER.error(e.toString());
-		}
 
 		return model;
-	}
-
-	public static void main(String[] args) throws ArtistNotFoundException {
-		ApplicationContext context = new ClassPathXmlApplicationContext("main-context.xml");
-		OntologyBuilder builder = (OntologyBuilder) context.getBean("ontologyBuilderImpl");
-		builder.createArtistOntology("Bjšrk");
 	}
 
 	public void setApplicationContext(ApplicationContext applicationContext)

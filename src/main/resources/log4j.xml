@@ -45,17 +45,17 @@
 	</logger>
 
 	<logger name="edu.uib.info310" additivity="true">
-		<level value="debug" />
+		<level value="warn" />
 		<appender-ref ref="dailylogfile" />
 	</logger>
 
-	<logger name="edu.uib.info310.search">
-		<level value="debug" />
-	</logger>
+<!-- 	<logger name="edu.uib.info310.search"> -->
+<!-- 		<level value="debug" /> -->
+<!-- 	</logger> -->
 	
-		<logger name="edu.uib.info310.search.SearcherImpl">
-		<level value="debug" />
-	</logger>
+<!-- 		<logger name="edu.uib.info310.search.SearcherImpl"> -->
+<!-- 		<level value="debug" /> -->
+<!-- 	</logger> -->
 	
 
 

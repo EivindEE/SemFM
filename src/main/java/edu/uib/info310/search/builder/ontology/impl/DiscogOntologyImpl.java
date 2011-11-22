@@ -1,9 +1,5 @@
 package edu.uib.info310.search.builder.ontology.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -13,7 +9,6 @@ import java.net.URLEncoder;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.TransformerException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,18 +26,13 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import edu.uib.info310.exception.MasterNotFoundException;
 import edu.uib.info310.search.builder.ontology.DiscogOntology;
-import edu.uib.info310.transformation.XslTransformer;
 
 @Component
 public class DiscogOntologyImpl implements DiscogOntology {
-	//	private static final String searchAlbum = "http://api.discogs.com/search?q=";
-	//	private static final String searchEnd = "&f=xml";
-	//	private static final String kasabi = "http://api.kasabi.com/dataset/discogs/apis/sparql?apikey=fe29b8c58180640f6db16b9cd3bce37c872c2036&output=xml&query=";
 	private static final String release = "http://api.discogs.com/release/";
 	private static final String master =  "http://api.discogs.com/master/";
 	private static final Logger LOGGER = LoggerFactory.getLogger(DiscogOntologyImpl.class);
@@ -106,15 +96,6 @@ public class DiscogOntologyImpl implements DiscogOntology {
 	 * @see edu.uib.info310.search.builder.ontology.DiscogOntology#getAlbum(java.lang.String)
 	 */
 	public Model getAlbum(String search_string){
-		String safe_search = "";
-		try {
-			safe_search = URLEncoder.encode(search_string, "UTF-8");
-		} catch (UnsupportedEncodingException e) {/*ignore*/}
-		
-		
-
-		String searchString =
-				"DESCRIBE ?album WHERE{?album dc:title \""+ search_string + "\" ; rdf:type mo:Record; mo:publisher ?publisher. ?maker foaf:name 'Michael Jackson'. ?album foaf:maker ?maker}";
 		String constructStr = "CONSTRUCT {?artist foaf:made ?record;" +
 				"foaf:name ?artistName;" +
 				"rdf:type mo:MusicArtist ." +
@@ -140,7 +121,6 @@ public class DiscogOntologyImpl implements DiscogOntology {
 
 		Query query = QueryFactory.create(PREFIX + constructStr + whereStr);
 		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest("http://api.kasabi.com/dataset/discogs/apis/sparql", query);
-
 		queryExecution.addParam("apikey", "fe29b8c58180640f6db16b9cd3bce37c872c2036");
 
 		return queryExecution.execConstruct();
@@ -311,7 +291,6 @@ public class DiscogOntologyImpl implements DiscogOntology {
 
 
 				QuerySolution queryRelease = releaseIdResult.next();
-				//		LOGGER.debug("" + queryRelease.get("type").toString());
 				String releaseUri = queryRelease.get("album").toString();
 				releaseId = releaseUri.replace("http://data.kasabi.com/dataset/discogs/release/", "");
 
@@ -323,12 +302,6 @@ public class DiscogOntologyImpl implements DiscogOntology {
 			}
 
 		}
-	}
-
-	public static void main(String[] args) throws MasterNotFoundException {
-		ApplicationContext context = new ClassPathXmlApplicationContext("main-context.xml");
-		DiscogOntology search = (DiscogOntology) context.getBean("discogSearch");
-		System.out.println(search.getRecordReleaseId("If It's Lovin' That You Want","Rihanna"));
 	}
 }
 

@@ -51,8 +51,6 @@ public class BBCOntologyImpl implements BBCOntology {
 		Model translatedModel = exec.execConstruct();
 
 		LOGGER.debug("BBC search found " + translatedModel.size() + " statements" );
-		FileOutputStream out = new FileOutputStream(new File("log/bbcout.ttl"));
-		translatedModel.write(out, "TURTLE");
 		return translatedModel;
 	}
 

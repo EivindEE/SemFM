@@ -39,15 +39,7 @@ public class HomeController {
 	 * Selects the home page and populates the model with a message
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Model model) {
-		String helloWrold = null;
-		try {
-			helloWrold = GetUrl.getContent("http://www.tastekid.com/ask/ws?q=rihanna"); // RIHANNA FUCK YEAH!
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		model.addAttribute("controllerMessage",
-				helloWrold);
+	public String home() {
 		return "home";
 	}
 

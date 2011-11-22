@@ -55,9 +55,6 @@ public class DBPediaOntologyImpl implements DBPediaOntology {
 		QueryExecution exec = QueryExecutionFactory.create(prefix + translateConstructStr + translateWhere, model);
 		Model translatedModel = exec.execConstruct();
 
-		FileOutputStream out = new FileOutputStream(new File("log/dbpout.ttl"));
-		translatedModel.write(out, "TURTLE");
-
 		LOGGER.debug("DBPedia search found " + translatedModel.size() + " statements" );
 		return translatedModel;
 

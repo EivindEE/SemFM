@@ -1,9 +1,6 @@
 package edu.uib.info310.search.builder.ontology.impl;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -11,7 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.sql.Time;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -30,7 +26,6 @@ import com.hp.hpl.jena.sparql.vocabulary.FOAF;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.RDFS;
 
 import edu.uib.info310.search.builder.ontology.ITunesOntology;
 import edu.uib.info310.vocabulary.MO;
@@ -70,6 +65,7 @@ public class ITunesOntologyImpl implements ITunesOntology {
 					property = FOAF.depiction;
 					rdfObject = model.createResource(jObject.get("artworkUrl100").toString());
 					model.add(subject, property, rdfObject);
+					
 					String collectionName = jObject.get("collectionName").toString();
 					if(collectionName.endsWith(SINGLE))
 						collectionName = collectionName.substring(0, collectionName.length() - SINGLE.length());
@@ -115,15 +111,10 @@ public class ITunesOntologyImpl implements ITunesOntology {
 			LOGGER.error("Got ParseException: " + e.toString());
 		}
 
-		try {
-			FileOutputStream out = new FileOutputStream(new File("log/iTunesOut.ttl"));
-			model.write(out, "TURTLE");
-		} catch (FileNotFoundException e) {	LOGGER.error("Got FileNotFoundException: " + e.toString());	}
-
 		if(model.isEmpty()){
 			try {
 				LOGGER.debug("Got 0 results for query: " + ALBUM + URLEncoder.encode(artist, "UTF-8"));
-			} catch (UnsupportedEncodingException e) {			}
+			} catch (UnsupportedEncodingException e) {	LOGGER.error("UnsupportedEncodingException" + e.getLocalizedMessage());		}
 		}
 		return model;
 	}

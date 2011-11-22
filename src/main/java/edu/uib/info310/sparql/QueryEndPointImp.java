@@ -9,7 +9,6 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.Model;
 
 /**
@@ -96,19 +95,5 @@ public class QueryEndPointImp implements QueryEndPoint {
 	 */
 	public void setEndPoint(URL endPoint) {
 		this.endPoint = endPoint.toString();
-	}
-
-	/**
-	 * Example of use
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		QueryEndPoint qep = new QueryEndPointImp();
-		String query = "PREFIX rdf:<http://www.w3.org/2000/01/rdf-schema#> PREFIX dbp:<http://dbpedia.org/property/> SELECT * WHERE { ?person rdf:label 'George Washington'@en. ?location dbp:namedFor ?person }";
-		qep.setQuery(query);
-		qep.setEndPoint(QueryEndPoint.DB_PEDIA);
-		
-		ResultSet rs = qep.selectStatement();
-		ResultSetFormatter.out(rs);
 	}
 }
