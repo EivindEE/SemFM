@@ -13,10 +13,14 @@ import javax.xml.transform.TransformerException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.ServletContextResourceLoader;
 
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -24,6 +28,7 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.sparql.function.library.e;
 
 import edu.uib.info310.exception.ArtistNotFoundException;
 import edu.uib.info310.exception.MasterNotFoundException;
@@ -35,7 +40,7 @@ import edu.uib.info310.search.builder.ontology.LastFMOntology;
 import edu.uib.info310.transformation.XslTransformer;
 
 @Component
-public class OntologyBuilderImpl implements OntologyBuilder {
+public class OntologyBuilderImpl implements OntologyBuilder, ApplicationContextAware {
 
 	@Autowired
 	private LastFMOntology search;
@@ -54,32 +59,37 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 
 	@Autowired
 	private DBPediaOntology dbp;				
-	private static final String SIMILAR_XSL = "../../../../../resources/XSL/xslSimilarArtistLastFM.xsl";
-	private static final String ARTIST_EVENTS_XSL = "../../../../../resources/XSL/Events.xsl";
-	private static final String ALBUM_XSL = "../../../../../resources/XSL/AlbumXSLT.xsl";
+	private static final String SIMILAR_XSL = "WEB-INF/xsl/SimilarArtistLastFM.xsl";
+	private static final String ARTIST_EVENTS_XSL = "WEB-INF/xsl/Events.xsl";
+	private static final String ALBUM_XSL = "WEB-INF/xsl/AlbumXSLT.xsl";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OntologyBuilderImpl.class);
+
+	@Autowired
+	private ApplicationContext applicationContext;
 
 
 	/* (non-Javadoc)
 	 * @see edu.uib.info310.search.builder.OntologyBuilder#createArtistOntology(java.lang.String)
 	 */
-	public Model createArtistOntology(String search_string) throws ArtistNotFoundException {
+	public Model createArtistOntology(String search_string) throws ArtistNotFoundException  {
 		Model model = ModelFactory.createDefaultModel();
 		String correctName = search.correctArtist(search_string);
-
+		
 		try {
 			transformer.setXml(search.getSimilarArtist(correctName));
-			File xsl = (new File(SIMILAR_XSL));
+			LOGGER.debug(applicationContext.toString());
+			File xsl = applicationContext.getResource(SIMILAR_XSL).getFile();
 			LOGGER.debug("Using XSL" + xsl.getAbsolutePath());
-			transformer.setXsl(new File(SIMILAR_XSL));
+			transformer.setXsl(xsl);
 
 			InputStream in = new ByteArrayInputStream(transformer.transform().toByteArray());
 
 			model.read(in, null);
 			LOGGER.debug("Model size after getting similar artists: " + model.size());
 			transformer.setXml(search.getArtistEvents(correctName));
-			transformer.setXsl(new File(ARTIST_EVENTS_XSL));
+			xsl = applicationContext.getResource(ARTIST_EVENTS_XSL).getFile();
+			transformer.setXsl(xsl);
 
 			in = new ByteArrayInputStream(transformer.transform().toByteArray());
 			model.read(in, null);
@@ -146,7 +156,12 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 	public Model createRecordOntology(String releaseId, String record_name, String artist_name){
 
 		LOGGER.debug("Got releaseID: " + releaseId);
-		File xsl = new File(ALBUM_XSL);
+		File xsl = null;
+		try {
+			xsl = applicationContext.getResource(ALBUM_XSL).getFile();
+		} catch (IOException e2) {
+			LOGGER.error("Got IOException: " + e2.getLocalizedMessage());
+		}
 
 		XslTransformer transform = new XslTransformer();
 
@@ -157,13 +172,13 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 		}
 		transform.setXsl(xsl);
 
-		Model model = ModelFactory.createDefaultModel();
 		InputStream in = null;
 		try {
 			in = new ByteArrayInputStream(transform.transform().toByteArray());
 		} catch (TransformerException e1) {
 			LOGGER.error(e1.toString());
 		}
+		Model model = ModelFactory.createDefaultModel();
 		model.read(in,null);
 		LOGGER.debug("Model size after getting album info: " + model.size());
 
@@ -189,6 +204,12 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 		ApplicationContext context = new ClassPathXmlApplicationContext("main-context.xml");
 		OntologyBuilder builder = (OntologyBuilder) context.getBean("ontologyBuilderImpl");
 		builder.createArtistOntology("Bjšrk");
+	}
+
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		this.applicationContext = applicationContext;
+		
 	}
 
 }
