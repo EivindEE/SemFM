@@ -13,6 +13,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,6 +22,7 @@ public class XslTransformer {
 
 	private Source xml;
 	private Source xsl;
+	private static final Logger LOGGER = LoggerFactory.getLogger(XslTransformer.class); 
 
 	/**
 	 * Transforms an xml using the instance's xml and xsl sources
@@ -27,6 +30,7 @@ public class XslTransformer {
 	 * @throws TransformerException if an invalid xsl is provided
 	 */
 	public ByteArrayOutputStream transform() throws TransformerException{
+		LOGGER.debug("Transforming " + xml + " with stylesheet " + xsl);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		Result result = new StreamResult(out);
 
@@ -74,7 +78,9 @@ public class XslTransformer {
 	 * @param xml
 	 */
 	public void setXml(InputStream xml) {
+		LOGGER.debug("Got inputstream : " + xml);
 		this.xml = new StreamSource(xml);
+		LOGGER.debug("This xml is " + this.xml);
 	}
 
 	/**
@@ -97,6 +103,7 @@ public class XslTransformer {
 	 * @param xml
 	 */
 	public void setXsl(File xsl) {
+		LOGGER.debug("Setting xsl to be " + xsl.getAbsolutePath());
 		this.xsl = new StreamSource(xsl);
 	}
 

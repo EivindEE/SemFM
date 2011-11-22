@@ -102,7 +102,7 @@ public class LastFMOntologyImpl implements LastFMOntology {
 		URL lastFMRequest = new URL(similarArtistRequest + safeArtist + apiKey);
 		LOGGER.debug("LastFM request URL: " + lastFMRequest.toExternalForm());
 		URLConnection lastFMConnection = lastFMRequest.openConnection();
-
+		LOGGER.debug("Is connection null? " + lastFMConnection);
 		return lastFMConnection.getInputStream();
 	}
 

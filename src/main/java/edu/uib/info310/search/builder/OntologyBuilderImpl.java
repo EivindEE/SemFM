@@ -53,10 +53,11 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 	private BBCOntology bbc;
 
 	@Autowired
-	private DBPediaOntology dbp;
+	private DBPediaOntology dbp;				
+	private static final String SIMILAR_XSL = "../../../../../resources/XSL/xslSimilarArtistLastFM.xsl";
+	private static final String ARTIST_EVENTS_XSL = "../../../../../resources/XSL/Events.xsl";
+	private static final String ALBUM_XSL = "../../../../../resources/XSL/AlbumXSLT.xsl";
 
-	private static final String SIMILAR_XSL = "src/main/resources/XSL/SimilarArtistLastFM.xsl";
-	private static final String ARTIST_EVENTS_XSL = "src/main/resources/XSL/Events.xsl";
 	private static final Logger LOGGER = LoggerFactory.getLogger(OntologyBuilderImpl.class);
 
 
@@ -69,6 +70,8 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 
 		try {
 			transformer.setXml(search.getSimilarArtist(correctName));
+			File xsl = (new File(SIMILAR_XSL));
+			LOGGER.debug("Using XSL" + xsl.getAbsolutePath());
 			transformer.setXsl(new File(SIMILAR_XSL));
 
 			InputStream in = new ByteArrayInputStream(transformer.transform().toByteArray());
@@ -82,7 +85,11 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 			model.read(in, null);
 			LOGGER.debug("Model size after getting artist events: " + model.size());
 		} catch(Exception e) {
-			LOGGER.error("Threw exception" + e);
+			StringBuilder stackTrace = new StringBuilder();
+			for(StackTraceElement ee : e.getStackTrace()){
+				stackTrace.append(ee.toString() + "\n");
+			}
+			LOGGER.error("Threw exception" + e + ", with stack trace " + stackTrace.toString());
 		}
 
 		String id = "";
@@ -139,7 +146,7 @@ public class OntologyBuilderImpl implements OntologyBuilder {
 	public Model createRecordOntology(String releaseId, String record_name, String artist_name){
 
 		LOGGER.debug("Got releaseID: " + releaseId);
-		File xsl = new File("src/main/resources/XSL/AlbumXSLT.xsl");
+		File xsl = new File(ALBUM_XSL);
 
 		XslTransformer transform = new XslTransformer();
 
