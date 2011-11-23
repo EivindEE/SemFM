@@ -73,7 +73,7 @@ public class ITunesOntologyImpl implements ITunesOntology {
 						collectionName = collectionName.substring(0, collectionName.length() - EP.length());
 
 					property = DCTerms.title;
-					rdfObject = model.createResource(collectionName);
+					rdfObject = model.createLiteral(collectionName);
 					model.add(subject, property, rdfObject);
 
 					property = RDF.type;
