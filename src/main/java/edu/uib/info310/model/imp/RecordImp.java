@@ -29,6 +29,7 @@ public class RecordImp implements Record{
 	private String year;
 	private String label;
 	private String discogId;
+	private String model;
 	
 	
 	public String getId() {
@@ -196,6 +197,15 @@ public class RecordImp implements Record{
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	public void setModel(String model) {
+	this.model = model;
+		
+	}
+
+	public String getModel() {
+		return model;
 	}
 	
 

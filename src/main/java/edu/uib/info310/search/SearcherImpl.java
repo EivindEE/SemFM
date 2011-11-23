@@ -1,5 +1,9 @@
 package edu.uib.info310.search;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -56,6 +60,9 @@ public class SearcherImpl implements Searcher {
 			throws ArtistNotFoundException {
 		this.artist = modelFactory.createArtist();
 		this.model = builder.createArtistOntology(search_string);
+		
+		
+		
 		LOGGER.debug("Size of infered model: " + model.size());
 
 		setArtistIdAndName();
@@ -67,8 +74,21 @@ public class SearcherImpl implements Searcher {
 		setArtistDiscography();
 
 		setArtistInfo();
+		
+		setArtistOntology();
 
 		return this.artist;
+	}
+
+	private void setArtistOntology() {		
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		model.write(out);
+		try {
+			this.artist.setModel(out.toString("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.error("Failed to write to string with  UTF-8 encoding: " + e);
+		}
+		
 	}
 
 	public List<Record> searchRecords(String albumName) {
@@ -114,10 +134,7 @@ public class SearcherImpl implements Searcher {
 			artists.add(artist);
 			record.setArtist(artists);
 
-			// Date date = this.makeDate(querySol.get("year").toString());
-
 			record.setYear(querySol.get("year").toString().substring(0, 4));
-			// recordResult.setDiscogId(querySol.get("discogs").toString());
 			if (!records.contains(record)) {
 				records.add(record);
 			}
@@ -536,7 +553,20 @@ public class SearcherImpl implements Searcher {
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		}
+		
+		setRecordOntology();
 		return record;
+	}
+
+	private void setRecordOntology() {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		model.write(out, "RDF/XML");
+		try {
+			record.setModel(out.toString("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.error("Failed to write to string with  UTF-8 encoding: " + e);
+		}
+		
 	}
 
 	public void setRecordInfo(String search_string)

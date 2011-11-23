@@ -78,4 +78,14 @@ return createDiscography();
 	public void setEvents(List<Event> events) {/*ignore*/	}
 
 	public void setMeta(Map<String, Object> meta) {/*ignore*/	}
+
+	public void setModel(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

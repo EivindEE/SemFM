@@ -133,4 +133,14 @@ public class MockRecord implements Record {
 
 	public void setItunesPreview(String itunesPreview) { /*ignore*/}
 
+	public void setModel(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

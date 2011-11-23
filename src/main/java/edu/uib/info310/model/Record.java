@@ -71,6 +71,10 @@ public interface Record {
 
 	public void setItunesPreview(String itunesPreview);
 
+	public void setModel(String string);
+	
+	public String getModel();
+
 
 
 }

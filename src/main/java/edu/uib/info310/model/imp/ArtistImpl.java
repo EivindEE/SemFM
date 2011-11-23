@@ -26,6 +26,7 @@ public class ArtistImpl implements Artist {
 	private List<Artist> similar;
 	private List<Event> events;
 	private Map<String, Object> meta;
+	private String model;
 
 	public String getId() {
 		return this.id;
@@ -156,6 +157,14 @@ public class ArtistImpl implements Artist {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public String getModel() {
+		return this.model;
 	}
 
 }

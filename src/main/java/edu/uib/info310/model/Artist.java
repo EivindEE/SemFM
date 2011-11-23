@@ -49,4 +49,8 @@ public interface Artist {
 	
 	public void setMeta(Map<String, Object> meta);
 
+	public void setModel(String string);
+	
+	public String getModel();
+
 }
