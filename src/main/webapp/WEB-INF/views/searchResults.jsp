@@ -19,7 +19,7 @@
 		<c:if test="${artist != null}">
 			<h3>Artists:</h3>
 			<ul class="zebra_list search_result_list full">
-				<li><a href="artist?q=${artist.name}">${artist.name}</a>
+				<li><a href="artist?q=${artist.name}">${artist.name}</a> <span class="right">(<a href="artist?q=${artist.name}&out=true">Artist RDF</a>)</span></li>
 			</ul>
 		
 		</c:if>
@@ -38,6 +38,7 @@
 						<c:forEach var="artist" items="${record.artist}">
 							<a href="artist?q=${artist.name}">${artist.name}</a> 
 						</c:forEach>
+						<span class="right">(<a href="album?q=${record.name}&amp;artist=${record.artist[0].name}&out=true">Album RDF</a> / <a href="artist?q=${record.artist[0].name}&out=true">Artist RDF</a> )</span>
 				</li>
 			</c:forEach>
 		</ul>

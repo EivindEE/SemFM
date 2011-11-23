@@ -140,7 +140,7 @@ a {
 .hidden {
 	display:block;
 }
-#sources, #help {
+#sources, #help, #rdf {
 	display:none;
 	position: relative;
 	margin-top: 20px;

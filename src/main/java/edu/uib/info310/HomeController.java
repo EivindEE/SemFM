@@ -65,13 +65,13 @@ public class HomeController {
 			mav.setViewName("notFound");
 		}else if(records.size() == 1 && artist == null){
 			Record record = records.get(0);
-			mav = album(record.getName(), record.getArtist().get(0).getName());
+			mav = album(record.getName(), record.getArtist().get(0).getName(), "false");
 		}
 		else{
 			mav.addObject("records", records);
 			mav.setViewName("searchResults");
 		}
-		
+
 		LOGGER.debug("Returning view: " + mav.getViewName());
 		return mav;
 	}
@@ -79,15 +79,20 @@ public class HomeController {
 
 	@RequestMapping(value = "/artist")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ModelAndView artist(@RequestParam String q){
+	public ModelAndView artist(@RequestParam String q, @RequestParam(required=false) String out){
 		LOGGER.debug("Artist got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("q", q);
 		try {
-			mav.addObject("artist", searcher.searchArtist(q));
+			Artist artist = searcher.searchArtist(q);
+			mav.addObject("model", artist.getModel());
+			mav.addObject("artist", artist);
 			mav.setViewName("artist");
 		} catch (ArtistNotFoundException e) {
 			mav.setViewName("notFound");
+		}
+		if(out != null && out.equals("true")){
+			mav.setViewName("out");
 		}
 
 		return mav;
@@ -97,18 +102,22 @@ public class HomeController {
 
 	@RequestMapping(value = "/album")
 	@ResponseStatus(value = HttpStatus.OK)
-	public ModelAndView album(@RequestParam String q,String artist){
+	public ModelAndView album(@RequestParam(required=true) String q, @RequestParam(required=true) String artist, @RequestParam(required=false) String out){
 		LOGGER.debug("Album got search string: " + q);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("q", q);
 
 		try {
-			mav.addObject("record", searcher.searchRecord(q,artist));
+			Record record = searcher.searchRecord(q,artist);
+			mav.addObject("record", record);
+			mav.addObject("model", record.getModel());
 			mav.setViewName("record");
 		} catch (MasterNotFoundException e) {
 			mav.setViewName("notFound");
 		}
-
+		if(out != null && out.equals("true")){
+			mav.setViewName("out");
+		}
 		return mav;
 	}
 }
