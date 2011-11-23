@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div id="header" class="cf">
-	<a href="SemFM" id="logo"><img
+	<a href="/SemFM" id="logo"><img
 		src="resources/images/SemFM-small.png" alt="" /></a>
 	<form id="search_form" action="search" method="get">
 		<input type="text" name="q" id="q" value="${q}" />
