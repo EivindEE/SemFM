@@ -9,11 +9,13 @@
 		<button class="search_button">Submit Search</button>
 	</form>
 	<ul class="header_meta_links">
-		<c:if test="${! empty artist}">
-		<li><a href="?q=${q}&out=true">as rdf</a></li>
-		</c:if>
-		<c:if test="${! empty record}">
-		<li><a href="?q=${q}&artist=${record.artist[0].name}&out=true">as rdf</a></li>
+		<c:if test="${! empty model}">
+			<c:if test="${! empty artist}">
+				<li><a href="?q=${q}&out=true">as rdf</a></li>
+			</c:if>
+			<c:if test="${! empty record}">
+				<li><a href="?q=${q}&artist=${record.artist[0].name}&out=true">as rdf</a></li>
+			</c:if>
 		</c:if>
 		<li><a href="#sources" class="close">our sources</a></li>
 		<li><a href="#help">help</a></li>
