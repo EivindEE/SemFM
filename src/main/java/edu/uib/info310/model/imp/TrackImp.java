@@ -1,11 +1,15 @@
 package edu.uib.info310.model.imp;
 
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import edu.uib.info310.model.Track;
 
 @Component
 public class TrackImp implements Track {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TrackImp.class);
 	private String trackNr;
 	private String name;
 	private String length;
@@ -60,6 +64,20 @@ public class TrackImp implements Track {
 
 	public void setPreview(String preview) {
 		this.preview = preview;
+	}
+
+	public JSONObject getJson() {
+		JSONObject json = new JSONObject();
+		try {
+		json.accumulate("trackNr", trackNr);
+		json.accumulate("name", name);
+		json.accumulate("length", length);
+		json.accumulate("artist", artist);
+		json.accumulate("preview", preview);
+		} catch (Exception e) {
+			LOGGER.error("Caught a JSONException: " + e.getStackTrace().toString());
+		}
+		return json;
 	}
 
 }

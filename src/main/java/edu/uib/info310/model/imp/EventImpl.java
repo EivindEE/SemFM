@@ -2,6 +2,10 @@ package edu.uib.info310.model.imp;
 
 import java.util.Date;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import edu.uib.info310.model.Event;
@@ -9,7 +13,8 @@ import edu.uib.info310.model.Event;
 @Component
 public class EventImpl implements Event {
 
-	
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(EventImpl.class);
 	private String website;
 	private String id;
 	private Date date;
@@ -102,6 +107,25 @@ public class EventImpl implements Event {
 	}
 	public void setWebsite(String website){
 		this.website = website;
+	}
+
+	public JSONObject getJson() {
+		JSONObject json = new JSONObject();
+		try {
+			json.accumulate("website", website);
+			json.accumulate("id", id);
+			json.accumulate("date", date.toString());
+			json.accumulate("location", location);
+			json.accumulate("venue", venue);;
+			json.accumulate("lng", lng);
+			json.accumulate("lat", lat);
+			json.accumulate("streetAddress", streetAddress);
+			json.accumulate("country", country);
+			json.accumulate("image", image);
+		} catch (JSONException e) {
+			LOGGER.error("Caught a JSONException: " + e.getStackTrace().toString());
+		}
+		return json;
 	}
 
 }

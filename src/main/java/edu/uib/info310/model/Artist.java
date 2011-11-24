@@ -1,7 +1,10 @@
 package edu.uib.info310.model;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONObject;
 
 public interface Artist {
 	
@@ -52,5 +55,7 @@ public interface Artist {
 	public void setModel(String string);
 	
 	public String getModel();
+
+	public JSONObject getJson();
 
 }

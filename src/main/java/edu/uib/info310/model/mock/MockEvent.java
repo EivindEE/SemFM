@@ -3,6 +3,8 @@ package edu.uib.info310.model.mock;
 import java.util.Date;
 import java.util.Random;
 
+import org.json.JSONObject;
+
 import edu.uib.info310.model.Event;
 
 public class MockEvent implements Event {
@@ -74,5 +76,10 @@ public class MockEvent implements Event {
 	public void setCountry(String country) {/*ignore*/}
 
 	public void setImage(String image) {/*ignore*/}
+
+	public JSONObject getJson() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

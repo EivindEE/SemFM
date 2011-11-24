@@ -1,6 +1,9 @@
 package edu.uib.info310.model;
 
+import java.util.Collection;
 import java.util.Date;
+
+import org.json.JSONObject;
 
 public interface Event extends Comparable<Event> {
 	
@@ -43,4 +46,6 @@ public interface Event extends Comparable<Event> {
 	public void setCountry(String country);
 	
 	public void setImage(String image);
+
+	public JSONObject getJson();
 }

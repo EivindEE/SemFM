@@ -1,5 +1,7 @@
 package edu.uib.info310.model.mock;
 
+import org.json.JSONObject;
+
 import edu.uib.info310.model.Track;
 
 
@@ -39,5 +41,10 @@ public class MockTrack implements Track {
 	}
 
 	public void setPreview(String preview) {}
+
+	public JSONObject getJson() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

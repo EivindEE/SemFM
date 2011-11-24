@@ -7,6 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.openjena.atlas.json.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import edu.uib.info310.model.Artist;
@@ -16,6 +22,7 @@ import edu.uib.info310.model.Record;
 @Component
 public class ArtistImpl implements Artist {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ArtistImpl.class);
 	private String id;
 	private String name;
 	private String shortDescription;
@@ -122,7 +129,7 @@ public class ArtistImpl implements Artist {
 		for(Event e: events){
 			if((e.getLat() == null || e.getLng() == null) || (e.getLat().equals("") || e.getLng().equals(""))){
 				continue;
-		}
+			}
 			locatedEvents.add(e);
 		}
 		return locatedEvents;
@@ -164,7 +171,47 @@ public class ArtistImpl implements Artist {
 	}
 
 	public String getModel() {
-		return this.model;
+		return this.getJson().toString();
+	}
+
+	public JSONObject getJson(){
+		JSONObject json = new JSONObject();
+		try {
+		json.accumulate("id", id);
+		json.accumulate("name", name);
+			json.accumulate("shortDescription", shortDescription);
+		json.accumulate("description", description);
+		json.accumulate("bio", bio);
+		json.accumulate("image", image);
+		if(discography != null && !discography.isEmpty()){
+			JSONArray jdiscography = new JSONArray();
+			for(Record rec : discography){
+				jdiscography.put(rec.getJson());
+			}
+			json.accumulate("discography", jdiscography);
+		}
+		if(similar != null && !similar.isEmpty()){
+			JSONArray jsimilar = new JSONArray();
+			for(Artist sim : similar){
+				jsimilar.put(sim.getJson());
+			}
+			json.accumulate("similar", jsimilar);
+		}
+		
+		if(events != null && !events.isEmpty()){
+			JSONArray jevents = new JSONArray();
+			for(Event event : events){
+				jevents.put(event.getJson());
+			}
+			json.accumulate("events", jevents);
+		}
+		
+		json.accumulate("meta", meta);
+		} catch (JSONException e) {
+			LOGGER.error("Caught a JSONException: " + e.getStackTrace().toString());
+		}
+		return json;
+
 	}
 
 }

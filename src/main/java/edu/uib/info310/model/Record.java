@@ -1,8 +1,11 @@
 package edu.uib.info310.model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONObject;
 
 
 public interface Record {
@@ -74,6 +77,8 @@ public interface Record {
 	public void setModel(String string);
 	
 	public String getModel();
+
+	public JSONObject getJson();
 
 
 

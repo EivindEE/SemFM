@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
 import edu.uib.info310.model.Record;
@@ -85,6 +87,11 @@ return createDiscography();
 	}
 
 	public String getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public JSONObject getJson() {
 		// TODO Auto-generated method stub
 		return null;
 	}

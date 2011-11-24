@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import edu.uib.info310.model.Artist;
@@ -13,12 +18,13 @@ import edu.uib.info310.model.Track;
 
 @Component
 public class RecordImp implements Record{
+	private static final Logger LOGGER = LoggerFactory.getLogger(RecordImp.class);
 	private String id;
 	private String name;
 	private String image;
 	private String description;
 	private List<Track> tracks;
-	private List<Artist> artist;
+	private List<Artist> artists;
 	private List<Record> relatedRecords;
 	private String itunesLink;
 	private List<String> reviews;
@@ -30,8 +36,8 @@ public class RecordImp implements Record{
 	private String label;
 	private String discogId;
 	private String model;
-	
-	
+
+
 	public String getId() {
 		return this.id;
 	}
@@ -43,7 +49,7 @@ public class RecordImp implements Record{
 	public String getImage() {
 		return this.image;
 	}
-	
+
 	public String getDescription() {
 		return this.description;
 	}
@@ -51,15 +57,15 @@ public class RecordImp implements Record{
 	public List<Record> getRelatedRecords() {
 		return this.relatedRecords;
 	}
-	
+
 	public List<Artist> getArtist() {
-		return this.artist;
+		return this.artists;
 	}
-	
+
 	public String getLabel() {
 		return this.label;
 	}
-	
+
 	public String getItunesLink() {
 		return this.itunesLink;
 	}
@@ -80,27 +86,27 @@ public class RecordImp implements Record{
 		this.image = image;
 	}
 
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public void setTrack(List<Track> track) {
 		this.tracks = track;
 	}
-	
+
 	public void setArtist(List<Artist> artist) {
-		this.artist = artist;
+		this.artists = artist;
 	}
-	
+
 	public void setRelatedRecords(List<Record> relatedRecord) {
 		this.relatedRecords = relatedRecord;
 	}
-	
+
 	public void setItunesLink(String itunesLink) {
 		this.itunesLink = itunesLink;
 	}
-	
+
 	public void setLabel(String label) {
 		this.label = label;
 	}
@@ -155,11 +161,11 @@ public class RecordImp implements Record{
 	public String getYear() {
 		return this.year;
 	}
-	
+
 	public String getDiscogId() {
 		return this.discogId;
 	}
-	
+
 	public void setYear(String year){
 		this.year = year;
 	}
@@ -172,7 +178,7 @@ public class RecordImp implements Record{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
+		result = prime * result + ((artists == null) ? 0 : artists.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -186,10 +192,10 @@ public class RecordImp implements Record{
 		if (getClass() != obj.getClass())
 			return false;
 		RecordImp other = (RecordImp) obj;
-		if (artist == null) {
-			if (other.artist != null)
+		if (artists == null) {
+			if (other.artists != null)
 				return false;
-		} else if (!artist.equals(other.artist))
+		} else if (!artists.equals(other.artists))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -200,13 +206,75 @@ public class RecordImp implements Record{
 	}
 
 	public void setModel(String model) {
-	this.model = model;
-		
+		this.model = model;
+
 	}
 
 	public String getModel() {
 		return model;
 	}
-	
+
+	public JSONObject getJson() {
+		JSONObject json = new JSONObject();
+		try{
+		json.accumulate("id",id);
+		json.accumulate("name", name);
+		json.accumulate("image",image);
+		json.accumulate("description", description);
+		if( tracks != null && !tracks.isEmpty()){
+			JSONArray jtracks = new JSONArray();
+			for(Track track : tracks){
+				jtracks.put(track.getJson());
+			}
+			json.accumulate("tracks",jtracks);
+		}
+
+		if(artists != null && !artists.isEmpty()){
+			JSONArray jartist = new JSONArray();
+			for(Artist artist: artists){
+				jartist.put(artist.getJson());
+			}
+			json.accumulate("artists",jartist);
+		}
+
+		if(relatedRecords != null && !relatedRecords.isEmpty()){
+			JSONArray jrecords = new JSONArray();
+			for(Record rec: relatedRecords){
+				jrecords.put(rec.getJson());
+			}
+			json.accumulate("relatedRecords",jrecords);
+		}
+
+		json.accumulate("itunesLink",itunesLink);
+
+		if(reviews != null && !reviews.isEmpty()){
+			JSONArray jreviews= new JSONArray(reviews);
+			json.accumulate("reviews",jreviews);
+		}
+
+		if(genres != null && !genres.isEmpty()){
+			JSONArray jgenres = new JSONArray(genres);
+			json.accumulate("genres", genres);
+		}
+
+		json.accumulate("spotifyUri", spotifyUri);
+
+		if(meta != null && !meta.isEmpty()){
+			JSONArray jmeta = new JSONArray(meta);
+			json.accumulate("meta", meta);
+		}
+		
+		json.accumulate("itunesPreview", itunesPreview);
+		json.accumulate("year", year);
+		json.accumulate("label", label);
+		
+		json.accumulate("discogId", discogId);
+		}
+		catch (JSONException e) {
+			LOGGER.error("Caught a JSONException: " + e.getStackTrace().toString());
+		}
+		return json;
+	}
+
 
 }

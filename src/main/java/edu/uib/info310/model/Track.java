@@ -1,5 +1,7 @@
 package edu.uib.info310.model;
 
+import org.json.JSONObject;
+
 public interface Track extends Comparable<Track> {
 	
 	public String getTrackNr();
@@ -21,4 +23,6 @@ public interface Track extends Comparable<Track> {
 	public void setArtist(String artist);
 
 	public void setPreview(String preview);
+
+	public JSONObject getJson();
 }
