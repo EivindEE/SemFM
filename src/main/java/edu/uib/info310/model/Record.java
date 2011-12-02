@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
+import com.hp.hpl.jena.rdf.model.Model;
+
 
 public interface Record {
 
@@ -74,9 +76,9 @@ public interface Record {
 
 	public void setItunesPreview(String itunesPreview);
 
-	public void setModel(String string);
+	public void setModel(Model string);
 	
-	public String getModel();
+	public String getModel(String format);
 
 	public JSONObject getJson();
 

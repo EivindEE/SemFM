@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import edu.uib.info310.exception.ArtistNotFoundException;
 import edu.uib.info310.exception.MasterNotFoundException;
+import edu.uib.info310.exception.NoSuchFormatException;
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Record;
 import edu.uib.info310.search.Searcher;
@@ -85,16 +86,18 @@ public class HomeController {
 		mav.addObject("q", q);
 		try {
 			Artist artist = searcher.searchArtist(q);
-			mav.addObject("model", artist.getModel());
 			mav.addObject("artist", artist);
 			mav.setViewName("artist");
+			if(out != null){
+				mav.setViewName("out");
+				mav.addObject("model", artist.getModel(out));
+				mav.addObject("format", out);
+			}
 		} catch (ArtistNotFoundException e) {
 			mav.setViewName("notFound");
+		} catch (NoSuchFormatException e) {
+			mav.setViewName("notFound");
 		}
-		if(out != null && out.equals("true")){
-			mav.setViewName("out");
-		}
-
 		return mav;
 	}
 
@@ -110,13 +113,15 @@ public class HomeController {
 		try {
 			Record record = searcher.searchRecord(q,artist);
 			mav.addObject("record", record);
-			mav.addObject("model", record.getModel());
+			mav.addObject("model", record.getModel(out));
 			mav.setViewName("record");
+			if(out != null){
+				mav.setViewName("out");
+				mav.addObject("model", record.getModel(out));
+				mav.addObject("format", out);
+			}
 		} catch (MasterNotFoundException e) {
 			mav.setViewName("notFound");
-		}
-		if(out != null && out.equals("true")){
-			mav.setViewName("out");
 		}
 		return mav;
 	}

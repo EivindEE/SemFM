@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
+import com.hp.hpl.jena.rdf.model.Model;
+
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
@@ -146,6 +148,16 @@ public class MockRecord implements Record {
 	}
 
 	public JSONObject getJson() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setModel(Model string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getModel(String format) {
 		// TODO Auto-generated method stub
 		return null;
 	}

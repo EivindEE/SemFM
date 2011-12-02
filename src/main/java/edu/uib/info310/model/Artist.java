@@ -6,6 +6,10 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
+import com.hp.hpl.jena.rdf.model.Model;
+
+import edu.uib.info310.exception.NoSuchFormatException;
+
 public interface Artist {
 	
 	public String getId();
@@ -52,9 +56,9 @@ public interface Artist {
 	
 	public void setMeta(Map<String, Object> meta);
 
-	public void setModel(String string);
+	public void setModel(Model string);
 	
-	public String getModel();
+	public String getModel(String format) throws NoSuchFormatException;
 
 	public JSONObject getJson();
 

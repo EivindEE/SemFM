@@ -1,5 +1,6 @@
 package edu.uib.info310.model.imp;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import com.hp.hpl.jena.rdf.model.Model;
 
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Record;
@@ -35,7 +38,7 @@ public class RecordImp implements Record{
 	private String year;
 	private String label;
 	private String discogId;
-	private String model;
+	private Model model;
 
 
 	public String getId() {
@@ -205,13 +208,28 @@ public class RecordImp implements Record{
 		return true;
 	}
 
-	public void setModel(String model) {
+	public void setModel(Model model) {
 		this.model = model;
 
 	}
 
-	public String getModel() {
-		return model;
+	public String getModel(String format) {
+		if(format.equals("json"))
+			return this.getJson().toString();
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		if(format.equals("ttl")|| format.equals("turtle")){
+			model.write(out, "TURTLE");
+		}
+		else if(format.equals("xml")|| format.equals("true")){
+			model.write(out, "RDF/XML");
+		}
+		else if(format.equals("n3")){
+			model.write(out, "N3");
+		}
+		else if(format.equals("xml-abr")){
+			model.write(out, "RDF/XML-ABBREV");
+		}
+		return out.toString();
 	}
 
 	public JSONObject getJson() {

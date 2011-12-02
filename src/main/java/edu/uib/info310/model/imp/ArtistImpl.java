@@ -1,5 +1,6 @@
 package edu.uib.info310.model.imp;
 
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collections;
@@ -15,6 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.hp.hpl.jena.rdf.model.Model;
+
+import edu.uib.info310.exception.NoSuchFormatException;
 import edu.uib.info310.model.Artist;
 import edu.uib.info310.model.Event;
 import edu.uib.info310.model.Record;
@@ -33,7 +37,7 @@ public class ArtistImpl implements Artist {
 	private List<Artist> similar;
 	private List<Event> events;
 	private Map<String, Object> meta;
-	private String model;
+	private Model model;
 
 	public String getId() {
 		return this.id;
@@ -166,47 +170,65 @@ public class ArtistImpl implements Artist {
 		return true;
 	}
 
-	public void setModel(String model) {
+	public void setModel(Model model) {
 		this.model = model;
 	}
 
-	public String getModel() {
-		return this.getJson().toString();
+	public String getModel(String format) throws NoSuchFormatException {
+		if(format.equals("json"))
+			return this.getJson().toString();
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		if(format.equals("ttl")|| format.equals("turtle")){
+			model.write(out, "TURTLE");
+		}
+		else if(format.equals("xml")|| format.equals("true")){
+			model.write(out, "RDF/XML");
+		}
+		else if(format.equals("n3")){
+			model.write(out, "N3");
+		}
+		else if(format.equals("xml-abr")){
+			model.write(out, "RDF/XML-ABBREV");
+		}
+		else{
+			throw new NoSuchFormatException();
+		}
+		return out.toString();
 	}
 
 	public JSONObject getJson(){
 		JSONObject json = new JSONObject();
 		try {
-		json.accumulate("id", id);
-		json.accumulate("name", name);
+			json.accumulate("id", id);
+			json.accumulate("name", name);
 			json.accumulate("shortDescription", shortDescription);
-		json.accumulate("description", description);
-		json.accumulate("bio", bio);
-		json.accumulate("image", image);
-		if(discography != null && !discography.isEmpty()){
-			JSONArray jdiscography = new JSONArray();
-			for(Record rec : discography){
-				jdiscography.put(rec.getJson());
+			json.accumulate("description", description);
+			json.accumulate("bio", bio);
+			json.accumulate("image", image);
+			if(discography != null && !discography.isEmpty()){
+				JSONArray jdiscography = new JSONArray();
+				for(Record rec : discography){
+					jdiscography.put(rec.getJson());
+				}
+				json.accumulate("discography", jdiscography);
 			}
-			json.accumulate("discography", jdiscography);
-		}
-		if(similar != null && !similar.isEmpty()){
-			JSONArray jsimilar = new JSONArray();
-			for(Artist sim : similar){
-				jsimilar.put(sim.getJson());
+			if(similar != null && !similar.isEmpty()){
+				JSONArray jsimilar = new JSONArray();
+				for(Artist sim : similar){
+					jsimilar.put(sim.getJson());
+				}
+				json.accumulate("similar", jsimilar);
 			}
-			json.accumulate("similar", jsimilar);
-		}
-		
-		if(events != null && !events.isEmpty()){
-			JSONArray jevents = new JSONArray();
-			for(Event event : events){
-				jevents.put(event.getJson());
+
+			if(events != null && !events.isEmpty()){
+				JSONArray jevents = new JSONArray();
+				for(Event event : events){
+					jevents.put(event.getJson());
+				}
+				json.accumulate("events", jevents);
 			}
-			json.accumulate("events", jevents);
-		}
-		
-		json.accumulate("meta", meta);
+
+			json.accumulate("meta", meta);
 		} catch (JSONException e) {
 			LOGGER.error("Caught a JSONException: " + e.getStackTrace().toString());
 		}

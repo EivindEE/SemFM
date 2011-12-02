@@ -57,9 +57,9 @@ public class SearcherImpl implements Searcher {
 			throws ArtistNotFoundException {
 		this.artist = modelFactory.createArtist();
 		this.model = builder.createArtistOntology(search_string);
-		
-		
-		
+
+
+
 		LOGGER.debug("Size of infered model: " + model.size());
 
 		setArtistIdAndName();
@@ -71,21 +71,14 @@ public class SearcherImpl implements Searcher {
 		setArtistDiscography();
 
 		setArtistInfo();
-		
+
 		setArtistOntology();
 
 		return this.artist;
 	}
 
 	private void setArtistOntology() {		
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		model.write(out);
-		try {
-			this.artist.setModel(out.toString("UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			LOGGER.error("Failed to write to string with  UTF-8 encoding: " + e);
-		}
-		
+		this.artist.setModel(model);
 	}
 
 	public List<Record> searchRecords(String albumName) {
@@ -550,20 +543,13 @@ public class SearcherImpl implements Searcher {
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		}
-		
+
 		setRecordOntology();
 		return record;
 	}
 
 	private void setRecordOntology() {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		model.write(out, "RDF/XML");
-		try {
-			record.setModel(out.toString("UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			LOGGER.error("Failed to write to string with  UTF-8 encoding: " + e);
-		}
-		
+		record.setModel(model);
 	}
 
 	public void setRecordInfo(String search_string)
