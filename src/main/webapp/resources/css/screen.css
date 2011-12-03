@@ -227,12 +227,12 @@ a {
 			right: 10px;
 			top: 10px;
 			height: 21px;
-			background: url('http://localhost:8080/SemFM/spring/resources/images/search-magnifier.png') top center no-repeat;
+			background: url('../images/search-magnifier.png') top center no-repeat;
 			border:0;
 			cursor: pointer;
 		}
 			#search_form button:hover {
-				background: url('http://localhost:8080/SemFM/spring/resources/images/search-magnifier.png') center center no-repeat;
+				background: url('../images/search-magnifier.png') center center no-repeat;
 			}
 			#search_form button:active {
 				top: 11px;
@@ -273,7 +273,7 @@ a {
 /* search result header */
 .headline_wrapper {
 	position:relative;
-	background: url('http://localhost:8080/SemFM/spring/resources/images/headline-background.png');
+	background: url('../images/headline-background.png');
 	
 	border-top: 1px solid #666;
 	border-bottom: 1px solid #666;
@@ -291,7 +291,7 @@ a {
 	.tour:before {
 		height: 87px;
 		width: 89px;
-		background: url(http://localhost:8080/SemFM/spring/resources/images/on-tour.png) no-repeat right top;
+		background: url(../images/on-tour.png) no-repeat right top;
 		position: absolute;
 		top: 0;
 		right: 0;
@@ -405,7 +405,7 @@ a {
 
 /* used in upcoming concerts */
 .concert_map {
-	background: url('http://localhost:8080/SemFM/spring/resources/images/map-background.png');
+	background: url('..//images/map-background.png');
 	border-radius: 10px;
 	height: 600px;
 	padding: 10px;
@@ -518,7 +518,7 @@ a {
 	position: absolute;
 	height: 65px;
 	width: 30px;
-	background: url('http://localhost:8080/SemFM/spring/resources/images/prev-scroll-arrow.png') no-repeat center center rgba(0,0,0,0.7);
+	background: url('../images/prev-scroll-arrow.png') no-repeat center center rgba(0,0,0,0.7);
 	border: 0;
 	top: 50%;
 	margin-top: -32px;
@@ -533,7 +533,7 @@ a {
 	position: absolute;
 	height: 64px;
 	width: 30px;
-	background: url('http://localhost:8080/SemFM/spring/resources/images/next-scroll-arrow.png') no-repeat center center rgba(0,0,0,0.7);
+	background: url('../images/next-scroll-arrow.png') no-repeat center center rgba(0,0,0,0.7);
 	border:0;
 	top: 50%;
 	margin-top: -32px;
