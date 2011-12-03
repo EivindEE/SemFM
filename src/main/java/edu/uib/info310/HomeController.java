@@ -113,7 +113,6 @@ public class HomeController {
 		try {
 			Record record = searcher.searchRecord(q,artist);
 			mav.addObject("record", record);
-			mav.addObject("model", record.getModel(out));
 			mav.setViewName("record");
 			if(out != null){
 				mav.setViewName("out");
