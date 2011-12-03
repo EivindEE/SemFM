@@ -45,7 +45,7 @@
 	</logger>
 
 	<logger name="edu.uib.info310" additivity="true">
-		<level value="warn" />
+		<level value="debug" />
 		<appender-ref ref="dailylogfile" />
 	</logger>
 
