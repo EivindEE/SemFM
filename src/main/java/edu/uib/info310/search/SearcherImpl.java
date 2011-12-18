@@ -1,6 +1,5 @@
 package edu.uib.info310.search;
 
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -36,7 +35,7 @@ import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 import edu.uib.info310.model.factory.ModelFactory;
 import edu.uib.info310.search.builder.OntologyBuilder;
-import edu.uib.info310.search.builder.ontology.DiscogOntology;
+import edu.uib.info310.search.builder.ontology.DiscogDataSource;
 
 @Component
 public class SearcherImpl implements Searcher {
@@ -48,7 +47,7 @@ public class SearcherImpl implements Searcher {
 	@Autowired
 	private ModelFactory modelFactory;
 	@Autowired
-	private DiscogOntology discog;
+	private DiscogDataSource discog;
 	private Model model;
 	private Artist artist;
 	private Record record;
