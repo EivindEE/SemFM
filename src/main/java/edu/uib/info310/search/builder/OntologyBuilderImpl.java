@@ -24,33 +24,37 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 import edu.uib.info310.exception.ArtistNotFoundException;
 import edu.uib.info310.exception.MasterNotFoundException;
-import edu.uib.info310.search.builder.ontology.BBCOntology;
-import edu.uib.info310.search.builder.ontology.DBPediaOntology;
-import edu.uib.info310.search.builder.ontology.DiscogOntology;
-import edu.uib.info310.search.builder.ontology.ITunesOntology;
-import edu.uib.info310.search.builder.ontology.LastFMOntology;
+import edu.uib.info310.search.builder.ontology.BBCDataSource;
+import edu.uib.info310.search.builder.ontology.DBPediaDataSource;
+import edu.uib.info310.search.builder.ontology.DiscogDataSource;
+import edu.uib.info310.search.builder.ontology.ITunesDataSource;
+import edu.uib.info310.search.builder.ontology.LastFMDataSource;
 import edu.uib.info310.transformation.XslTransformer;
 
 @Component
 public class OntologyBuilderImpl implements OntologyBuilder, ApplicationContextAware {
 
 	@Autowired
-	private LastFMOntology search;
+	private LastFMDataSource search;
 
 	@Autowired
 	private XslTransformer transformer;
 
-	@Autowired
-	private ITunesOntology itunes;
+//	@Autowired
+//	private ITunesDataSource itunes;
 
 	@Autowired
-	private DiscogOntology discog;
+	private DiscogDataSource discog;
 
-	@Autowired
-	private BBCOntology bbc;
+//	@Autowired
+//	private BBCDataSource bbc;
 
+//	@Autowired
+//	private DBPediaDataSource dbp;				
+	
 	@Autowired
-	private DBPediaOntology dbp;				
+	private ArtistDataSources artistDataSources;
+
 	private static final String SIMILAR_XSL = "WEB-INF/xsl/SimilarArtistLastFM.xsl";
 	private static final String ARTIST_EVENTS_XSL = "WEB-INF/xsl/Events.xsl";
 	private static final String ALBUM_XSL = "WEB-INF/xsl/AlbumXSLT.xsl";
@@ -112,24 +116,12 @@ public class OntologyBuilderImpl implements OntologyBuilder, ApplicationContextA
 			LOGGER.debug("Artist not found");
 			throw new ArtistNotFoundException("Last.FM found name, but no data.");
 		}
-
-
-		model.add(itunes.getRecordsByArtistName(artistName, id));
-		LOGGER.debug("Model size after adding record info from iTunes: " + model.size());
-		try{
-			model.add(bbc.getArtistModel(artistName, id));
-			LOGGER.debug("Model size after adding artist info from BBC: " + model.size());
-		}
-		catch (Exception e) {
-			LOGGER.error("Error retreiving model from BBC, maybe the server is down: " + e.toString());
-		}
-		try{
-			model.add(dbp.getArtistModel(artistName, id));
-			LOGGER.debug("Model size after adding artist info from DBPedia: " + model.size());
-		} 
-		catch (Exception e) {
-			LOGGER.error("Error retreiving model from DBPedia, maybe the server is down: " + e.toString());
-		}
+		artistDataSources.init();
+		artistDataSources.setArtistName(artistName);
+		artistDataSources.setArtistUri(id);
+		artistDataSources.setModel(model);
+		artistDataSources.getArtistModel();
+		
 
 		return  model;
 	}
@@ -171,8 +163,8 @@ public class OntologyBuilderImpl implements OntologyBuilder, ApplicationContextA
 		ResultSet albumResults = execution.execSelect();
 		QuerySolution uriResult = albumResults.next();
 		String albumUri = "http://api.discogs.com/release/" + uriResult.get("discogs").toString();
-		Model itunesModel = itunes.getRecordWithNameAndArtist(albumUri, record_name, artist_name);
-		model.add(itunesModel);
+//		Model itunesModel = itunes.getRecordWithNameAndArtist(albumUri, record_name, artist_name);
+//		model.add(itunesModel);
 		LOGGER.debug("Model size after getting iTunes info: " + model.size());
 
 		return model;
