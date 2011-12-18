@@ -9,13 +9,14 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
-import edu.uib.info310.search.builder.ontology.DBPediaOntology;
+import edu.uib.info310.search.builder.ontology.AbstractArtistDataSource;
+import edu.uib.info310.search.builder.ontology.DBPediaDataSource;
 import edu.uib.info310.sparql.QueryEndPoint;
 
 @Component
-public class DBPediaOntologyImpl implements DBPediaOntology {
+public class DBPediaDataSourceImpl extends AbstractArtistDataSource  implements DBPediaDataSource {
 	@Autowired
-	QueryEndPoint qep;
+	protected QueryEndPoint qep;
 	private static final String prefix = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
 			"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
 			"PREFIX mo: <http://purl.org/ontology/mo/>" +
@@ -24,18 +25,20 @@ public class DBPediaOntologyImpl implements DBPediaOntology {
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 			"PREFIX rc: <http://umbel.org/umbel/rc/>" +
 			"PREFIX owl: <http://www.w3.org/2002/07/owl#> ";
-	private static final Logger LOGGER = LoggerFactory.getLogger(DBPediaOntologyImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DBPediaDataSourceImpl.class);
+	
 	/* (non-Javadoc)
 	 * @see edu.uib.info310.search.builder.ontology.impl.DBPediaOntology#getArtistModel(java.lang.String, java.lang.String)
 	 */
-	public Model getArtistModel(String artistName, String artistUri) throws Exception{
+	@Override
+	public Model getArtistModel(String artistName, String artistUri){
 
 		String artist = "<" + artistUri + ">";
 		String constructStr = makeConstructString(artist);
 		String whereStr = makeWhereString(artistName);
 		
 		qep.setQuery(prefix + constructStr + whereStr);
-		qep.setEndPoint(QueryEndPoint.DB_PEDIA);
+		qep.setEndPoint(QueryEndPoint.DB_PEDIA_LIVE);
 		
 		Model model = qep.constructStatement();
 		

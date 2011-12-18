@@ -19,15 +19,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.uib.info310.exception.ArtistNotFoundException;
-import edu.uib.info310.search.builder.ontology.LastFMOntology;
+import edu.uib.info310.search.builder.ontology.AbstractArtistDataSource;
+import edu.uib.info310.search.builder.ontology.LastFMDataSource;
 
 @Component
-public class LastFMOntologyImpl implements LastFMOntology {
+public class LastFMDataSourceImpl implements LastFMDataSource {
 	private static final String similarArtistRequest = "http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar&artist=";
 	private static final String artistEvents = "http://ws.audioscrobbler.com/2.0/?method=artist.getevents&artist=";
 	private static final String artistCorrection = "http://ws.audioscrobbler.com/2.0/?method=artist.getcorrection&artist=";
 	private static final String apiKey = "&api_key=a7123248beb0bbcb90a2e3a9ced3bee9";
-	private static final Logger LOGGER = LoggerFactory.getLogger(LastFMOntologyImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LastFMDataSourceImpl.class);
 
 	private InputStream artistCorrection(String search_string) throws ArtistNotFoundException  {
 		InputStream in = null;
@@ -62,7 +63,7 @@ public class LastFMOntologyImpl implements LastFMOntology {
 		return doc;
 	}
 	/* (non-Javadoc)
-	 * @see edu.uib.info310.search.builder.ontology.LastFMOntology#correctArtist(java.lang.String)
+	 * @see edu.uib.info310.search.builder.ontology.LastFMDataSource#correctArtist(java.lang.String)
 	 */
 	public String correctArtist(String artist) throws ArtistNotFoundException {
 		try{
@@ -81,7 +82,7 @@ public class LastFMOntologyImpl implements LastFMOntology {
 
 
 	/* (non-Javadoc)
-	 * @see edu.uib.info310.search.builder.ontology.LastFMOntology#getArtistEvents(java.lang.String)
+	 * @see edu.uib.info310.search.builder.ontology.LastFMDataSource#getArtistEvents(java.lang.String)
 	 */
 	public InputStream getArtistEvents (String artist) throws Exception {
 		String safeArtist = makeWebSafeString(artist);
@@ -92,7 +93,7 @@ public class LastFMOntologyImpl implements LastFMOntology {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.uib.info310.search.builder.ontology.LastFMOntology#getSimilarArtist(java.lang.String)
+	 * @see edu.uib.info310.search.builder.ontology.LastFMDataSource#getSimilarArtist(java.lang.String)
 	 */
 	public InputStream getSimilarArtist(String artist) throws Exception {
 		String safeArtist = makeWebSafeString(artist);
@@ -105,7 +106,7 @@ public class LastFMOntologyImpl implements LastFMOntology {
 
 
 	/* (non-Javadoc)
-	 * @see edu.uib.info310.search.builder.ontology.LastFMOntology#makeWebSafeString(java.lang.String)
+	 * @see edu.uib.info310.search.builder.ontology.LastFMDataSource#makeWebSafeString(java.lang.String)
 	 */
 	public String makeWebSafeString(String unsafe){
 		try {

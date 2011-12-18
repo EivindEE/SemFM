@@ -24,13 +24,14 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import edu.uib.info310.exception.MasterNotFoundException;
-import edu.uib.info310.search.builder.ontology.DiscogOntology;
+import edu.uib.info310.search.builder.ontology.AbstractArtistDataSource;
+import edu.uib.info310.search.builder.ontology.DiscogDataSource;
 
 @Component
-public class DiscogOntologyImpl implements DiscogOntology {
+public class DiscogDataSourceImpl implements DiscogDataSource {
 	private static final String release = "http://api.discogs.com/release/";
 	private static final String master =  "http://api.discogs.com/master/";
-	private static final Logger LOGGER = LoggerFactory.getLogger(DiscogOntologyImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DiscogDataSourceImpl.class);
 	private static final String format = "?f=xml";
 	private static String PREFIX = 
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
@@ -76,7 +77,7 @@ public class DiscogOntologyImpl implements DiscogOntology {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.uib.info310.search.builder.ontology.DiscogOntology#getAlbumURI(java.lang.String)
+	 * @see edu.uib.info310.search.builder.ontology.DiscogDataSource#getAlbumURI(java.lang.String)
 	 */
 	public InputStream getAlbumURI(String releaseId) throws MasterNotFoundException {
 		LOGGER.debug("Trying to find master for  " + releaseId);
@@ -106,7 +107,7 @@ public class DiscogOntologyImpl implements DiscogOntology {
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.uib.info310.search.builder.ontology.DiscogOntology#getRecordReleaseId(java.lang.String, java.lang.String)
+	 * @see edu.uib.info310.search.builder.ontology.DiscogDataSource#getRecordReleaseId(java.lang.String, java.lang.String)
 	 */
 	public String getRecordReleaseId(String record_name, String artist_name) throws MasterNotFoundException{
 		

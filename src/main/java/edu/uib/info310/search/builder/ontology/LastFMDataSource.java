@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import edu.uib.info310.exception.ArtistNotFoundException;
 
-public interface LastFMOntology {
+public interface LastFMDataSource {
 
 	public String correctArtist(String artist) throws ArtistNotFoundException;
 

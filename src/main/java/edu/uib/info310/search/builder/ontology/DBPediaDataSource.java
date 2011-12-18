@@ -2,13 +2,13 @@ package edu.uib.info310.search.builder.ontology;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
-public interface BBCOntology {
+public interface DBPediaDataSource {
 
-	/**
-	 * Returns a model with data from BBC_MUSIC SPARQL search
-	 * @returns a Model
-	 */
 	public Model getArtistModel(String artistName, String artistUri)
 			throws Exception;
+	
+	public void setArtistName(String artistName);
+	
+	public void setArtistUri(String artistUri);
 
 }

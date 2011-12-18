@@ -9,14 +9,19 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
-import edu.uib.info310.search.builder.ontology.BBCOntology;
+import edu.uib.info310.search.builder.ontology.AbstractArtistDataSource;
+import edu.uib.info310.search.builder.ontology.BBCDataSource;
 import edu.uib.info310.sparql.QueryEndPoint;
 
 @Component
-public class BBCOntologyImpl implements BBCOntology {
+public class BBCDataSourceImpl extends AbstractArtistDataSource implements BBCDataSource{
+	protected String artistName;
+	protected String artistUri;
+	
 	@Autowired
-	QueryEndPoint qep;
-	private static final Logger LOGGER = LoggerFactory.getLogger(BBCOntologyImpl.class);
+	protected QueryEndPoint qep;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(BBCDataSourceImpl.class);
 	private static final String prefix = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
 			"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
 			"PREFIX mo: <http://purl.org/ontology/mo/>" +
@@ -36,7 +41,7 @@ public class BBCOntologyImpl implements BBCOntology {
 	/* (non-Javadoc)
 	 * @see edu.uib.info310.search.builder.ontology.impl.BBCOntology#getArtistModel(java.lang.String, java.lang.String)
 	 */
-	public Model getArtistModel(String artistName, String artistUri) throws Exception{
+	public Model getArtistModel(String artistName, String artistUri){
 		String artist = "<" + artistUri + ">";
 		String constructStr =  this.makeConstruct(artist);
 		String whereStr = this.makeWhere(artistName);
@@ -74,5 +79,4 @@ public class BBCOntologyImpl implements BBCOntology {
 				"owl:sameAs ?artist" +
 				"} " ;
 	}
-
 }

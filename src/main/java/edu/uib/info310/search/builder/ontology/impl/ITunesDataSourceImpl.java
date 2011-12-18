@@ -27,23 +27,24 @@ import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-import edu.uib.info310.search.builder.ontology.ITunesOntology;
+import edu.uib.info310.search.builder.ontology.AbstractArtistDataSource;
+import edu.uib.info310.search.builder.ontology.ITunesDataSource;
 import edu.uib.info310.vocabulary.MO;
 
 
 
 @Component
-public class ITunesOntologyImpl implements ITunesOntology {
+public class ITunesDataSourceImpl extends AbstractArtistDataSource  implements ITunesDataSource {
 	private static String ALBUM = "http://itunes.apple.com/search?entity=album&limit=200&country=NO&term=";
 	private static String TRACK = "http://itunes.apple.com/search?entity=musicTrack&limit=1000&country=NO&term=";
 	private static String SINGLE = " - Single";
 	private static String EP = " - EP";
-	private static final Logger LOGGER = LoggerFactory.getLogger(ITunesOntologyImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ITunesDataSourceImpl.class);
 
 	/* (non-Javadoc)
-	 * @see edu.uib.info310.search.builder.ontology.ITunesOntology#getRecordsByArtistName(java.lang.String, java.lang.String)
+	 * @see edu.uib.info310.search.builder.ontology.ITunesDataSource#getRecordsByArtistName(java.lang.String, java.lang.String)
 	 */
-	public Model getRecordsByArtistName(String artist, String artistUri){
+	public Model getArtistModel(String artist, String artistUri){
 		Model model = ModelFactory.createDefaultModel();
 		Resource subject;
 		Property property;
@@ -116,11 +117,12 @@ public class ITunesOntologyImpl implements ITunesOntology {
 				LOGGER.debug("Got 0 results for query: " + ALBUM + URLEncoder.encode(artist, "UTF-8"));
 			} catch (UnsupportedEncodingException e) {	LOGGER.error("UnsupportedEncodingException" + e.getLocalizedMessage());		}
 		}
+		LOGGER.debug("Got " + model.size() + " # of tripplets in iTunes");
 		return model;
 	}
 
 	/* (non-Javadoc)
-	 * @see edu.uib.info310.search.builder.ontology.ITunesOntology#getRecordWithNameAndArtist(java.lang.String, java.lang.String, java.lang.String)
+	 * @see edu.uib.info310.search.builder.ontology.ITunesDataSource#getRecordWithNameAndArtist(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public Model getRecordWithNameAndArtist(String albumUri, String album, String artist){
 		Model model = ModelFactory.createDefaultModel();
