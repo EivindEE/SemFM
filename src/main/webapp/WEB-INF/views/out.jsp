@@ -19,5 +19,4 @@ else{
 }
 response.setContentType(contentType + " ; charset=UTF-8");  
 %>
-<%=response.getContentType()%>
 ${model}
