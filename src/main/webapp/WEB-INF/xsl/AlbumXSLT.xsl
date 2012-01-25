@@ -23,9 +23,6 @@ encoding="UTF-8" indent="yes"/>
 			<rdf:Description rdf:about="http://api.discogs.com/release/{release/@id}">
 			<rdf:type rdf:resource="http://purl.org/ontology/mo/release" />
 
-			<!-- <xsl:for-each select="release/images/image">
-					<mo:image rdf:recource="{@uri}" />
-				</xsl:for-each> -->
 				<xsl:for-each select="release/artists/artist">
 					<foaf:hasAgent>
 						<xsl:value-of select="name" />

@@ -9,7 +9,6 @@ public interface OntologyBuilder {
 	public Model createArtistOntology(String search_string)
 			throws ArtistNotFoundException;
 
-	public Model createRecordOntology(String releaseId, String record_name,
-			String artist_name);
+	public Model createRecordOntology(String recordName, String artistName);
 
 }

@@ -35,7 +35,6 @@ import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 import edu.uib.info310.model.factory.ModelFactory;
 import edu.uib.info310.search.builder.OntologyBuilder;
-import edu.uib.info310.search.builder.ontology.DiscogDataSource;
 
 @Component
 public class SearcherImpl implements Searcher {
@@ -46,8 +45,6 @@ public class SearcherImpl implements Searcher {
 	private OntologyBuilder builder;
 	@Autowired
 	private ModelFactory modelFactory;
-	@Autowired
-	private DiscogDataSource discog;
 	private Model model;
 	private Artist artist;
 	private Record record;
@@ -532,9 +529,8 @@ public class SearcherImpl implements Searcher {
 	public Record searchRecord(String record_name, String artist_name)
 			throws MasterNotFoundException {
 		this.record = modelFactory.createRecord();
-		String release = discog.getRecordReleaseId(record_name, artist_name);
-		this.model = builder.createRecordOntology(release, record_name,
-				artist_name);
+		String release = null;
+		this.model = builder.createRecordOntology(record_name, artist_name);
 		try {
 			setRecordInfo(release);
 		} catch (MasterNotFoundException e) {
@@ -554,9 +550,7 @@ public class SearcherImpl implements Searcher {
 	public void setRecordInfo(String search_string)
 			throws MasterNotFoundException, TransformerException {
 
-		String release = "<http://api.discogs.com/release/" + search_string
-				+ ">";
-		LOGGER.debug("This is the search_string " + release);
+		
 		String albumStr = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 				+ "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "
 				+ "PREFIX mo: <http://purl.org/ontology/mo/> "
@@ -593,7 +587,9 @@ public class SearcherImpl implements Searcher {
 			// LOGGER.debug(queryAlbum.get("genre").toString());
 			// LOGGER.debug(queryAlbum.get("year").toString());
 
-			record.setId(release);
+			if(queryAlbum.get("id") != null){
+				record.setId(queryAlbum.get("id").toString());
+			}
 
 			if (queryAlbum.get("name") != null)
 				record.setName(queryAlbum.get("name").toString());

@@ -40,6 +40,20 @@ public class XslTransformer {
 		
 		return out;
 	}
+	
+	public ByteArrayOutputStream transform(String itemUri) throws TransformerException{
+		LOGGER.debug("Transforming " + xml + " with stylesheet " + xsl);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		Result result = new StreamResult(out);
+
+		TransformerFactory factory = TransformerFactory.newInstance();
+		Transformer transformer = factory.newTransformer(xsl);
+		transformer.setParameter("itemUri", itemUri);
+		transformer.transform(xml, result);
+		
+		return out;
+	}
+	
 
 	/**
 	 * Returns the Source containing the xml

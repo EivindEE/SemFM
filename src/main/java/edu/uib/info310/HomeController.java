@@ -106,7 +106,7 @@ public class HomeController {
 	@RequestMapping(value = "/album")
 	@ResponseStatus(value = HttpStatus.OK)
 	public ModelAndView album(@RequestParam(required=true) String q, @RequestParam(required=true) String artist, @RequestParam(required=false) String out){
-		LOGGER.debug("Album got search string: " + q);
+		LOGGER.debug("Album got search string: " + q + ", with artist: "  + artist);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("q", q);
 

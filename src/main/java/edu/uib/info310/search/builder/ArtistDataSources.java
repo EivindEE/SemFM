@@ -13,34 +13,35 @@ import org.springframework.stereotype.Component;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import edu.uib.info310.search.builder.ontology.AbstractArtistDataSource;
+import edu.uib.info310.search.builder.ontology.ArtistDataSource;
+import edu.uib.info310.search.builder.ontology.BBCArtistDataSource;
 
 @Component
 public class ArtistDataSources {
 	
 	@Autowired
-	@Qualifier("ITunesDataSourceImpl")
-	private AbstractArtistDataSource itunes;
+	@Qualifier("ITunesArtistDataSourceImpl")
+	private ArtistDataSource itunes;
 
 	@Autowired
-	@Qualifier("BBCDataSourceImpl")
-	private AbstractArtistDataSource bbc;
+	private BBCArtistDataSource bbc;
 
 	@Autowired
-	@Qualifier("DBPediaDataSourceImpl")
-	private AbstractArtistDataSource dbp;	
+	@Qualifier("DBPediaArtistDataSourceImpl")
+	private ArtistDataSource dbp;	
 	
-	private List<AbstractArtistDataSource> dataSources;
+	private List<ArtistDataSource> dataSources;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArtistDataSources.class);
 
 	public void init(){
-		this.dataSources = Arrays.asList(new AbstractArtistDataSource[]{itunes,bbc,dbp});
+		this.dataSources = Arrays.asList(new ArtistDataSource[]{itunes,bbc,dbp});
 		LOGGER.debug("Running the query will gather information from these sources: " + dataSources);
 	}
 
 	public void getArtistModel(){
 		List<Thread> threads = new LinkedList<Thread>();
-		for(AbstractArtistDataSource source : dataSources){
+		for(ArtistDataSource source : dataSources){
 			threads.add(new Thread(source));
 		}
 		for(Thread thread :  threads){
@@ -62,19 +63,19 @@ public class ArtistDataSources {
 	}
 
 	public void setArtistName(String artistName) {
-		for(AbstractArtistDataSource source : dataSources){
+		for(ArtistDataSource source : dataSources){
 			source.setArtistName(artistName);
 		}
 	}
 
 	public void setArtistUri(String artistUri) {
-		for(AbstractArtistDataSource source : dataSources){
+		for(ArtistDataSource source : dataSources){
 			source.setArtistUri(artistUri);
 		}
 	}
 
 	public void setModel(Model model) {
-		for(AbstractArtistDataSource source : dataSources){
+		for(ArtistDataSource source : dataSources){
 			source.setModel(model);
 		}
 	}

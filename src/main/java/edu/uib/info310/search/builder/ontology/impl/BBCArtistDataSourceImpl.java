@@ -10,18 +10,18 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import edu.uib.info310.search.builder.ontology.AbstractArtistDataSource;
-import edu.uib.info310.search.builder.ontology.BBCDataSource;
+import edu.uib.info310.search.builder.ontology.BBCArtistDataSource;
 import edu.uib.info310.sparql.QueryEndPoint;
 
 @Component
-public class BBCDataSourceImpl extends AbstractArtistDataSource implements BBCDataSource{
+public class BBCArtistDataSourceImpl extends AbstractArtistDataSource implements BBCArtistDataSource {
 	protected String artistName;
 	protected String artistUri;
 	
 	@Autowired
 	protected QueryEndPoint qep;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(BBCDataSourceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(BBCArtistDataSourceImpl.class);
 	private static final String prefix = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
 			"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
 			"PREFIX mo: <http://purl.org/ontology/mo/>" +

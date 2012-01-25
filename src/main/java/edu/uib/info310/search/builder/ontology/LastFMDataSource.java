@@ -12,6 +12,4 @@ public interface LastFMDataSource {
 
 	public InputStream getSimilarArtist(String artist) throws Exception;
 
-	public String makeWebSafeString(String unsafe);
-
 }

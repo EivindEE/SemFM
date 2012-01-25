@@ -10,11 +10,11 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import edu.uib.info310.search.builder.ontology.AbstractArtistDataSource;
-import edu.uib.info310.search.builder.ontology.DBPediaDataSource;
+import edu.uib.info310.search.builder.ontology.DBpediaArtistDataSource;
 import edu.uib.info310.sparql.QueryEndPoint;
 
 @Component
-public class DBPediaDataSourceImpl extends AbstractArtistDataSource  implements DBPediaDataSource {
+public class DBPediaArtistDataSourceImpl extends AbstractArtistDataSource implements DBpediaArtistDataSource {
 	@Autowired
 	protected QueryEndPoint qep;
 	private static final String prefix = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" +
@@ -25,10 +25,13 @@ public class DBPediaDataSourceImpl extends AbstractArtistDataSource  implements 
 			"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
 			"PREFIX rc: <http://umbel.org/umbel/rc/>" +
 			"PREFIX owl: <http://www.w3.org/2002/07/owl#> ";
-	private static final Logger LOGGER = LoggerFactory.getLogger(DBPediaDataSourceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DBPediaArtistDataSourceImpl.class);
 	
 	/* (non-Javadoc)
 	 * @see edu.uib.info310.search.builder.ontology.impl.DBPediaOntology#getArtistModel(java.lang.String, java.lang.String)
+	 */
+	/* (non-Javadoc)
+	 * @see edu.uib.info310.search.builder.ontology.impl.DBpediaArtistDataSource#getArtistModel(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public Model getArtistModel(String artistName, String artistUri){
