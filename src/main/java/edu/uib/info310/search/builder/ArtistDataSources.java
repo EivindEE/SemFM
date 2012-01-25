@@ -15,6 +15,8 @@ import com.hp.hpl.jena.rdf.model.Model;
 import edu.uib.info310.search.builder.ontology.AbstractArtistDataSource;
 import edu.uib.info310.search.builder.ontology.ArtistDataSource;
 import edu.uib.info310.search.builder.ontology.BBCArtistDataSource;
+import edu.uib.info310.search.builder.ontology.DBpediaArtistDataSource;
+import edu.uib.info310.search.builder.ontology.ITunesArtistDataSource;
 
 @Component
 public class ArtistDataSources {
@@ -24,7 +26,8 @@ public class ArtistDataSources {
 	private ArtistDataSource itunes;
 
 	@Autowired
-	private BBCArtistDataSource bbc;
+	@Qualifier("BBCArtistDataSourceImpl")
+	private ArtistDataSource bbc;
 
 	@Autowired
 	@Qualifier("DBPediaArtistDataSourceImpl")
