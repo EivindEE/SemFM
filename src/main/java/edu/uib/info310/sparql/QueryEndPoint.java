@@ -16,7 +16,7 @@ public interface QueryEndPoint {
 	public static final String DB_PEDIA = "http://dbpedia.org/sparql";
 	public static final String DB_PEDIA_LIVE = "http://live.dbpedia.org/sparql";
 	public static final String DISCOGS = "http://kasabi.com/dataset/discogs/apis/sparql";
-
+	public static final String MUSICBRAINZ = "http://dbtune.org/musicbrainz/sparql";
 	/**
 	 * Returns a ResultSet containg the results of the query
 	 * @return A ResultSet
