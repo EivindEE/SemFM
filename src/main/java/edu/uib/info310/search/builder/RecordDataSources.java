@@ -24,14 +24,20 @@ public class RecordDataSources {
 	@Qualifier("ITunesRecordDataSourceImpl")
 	RecordDataSource itunes;
 	
+//	@Autowired
+//	@Qualifier("discogsRecordDataSourceImpl")
+//	RecordDataSource discogs;
+	
 	@Autowired
-	@Qualifier("discogsRecordDataSourceImpl")
-	RecordDataSource discogs;
+	@Qualifier("DBTuneDataSourceImpl")
+	RecordDataSource dbtunes;
+	
+	
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArtistDataSources.class);
 
 	public void init(){
-		this.dataSources = Arrays.asList(new RecordDataSource[]{itunes, discogs});
+		this.dataSources = Arrays.asList(new RecordDataSource[]{itunes,dbtunes});
 		LOGGER.debug("Running the query will gather information from these sources: " + dataSources);
 	}
 	
@@ -43,12 +49,23 @@ public class RecordDataSources {
 		for(Thread thread :  threads){
 			thread.start();
 		}
-		while(running(threads)){
+		long startTime = System.currentTimeMillis();
+		while(running(threads, startTime)){
 			// Wait for threads to stop running
 		}
 	}
 	
-	private boolean running(List<Thread> threads) {
+	private boolean running(List<Thread> threads, long startTime) {
+		long currentTime = System.currentTimeMillis();
+		if (currentTime - startTime > 5000) {
+			for(Thread thread : threads){
+				if(thread.isAlive()){
+					thread.interrupt();
+					LOGGER.debug("Thread "  + thread.getName() + " interupted");
+				}
+				return false;
+			}
+		}
 		for(Thread thread : threads){
 			if(thread.isAlive()){
 				return true;
