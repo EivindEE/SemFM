@@ -21,6 +21,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.vocabulary.FOAF;
 import com.hp.hpl.jena.vocabulary.OWL;
 import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
 
 import edu.uib.info310.search.builder.ontology.AbstractRecordDataSource;
 import edu.uib.info310.search.builder.ontology.ITunesRecordDataSource;
@@ -65,9 +66,29 @@ public class ITunesRecordDataSourceImpl extends AbstractRecordDataSource impleme
 					rdfObject = model.createLiteral(jObject.get("primaryGenreName").toString());
 					model.add(subject, property, rdfObject);
 					
+					property = RDFS.label;
+					rdfObject = model.createLiteral(jObject.get("collectionName").toString());
+					model.add(subject, property, rdfObject);
+					
+					
+					property = RDF.type;
+					rdfObject = MO.Record;
+					model.add(subject, property, rdfObject);
+					
 					property = OWL.sameAs;
 					rdfObject = model.createResource(jObject.get("collectionViewUrl").toString());
 					model.add(subject, property, rdfObject);
+					
+					property = FOAF.maker;
+					rdfObject = model.createResource(jObject.get("artistName").toString());
+					model.add(subject, property, rdfObject);
+					
+					subject = model.createResource(jObject.get("artistName").toString());
+					property = FOAF.name;
+					rdfObject = model.createLiteral(jObject.get("artistName").toString());
+					model.add(subject, property, rdfObject);
+
+					
 				}
 				
 			}

@@ -25,6 +25,7 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import edu.uib.info310.search.builder.ontology.AbstractRecordDataSource;
@@ -45,6 +46,7 @@ public class DBTuneDataSourceImpl extends AbstractRecordDataSource implements Ap
 					"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
 					"PREFIX dc: <http://purl.org/dc/terms/>" +
 					"PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>"+
+					"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
 					"PREFIX owl: <http://www.w3.org/2002/07/owl#> ";
 
 	private static final Logger LOGGER= LoggerFactory.getLogger(DBTuneDataSource.class);
@@ -59,23 +61,22 @@ public class DBTuneDataSourceImpl extends AbstractRecordDataSource implements Ap
 		//String whereStr = this.makeWhere(artistName);
 
 		
-		String constructString = makeConstruct(record);
-		String whereString = makeWhere(artistName);
-		LOGGER.error("Query String: " + prefix + constructString + whereString);
+		String constructString = makeConstruct(record,artistName);
+		String whereString = makeWhere(artistName,album);
+		LOGGER.error("Query String DBTune: " + constructString + whereString);
 
 		LOGGER.error("qep toSTring: " + qep.toString());
 		qep.setQuery(prefix + constructString + whereString);
 		qep.setEndPoint(QueryEndPoint.MUSICBRAINZ);
-		Model model = qep.constructStatement();
-//		QueryExecution exec = QueryExecutionFactory.create(prefix + constructString + whereString, model);
-//		Model transalatedModel = exec.execConstruct();
+		Model model = null;
 		
-		
-		
-//		Query query = QueryFactory.create(prefix + constructString + whereString);
-//		QueryEngineHTTP queryExecution = QueryExecutionFactory.createServiceRequest(QueryEndPoint.MUSICBRAINZ, query);
-//		Model model = queryExecution.execConstruct();
-//		
+		try {
+			model = qep.constructStatement();
+		}
+		catch (Exception e ) {
+			model = ModelFactory.createDefaultModel();
+		}
+	
 		LOGGER.debug("modelsize=" + model.size());
 		return model;
 
@@ -104,45 +105,48 @@ public class DBTuneDataSourceImpl extends AbstractRecordDataSource implements Ap
 
 	}
 
-	public String queryEndPoint(String artist_name){
+//	public String queryEndPoint(String artist_name){
+//
+//		String selectString = "SELECT ?artist";
+//		String whereString = makeWhere(artist_name);
+//
+//		LOGGER.debug("selectString= " + selectString + whereString);
+//		qep.setQuery(prefix + selectString + whereString);
+//		qep.setEndPoint(QueryEndPoint.MUSICBRAINZ);
+//
+//
+//		ResultSet albumResult = qep.selectStatement();
+//	
+//		String albums =""; 
+//		while(albumResult.hasNext()){
+//			QuerySolution querySolution = albumResult.next();
+//			albums += "\n" + querySolution.get("artist").toString();
+//		}
+//
+//		return albums;
+//	}
 
-		String selectString = "SELECT ?artist";
-		String whereString = makeWhere(artist_name);
-
-		LOGGER.debug("selectString= " + selectString + whereString);
-		qep.setQuery(prefix + selectString + whereString);
-		qep.setEndPoint(QueryEndPoint.MUSICBRAINZ);
-
-
-		ResultSet albumResult = qep.selectStatement();
-	
-		String albums =""; 
-		while(albumResult.hasNext()){
-			QuerySolution querySolution = albumResult.next();
-			albums += "\n" + querySolution.get("artist").toString();
-		}
-
-		return albums;
-	}
-
-	private String makeWhere(String artist_name) {
-		return " WHERE {?artist foaf:name \"" + artist_name + "\" " + "." +
-				"?album foaf:maker ?artist;" +
-				"rdf:type ?type;" +
-				"OPTIONAL{?album dc:title ?title}" +
-				"OPTIONAL{?album rdfs:label ?label}" +
-				"OPTIONAL{?album mo:release ?release}" +
+	private String makeWhere(String artistName,String albumName) {
+		return " WHERE {?artist foaf:name \"" + artistName + "\" " + "." +
+				"?album rdfs:label \""+ albumName +"\";" +
+				"rdf:type mo:Record;" +
+				"mo:track ?track." +
+				" OPTIONAL {?album foaf:name ?name } " +
+				" OPTIONAL {?album rdfs:label ?label } " +
 				"}"
 				;
 	}
 
-	private String makeConstruct(String album) {
+	private String makeConstruct(String album, String artistName) {
 
-		return "CONSTRUCT { " + album + " foaf:maker ?artist;" +
-				"rdf:type ?type;" +
-				"dc:title ?title;" +
-				"rdfs:label ?label;" +
-				"mo:release ?release;" +
+		return "CONSTRUCT { " + album + 
+				"foaf:maker ?artist;" +
+				"owl:SameAs ?album;" +
+				"mo:track ?track;" +
+				"rdf:type mo:Record;" +
+				"foaf:name ?name;" +
+				"rdfs:label ?label." + 
+				"?artist foaf:name \"" + artistName + "\" " +
 				"} " ;
 	}
 
