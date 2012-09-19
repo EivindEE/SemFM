@@ -41,7 +41,7 @@ public class DBPediaArtistDataSourceImpl extends AbstractArtistDataSource implem
 		String whereStr = makeWhereString(artistName);
 		
 		qep.setQuery(prefix + constructStr + whereStr);
-		qep.setEndPoint(QueryEndPoint.DB_PEDIA_LIVE);
+		qep.setEndPoint(QueryEndPoint.DB_PEDIA);
 		
 		Model model = qep.constructStatement();
 		
@@ -75,6 +75,7 @@ public class DBPediaArtistDataSourceImpl extends AbstractArtistDataSource implem
 				"OPTIONAL{?artist dbont:birthDate ?birth} ." +
 				"OPTIONAL{?artist dbont:deathDate ?death} ." +
 				"OPTIONAL{?artist mo:wikipedia ?wikipedia}. "+
+				"OPTIONAL{?artist mo:image ?image}. " +
 				"OPTIONAL {{{?artist dbpedia:currentMembers ?currentMembers. ?currentMembers rdfs:label ?name3. FILTER(lang(?name3) = 'en') } UNION {?artist dbont:bandMember ?currentMember. ?currentMember rdfs:label ?name1. FILTER(lang(?name1) = 'en')}} UNION"+
 				"{ {?artist dbpedia:pastMembers ?pastMembers. ?pastMembers rdfs:label ?name4. FILTER(lang(?name4) = 'en')} UNION {?artist dbont:formerBandMember ?pastMember. ?pastMember rdfs:label ?name2. FILTER(lang(?name2) = 'en')}}}" +
 				"OPTIONAL {?artist rdfs:label ?name}}" +
@@ -92,7 +93,8 @@ public class DBPediaArtistDataSourceImpl extends AbstractArtistDataSource implem
 				"OPTIONAL{?artist dbont:activeYearsStartYear ?start} ." +
 				"OPTIONAL{?artist dbont:birthDate ?birth} ." +
 				"OPTIONAL{?artist dbont:deathDate ?death} ." +
-				"OPTIONAL{?artist foaf:page ?wikipedia}. "+
+				"OPTIONAL{?artist foaf:page ?wikipedia}. " +
+				"OPTIONAL{?artist foaf:depiction ?image}. " +
 				"OPTIONAL {{{?currentMembers dbpedia:currentMembers ?artist. ?currentMembers rdfs:label ?name3. FILTER(lang(?name3) = 'en') } UNION {?artist dbont:bandMember ?currentMember. ?currentMember rdfs:label ?name1. FILTER(lang(?name1) = 'en')}} UNION"+
 				"{ {?pastMembers dbpedia:pastMembers ?artist. ?pastMembers rdfs:label ?name4. FILTER(lang(?name4) = 'en')} UNION {?artist dbont:formerBandMember ?pastMember. ?pastMember rdfs:label ?name2. FILTER(lang(?name2) = 'en')}}}" +
 				"} limit 100000";
@@ -109,7 +111,8 @@ public class DBPediaArtistDataSourceImpl extends AbstractArtistDataSource implem
 				"mo:activity_end ?end ;" +	
 				"dbont:birthDate ?birth ;" +
 				"dbont:deathDate ?death ;" +
-				"mo:wikipedia ?wikipedia ;" +
+				"mo:wikipedia ?wikipedia ; " +
+				"mo:image ?image ;" +
 				"owl:sameAs ?artist;" +
 				"dbont:bandMember ?currentMember;" +
 				"dbont:formerBandMember ?pastMember;" +
