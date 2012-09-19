@@ -12,7 +12,7 @@ import com.hp.hpl.jena.rdf.model.Model;
  */
 public interface QueryEndPoint {
 
-	public static final String BBC_MUSIC = "http://api.talis.com/stores/bbc-backstage/services/sparql";
+	public static final String BBC_MUSIC = "http://bbc.openlinksw.com/sparql";
 	public static final String DB_PEDIA = "http://dbpedia.org/sparql";
 	public static final String DB_PEDIA_LIVE = "http://live.dbpedia.org/sparql";
 	public static final String DISCOGS = "http://kasabi.com/dataset/discogs/apis/sparql";
