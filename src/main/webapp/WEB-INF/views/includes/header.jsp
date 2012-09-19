@@ -11,10 +11,10 @@
 	<ul class="header_meta_links">
 		<c:if test="${! empty artist  || ! empty record}">
 			<c:if test="${! empty artist}">
-				<li><a href="?q=${q}&out=xml">as rdf</a></li>
+				<li><a href="/SemFM/spring/artist?q=${q}&out=xml">as rdf</a></li>
 			</c:if>
 			<c:if test="${! empty record}">
-				<li><a href="?q=${q}&artist=${record.artist[0].name}&out=xml">as rdf</a></li>
+				<li><a href="/SemFM/spring/record?q=${q}&artist=${record.artist[0].name}&out=xml">as rdf</a></li>
 			</c:if>
 		</c:if>
 		<li><a onclick="document.getElementById('sources').style.display = 'block'" class="close">our sources</a></li>
