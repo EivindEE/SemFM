@@ -185,6 +185,13 @@ resources/css/screen.css
 	#logo {
 		float:left;
 	}
+	
+	.search_result_image {
+	width:auto;
+	height:auto;
+	max-height:300px;
+	max-width:500px;
+	}
 	.home #logo {
 		margin: 0 auto;
 		float: none !important;
