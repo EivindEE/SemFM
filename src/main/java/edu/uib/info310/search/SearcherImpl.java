@@ -1,5 +1,8 @@
 package edu.uib.info310.search;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -16,6 +19,7 @@ import javax.xml.transform.TransformerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.query.Query;
@@ -35,6 +39,8 @@ import edu.uib.info310.model.Record;
 import edu.uib.info310.model.Track;
 import edu.uib.info310.model.factory.ModelFactory;
 import edu.uib.info310.search.builder.OntologyBuilder;
+import edu.uib.info310.search.builder.ontology.impl.DBTuneDataSourceImpl;
+import edu.uib.info310.sparql.QueryEndPoint;
 
 @Component
 public class SearcherImpl implements Searcher {
@@ -101,13 +107,11 @@ public class SearcherImpl implements Searcher {
 				+ "dc:title ?albumName." + "?artist foaf:name ?artistName}"
 				+ "ORDER BY ?year";
 
+		LOGGER.debug("DISC SELECT QUERY= "+ albums);
 		Query query = QueryFactory.create(prefix + albums);
 		QueryEngineHTTP queryExecution = QueryExecutionFactory
-				.createServiceRequest(
-						"http://api.kasabi.com/dataset/discogs/apis/sparql",
+				.createServiceRequest(QueryEndPoint.MUSICBRAINZ,
 						query);
-		queryExecution.addParam("apikey",
-				"fe29b8c58180640f6db16b9cd3bce37c872c2036");
 		ResultSet recordResults = queryExecution.execSelect();
 
 		while (recordResults.hasNext()) {
@@ -555,18 +559,19 @@ public class SearcherImpl implements Searcher {
 				+ "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "
 				+ "PREFIX mo: <http://purl.org/ontology/mo/> "
 				+ "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
 				+ "PREFIX dc: <http://purl.org/dc/terms/> "
 				+ "PREFIX time: <http://www.w3.org/2006/time#> "
 				+ "SELECT DISTINCT * WHERE { "
-				+ "?discogs mo:discogs ?id."
-				+ "OPTIONAL { ?discogs foaf:name ?name.}"
-				+ "OPTIONAL { ?discogs rdfs:comment ?comment. }"
-				+ "OPTIONAL { ?discogs foaf:hasAgent ?artist. }"
-				+ "OPTIONAL { ?discogs mo:genre ?genre. }"
-				+ "OPTIONAL { ?discogs mo:catalogue_number ?catalogueNumber. }"
-				+ "OPTIONAL { ?discogs mo:label ?publisher . }"
-				+ "OPTIONAL { ?discogs mo:image ?image . }"
-				+ "OPTIONAL { ?discogs dc:issued ?year. }"
+				+ "?record rdf:type mo:Record. "
+				+ "OPTIONAL { ?record rdfs:label ?name.}"
+				+ "OPTIONAL { ?record rdfs:comment ?comment. }"
+				+ "OPTIONAL { ?record foaf:maker ?artist. ?artist foaf:name ?artistName }"
+				+ "OPTIONAL { ?record mo:genre ?genre. }"
+				+ "OPTIONAL { ?record mo:catalogue_number ?catalogueNumber. }"
+				+ "OPTIONAL { ?record mo:label ?publisher . }"
+				+ "OPTIONAL { ?record mo:image ?image . }"
+				+ "OPTIONAL { ?record dc:issued ?year. }"
 				+ "OPTIONAL { ?trackid foaf:name ?trackName. }"
 				+ "OPTIONAL { ?trackid mo:track_number ?trackNumber. }"
 				+ "OPTIONAL { ?trackid mo:preview ?preview. } "
@@ -574,7 +579,7 @@ public class SearcherImpl implements Searcher {
 		QueryExecution execution = QueryExecutionFactory
 				.create(albumStr, model);
 		ResultSet albumResults = execution.execSelect();
-
+		LOGGER.debug("found results: " + albumResults.hasNext());
 		HashMap<String, String> genre = new HashMap<String, String>();
 		HashMap<String, Object> meta = new HashMap<String, Object>();
 		HashMap<String, Track> tracks = new HashMap<String, Track>();
@@ -587,8 +592,8 @@ public class SearcherImpl implements Searcher {
 			// LOGGER.debug(queryAlbum.get("genre").toString());
 			// LOGGER.debug(queryAlbum.get("year").toString());
 
-			if(queryAlbum.get("id") != null){
-				record.setId(queryAlbum.get("id").toString());
+			if(queryAlbum.get("record") != null){
+				record.setId(queryAlbum.get("record").toString());
 			}
 
 			if (queryAlbum.get("name") != null)
@@ -617,11 +622,11 @@ public class SearcherImpl implements Searcher {
 
 			Artist artist = modelFactory.createArtist();
 
-			if (queryAlbum.get("artist") != null)
-				artist.setName(queryAlbum.get("artist").toString());
+			if (queryAlbum.get("artistName") != null)
+				artist.setName(queryAlbum.get("artistName").toString());
 
-			if (queryAlbum.get("artist") != null)
-				artists.put(queryAlbum.get("artist").toString(), artist);
+			if (queryAlbum.get("artistName") != null)
+				artists.put(queryAlbum.get("artistName").toString(), artist);
 
 			if (queryAlbum.get("genre") != null)
 				genre.put(queryAlbum.get("genre").toString(),
@@ -630,7 +635,7 @@ public class SearcherImpl implements Searcher {
 			if (queryAlbum.get("year") != null)
 				meta.put("Released", queryAlbum.get("year").toString());
 
-			if (queryAlbum.get("catalogueNumber").toString() != "none") {
+			if (queryAlbum.get("catalogueNumber") != null && queryAlbum.get("catalogueNumber").toString() != "none") {
 				meta.put("Catalogue Number", queryAlbum.get("catalogueNumber")
 						.toString());
 			}
@@ -665,3 +670,4 @@ public class SearcherImpl implements Searcher {
 	}
 
 }
+
