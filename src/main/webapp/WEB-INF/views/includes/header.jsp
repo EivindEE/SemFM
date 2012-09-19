@@ -17,15 +17,15 @@
 				<li><a href="?q=${q}&artist=${record.artist[0].name}&out=xml">as rdf</a></li>
 			</c:if>
 		</c:if>
-		<li><a href="#sources" class="close">our sources</a></li>
-		<li><a href="#help">help</a></li>
+		<li><a onclick="document.getElementById('sources').style.display = 'block'" class="close">our sources</a></li>
+		<li><a onclick="document.getElementById('help').style.display = 'block'">help</a></li>
 	</ul>
 </div>
 
 
 <div id="sources" class="full main_wrapper">
 	<h2>Our Sources</h2>
-	<a href="#" class="close">Close</a>
+	<a onclick="document.getElementById('sources').style.display = 'none'" class="close">Close</a>
 	<ol>
 		<li><a href="hhtp://last.fm">Last.FM</a> (API/XML): Related
 			artists and events</li>
@@ -40,7 +40,7 @@
 </div>
 <div id="help" class="full main_wrapper">
 	<h2>Help</h2>
-	<a href="#" class="close">Close</a>
+	<a onclick="document.getElementById('help').style.display = 'none'" class="close">Close</a>
 	<p>We allow searches for artists or albums.</p>
 	<h3>Examples:</h3>
 	<ul>

@@ -142,7 +142,12 @@ a {
 }
 #sources, #help, #rdf {
 	display:none;
-	position: relative;
+	position: absolute;
+	top: 55px;
+	right: 345px;
+	width: 500px;
+	z-index: 100;
+	background-color: white;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	border: 1px solid #ccc;
@@ -157,6 +162,8 @@ a {
 #sources:target, #help:target {
 	display: block;
 }
+
+resources/css/screen.css
 
 /* image formating */
 .rounded_image {
