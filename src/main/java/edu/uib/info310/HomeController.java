@@ -1,6 +1,7 @@
 package edu.uib.info310;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ public class HomeController {
 
 	@Autowired
 	private Searcher searcher;
+	
 
 
 	/**
@@ -58,7 +60,14 @@ public class HomeController {
 
 		}
 		LOGGER.debug("Looking for records called: " + q);
-		List<Record> records = searcher.searchRecords(q);
+
+		List<Record> records = new ArrayList<Record>();
+		try {
+			records = searcher.searchRecords(q);
+		}
+		catch ( Exception e) {
+			
+		}
 		LOGGER.debug("Found " + records.size() + " records" );
 		if(records.isEmpty() && artist != null){
 			mav.setViewName("artist");
