@@ -100,20 +100,21 @@ public class SearcherImpl implements Searcher {
 				+ "PREFIX dc: <http://purl.org/dc/terms/>"
 				+ "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>";
 
-		String albums = "SELECT ?artistName ?albumName ?year "
+		String albums = "SELECT ?artistName ?albumName ?year"
 				+ " WHERE {	?record dc:title \"" + safe_search + "\" ;"
-				+ "rdf:type mo:Record ;" + "foaf:maker ?artist ;"
-				+ "mo:discogs ?discogs ;" + "dc:issued ?year ;"
-				+ "dc:title ?albumName." + "?artist foaf:name ?artistName}"
+				+ "rdf:type mo:Record ;" 
+				+ "foaf:maker ?artist ;"
+				+ "dc:issued ?year ;"
+				+ "dc:title ?albumName." 
+				+ "?artist foaf:name ?artistName}"
 				+ "ORDER BY ?year";
 
-		LOGGER.debug("DISC SELECT QUERY= "+ albums);
 		Query query = QueryFactory.create(prefix + albums);
 		QueryEngineHTTP queryExecution = QueryExecutionFactory
-				.createServiceRequest(QueryEndPoint.MUSICBRAINZ,
+				.createServiceRequest(QueryEndPoint.BBC_MUSIC,
 						query);
 		ResultSet recordResults = queryExecution.execSelect();
-
+		
 		while (recordResults.hasNext()) {
 			List<Artist> artists = new LinkedList<Artist>();
 			Record record = modelFactory.createRecord();
@@ -353,7 +354,6 @@ public class SearcherImpl implements Searcher {
 		while (results.hasNext()) {
 			QuerySolution query = results.next();
 			if (query.get("name") != null) {
-				LOGGER.debug("Artistname " + query.get("name").toString());
 			}
 			if (query.get("image") != null) {
 				artist.setImage(query.get("image").toString());
@@ -579,7 +579,6 @@ public class SearcherImpl implements Searcher {
 		QueryExecution execution = QueryExecutionFactory
 				.create(albumStr, model);
 		ResultSet albumResults = execution.execSelect();
-		LOGGER.debug("found results: " + albumResults.hasNext());
 		HashMap<String, String> genre = new HashMap<String, String>();
 		HashMap<String, Object> meta = new HashMap<String, Object>();
 		HashMap<String, Track> tracks = new HashMap<String, Track>();
