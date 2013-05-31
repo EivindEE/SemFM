@@ -35,7 +35,6 @@
 			Artist Info</li>
 		<li><a href="http://dbpedia.org">DBPedia</a> (SPARQL): Artist
 			Info</li>
-		<li><a href="http://discogs.com">Discogs</a> (SPARQL): Album info</li>
 	</ol>
 </div>
 <div id="help" class="full main_wrapper">
