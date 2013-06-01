@@ -18,7 +18,7 @@
 		var player = document.getElementById(element);
 		var img = document.getElementById(element + "img");
 		if(playing){
-			
+
 			player.pause();
 			playing = false;
 			img.src = "resources/images/play-button.png";
@@ -29,44 +29,46 @@
 			img.src = "resources/images/pause-button.png";
 		}
 	}
-	
-// 	function switchImage(element){
-// 		alert('Hei!');
-// 	}
+
 </script>
 </head>
-<body class="album" itemscope
-	itemtype="http://www.schema.org/MusicAlbum">
+<body class="album">
 	<jsp:include page="includes/header.jsp" />
 
 	<div class="headline_wrapper">
 		<div class="headline">
 		<c:if test="${! empty record.image}">
-			<img src="${record.image}" alt="" class="search_result_image"
-				itemprop="image" style="width: 200px; height: 200px;" />
+			<span resource="#recordImg" typeof="schema:ImageObject">
+				<meta about="#record" property="schema:image" href="#recordImg" />
+				<img src="${record.image}" alt="" class="search_result_image"
+					property="schema:image" style="width: 200px; height: 200px;" />
+			</span>
 				</c:if>
-			<div class="h1-wrapper">
-				<h1 itemprop="name">${record.name}</h1>
-				<meta content="${fn:length(record.tracks)}" itemprop="numTracks" />
-				<meta content="${record.genres}" itemprop="genre" />
+			<div class="h1-wrapper" resource="#record" typeof="schema:MusicAlbum">
+				<h1 property="schema:name">${record.name}</h1>
+				<meta content="${fn:length(record.tracks)}" datatype="xsd:integer" property="schema:numTracks" />
 				<div class="h1-description">
-					<c:if test="${! empty record.itunesPreview}">
+					<c:if test="${! empty record.itunesLink}">
 						<audio controls="controls" itemprop="audio">
 							<source
-								src="http://a5.mzstatic.com/us/r2000/004/Music/4d/9b/3a/mzm.yidxkftn.aac.p.m4a"
+								src="${itunesLink}"
 								type="audio/aac" />
 						</audio>
 					</c:if>
 					<ul>
 						<c:forEach var="genre" items="${record.genres}">
-							<li>${genre.value}</li>
+							<li about="#record" property="schema:genre">${genre.value}</li>
 						</c:forEach>
 					</ul>
 					<br /> by
-					<ul itemprop="byArtist" itemscope
-						itemtype="http://www.schema.org/MusicGroup">
+					<ul>
 						<c:forEach var="artist" items="${record.artist}">
-							<li itemprop="name">${artist.name}</li>
+							<li>
+								<link typeof="schema:MusicGroup" href="artist?q=${artist.name}">
+									<meta about="artist?q=${artist.name}" property="schema:album" href="#record" />
+									<span about="artist?q=${artist.name}" property="schema:name">${artist.name}</span>
+								</link>
+							</li>
 						</c:forEach>
 					</ul>
 
@@ -121,21 +123,22 @@
 					<th>Preview</th>
 				</tr>
 				<c:forEach var="track" items="${record.tracks}">
-					<tr itemprop="tracks" itemscope
-						itemtype="http://www.schema.org/MusicRecording">
+					<tr resource="#track${track.trackNr}" typeof="schema:MusicRecording">
+						<meta about="#record" property="schema:track" href="#track${track.trackNr}" />
 						<td>${track.trackNr}</td>
-						<td itemprop="name">${track.name}</td>
-						<td itemprop="duration">${track.length}</td>
+						<td property="schema:name">${track.name}</td>
+						<td>${track.length}</td>
 						<td><c:if test="${! empty track.artist}">
-								<a href="artist?q=${track.artist}" itemprop="byArtist">${track.artist}</a>
+								<a href="artist?q=${track.artist}" property="schema:byArtist">${track.artist}</a>
 							</c:if> <c:if test="${empty track.artist}">
 								<c:forEach var="artist" items="${record.artist}">
-									<a href="artist?q=${artist.name}" itemprop="byArtist">${artist.name}</a>
+									<a href="artist?q=${artist.name}" property="schema:byArtist">${artist.name}</a>
 								</c:forEach>
 							</c:if></td>
 						<td><c:if test="${! empty track.preview}">
-								<audio id="${track.preview}" itemprop="audio">
-									<source src="${track.preview}"> </source>
+								<audio id="${track.preview}" resource="#prev${track.trackNr}" typeof="schema:AudioObject">
+									<meta about="#track${track.trackNr}" property="schema:associatedMedia" href="#prev${track.trackNr}" />
+									<source about="#prev${track.trackNr}" property="schema:contentUrl" src="${track.preview}"> </source>
 								</audio>
 								<div>
 									<a onclick="playClicked('${track.preview}')"><img id="${track.preview}img" alt="" src="resources/images/play-button.png"/></a>
