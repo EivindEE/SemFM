@@ -21,22 +21,22 @@
 			<ul class="zebra_list search_result_list full">
 				<li><a href="artist?q=${artist.name}">${artist.name}</a> <span class="right">(<a href="artist?q=${artist.name}&out=xml">Artist RDF</a>)</span></li>
 			</ul>
-		
+
 		</c:if>
 		<c:if test="${! empty records}">
 		<h3>Records:</h3>
 		<ul class="zebra_list search_result_list full">
-			
+
 			<c:forEach var="record" items="${records}">
 				<li>
-				
+
 					<a href="album?q=${record.name}&amp;artist=${record.artist[0].name}">
 						<strong>${record.name}</strong>(${record.year})
 					</a>
-					 by 
-					 
+					 by
+
 						<c:forEach var="artist" items="${record.artist}">
-							<a href="artist?q=${artist.name}">${artist.name}</a> 
+							<a href="artist?q=${artist.name}">${artist.name}</a>
 						</c:forEach>
 						<span class="right">(<a href="album?q=${record.name}&amp;artist=${record.artist[0].name}&out=xml">Album RDF</a> / <a href="artist?q=${record.artist[0].name}&out=xml">Artist RDF</a> )</span>
 				</li>
