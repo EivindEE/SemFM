@@ -144,7 +144,8 @@
 						<td about="${event.website}" property="schema:location">${event.location}</td>
 						<td about="${event.website}" property="schema:name">${event.venue}</td>
 						<td>
-							<a about="${event.website}" property="schema:url" href="${event.website}">Last.FM</a>
+							<link about="${event.website}" property="schema:url" href="${event.website}" />
+							<a href="${event.website}">Last.FM</a>
 						</td>
 					</link>
 				</tr>

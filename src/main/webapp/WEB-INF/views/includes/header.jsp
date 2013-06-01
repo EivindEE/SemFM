@@ -27,7 +27,7 @@
 	<h2>Our Sources</h2>
 	<a onclick="document.getElementById('sources').style.display = 'none'" class="close">Close</a>
 	<ol>
-		<li><a href="hhtp://last.fm">Last.FM</a> (API/XML): Related
+		<li><a href="http://last.fm">Last.FM</a> (API/XML): Related
 			artists and events</li>
 		<li><a href="http://itunes.apple.com">Apple iTunes</a>
 			(API/JSON): Discography</li>
